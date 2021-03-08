@@ -1,6 +1,6 @@
 # FUP
 FakeYourPhone
 
-##dependencias:
+## dependencias:
 scrcpy
 https://github.com/Genymobile/scrcpy
