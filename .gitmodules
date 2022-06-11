@@ -1,0 +1,3 @@
+[submodule "apk_server"]
+	path = apk_server
+	url = ./apk_server
