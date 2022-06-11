@@ -7,7 +7,8 @@ FakeYourPhone
 
 
 ## ventajas
-  - ejecutar aplicaciones en el disositivo
+  - ejecutar aplicaciones en el disositivo con espejo en el escritorio
+   'video' -> https://t.me/GUTLOficial/38486
   - mostrar notificaciones del dispositivo en el escritorio
 
 
