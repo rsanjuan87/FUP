@@ -33,6 +33,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::connectDevice(){
 
+    logcat.terminate();
+
     QProcess p;
     p.setProcessChannelMode(QProcess::MergedChannels);
 
@@ -54,12 +56,6 @@ void MainWindow::connectDevice(){
     //to connnect logcat with that date
     logcat.start(config.getAdbPath() +" shell logcat -s "+ Defs::KEY_PACKAGE_ID + " -T '"+
                  time+"'");
-
-
-    trayMenu->addAction("Mostrar Lanzador", this, SLOT(show()));
-    trayMenu->addSeparator();
-    trayMenu->addAction("Salir", qApp, SLOT(quit()));
-
 
     requestAction(Defs::KEY_START_SERVICE);
 
@@ -91,10 +87,13 @@ void MainWindow::init(){
     connect(&logcat, SIGNAL(readyReadStandardError()), this, SLOT(readLogcat()));
     connect(&logcat, SIGNAL(readyReadStandardOutput()), this, SLOT(readLogcat()));
 
-    connectDevice();
-    trayMenu->addSeparator();
     trayMenu->addAction("Reconectar", this, &MainWindow::connectDevice);
-    trayMenu->insertAction(trayMenu->actions().at(0), trayMenu->actions().last());
+    trayMenu->addSeparator();
+    trayMenu->addAction("Mostrar Lanzador", this, SLOT(show()));
+    trayMenu->addSeparator();
+    trayMenu->addAction("Salir", qApp, SLOT(quit()));
+
+    connectDevice();
     trayMenu->setDefaultAction(trayMenu->actions().first());
 }
 

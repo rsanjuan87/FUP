@@ -20,3 +20,7 @@ int main(int argc, char *argv[])
     a.setQuitOnLastWindowClosed(false);
     return a.exec();
 }
+
+
+
+//info puede crear un package.id.app por cada app q publique una notificacion con el icono del app asi sale con el icono
