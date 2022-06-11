@@ -16,6 +16,13 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>tester</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout">
@@ -29,8 +36,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>494</width>
-             <height>369</height>
+             <width>482</width>
+             <height>316</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="appListLayout">

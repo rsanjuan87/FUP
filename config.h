@@ -15,7 +15,7 @@ public:
 private:
 
     QString adbPath = "/Volumes/Datos/Databank/programacion/sdk/platform-tools/adb";
-    QString scrcpyPath = "/usr/local/Cellar/scrcpy/1.16_2/bin/scrcpy";
+    QString scrcpyPath = "/usr/local/bin/scrcpy";
 
 signals:
 

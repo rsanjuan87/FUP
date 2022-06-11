@@ -18,12 +18,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     config.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    notificationhelper.cpp
 
 HEADERS += \
     Defs.h \
     config.h \
-    mainwindow.h
+    mainwindow.h \
+    notificationhelper.h
 
 FORMS += \
     mainwindow.ui
@@ -35,3 +37,6 @@ TRANSLATIONS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    imgs.qrc

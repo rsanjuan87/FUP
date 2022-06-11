@@ -8,8 +8,10 @@
 #include <QPushButton>
 #include <QThread>
 #include <QVBoxLayout>
+#include <QSystemTrayIcon>
 #include "Defs.h"
 #include "config.h"
+#include "notificationhelper.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -81,26 +83,38 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QSystemTrayIcon *tray, QMenu *trayMenu, QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void requestAction(QString action);
+    void connectDevice();
 protected slots:
     void getAppList();
     void init();
     void readAdb(int);
+    void readLogcat();
     void runInAdb(QString shell, QString key = "");
 
     void parse(QStringList out);
+    void parseMessages(QStringList out);
     //void updatePackages(QStringList list);
     void onGeneralClick(QWidget *w, QMouseEvent *e);
     void addApp(QString id);
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QProcess adb;
+    QProcess logcat;
     QProcess scrcpy;
     Config config;
+    QSystemTrayIcon *tray;
     MouseButtonSignaler signaler;
     AppAdder *appAdder;
+    NotificationHelper *notifHelper;
+    QMenu *trayMenu;
 };
 
 
