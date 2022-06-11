@@ -1,3 +1,9 @@
 [submodule "apk_server"]
 	path = apk_server
 	url = ./apk_server
+[submodule "FUB_apk_server"]
+	path = FUB_apk_server
+	url = https://github.com/rsanjuan87/FUB_apk_server.git
+[submodule "FUP_apk_server"]
+	path = FUP_apk_server
+	url = https://github.com/rsanjuan87/FUP_apk_server.git
