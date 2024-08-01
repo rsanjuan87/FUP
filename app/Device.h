@@ -30,38 +30,48 @@ public:
     explicit Device(QString line, Config* conf, QSystemTrayIcon *t, QObject* parent = 0);
     ~Device();
     QString id();
-    QString getScreenSize();
-
-    QList<QMap<QString, QString> > convertirJsonAListaDeMapas(const QString &jsonString);
-
-    QList<LauncherInfo> launchers;
+    QString screenSize();
+    QString screenDpi();
+    QStringList screens();
+    QList<LauncherInfo*> launchers();
+    QString remoteFupDir();
+    QString remoteFupIconsDir();
 
 public slots:
 
     void connectDevice();
-    void requestAction(QString action);
-    void requestAction(QString action, QMap<QString, QString> extras);
+    void requestAction(QString action, std::function<void(QProcess*)> onAdbFinished = nullptr);
+    void requestAction(QString action, QMap<QString, QString> extras, std::function<void (QProcess *)> onAdbFinished = nullptr);
     void getAppList();
     void init();
-    void readAdb(int);
+    // void readAdb(int);
     void readLogcat();
-    QString runInAdb(QString shell);
+    void runInAdb(QString shell, std::function<void(QProcess* p)> onAdbFinished = nullptr);
 
-    void parse(QStringList out);
+    // void parse(QStringList out);
     void parseMessages(QStringList out);
 
-    void getIcon(QString remotePath);
+    // void getIcon(QString remotePath);
 
-    void runScrcpy(QStringList params = QStringList());
-    void stopScrcpy();
+    void runScrcpy(QString pkgId,QString title, QStringList params = QStringList());
+    void stopScrcpy(QString pkgId);
+    QProcess::ProcessState scrcpyStatus(QString pkgId);
+
+    void addedLauncherSlot(LauncherInfo *info);
+    void launchersSetSlot(QList<LauncherInfo *> list);
+    void launchersClearredSlot();
+    void loadApps(QString path);
+
 private:
     //loaded from adb
-    QString* screenSize;
+    QString _screenSize;
+    QString _dpi;
+    QString _fupDir;
 
 
-    QProcess adb;
+    // QProcess adb;
     QProcess logcat;
-    QProcess scrcpy;
+    QMap<QString, QProcess*> scrcpy;
     AppAdder *appAdder;
     NotificationHelper *notifHelper;
 
@@ -70,9 +80,11 @@ private:
     bool accessToNotif = false;
 
 signals:
-    void addLauncher(LauncherInfo);
-    void launchersClearred();
-    void launchersSet(QList<LauncherInfo>);
+    void addLauncher(LauncherInfo*, QString );
+    void launchersClearred(QString );
+    void launchersSet(QList<LauncherInfo*>, QString );
+
+private:
 };
 
 #endif // DEVICE_H

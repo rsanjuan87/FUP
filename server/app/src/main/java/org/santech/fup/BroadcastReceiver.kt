@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import android.util.Log
+import java.io.File
+import java.io.FileOutputStream
 
 
 class BroadcastReceiver : BroadcastReceiver() {
@@ -38,7 +40,23 @@ class BroadcastReceiver : BroadcastReceiver() {
                         l.add(s)
                     }
                     val text = "[" + l.joinToString(",") + "]"
-                    MsgHelper.print(context, Defs.KEY_GET_LAUNCHERS, text)
+
+                    val dir = Defs.KEY_FUP_DIR(context)
+                    val file = File(dir, "launchers.json")
+                    try {
+
+                        var fos: FileOutputStream? = null
+                        if (file.exists()) {
+                            file.delete()
+                        }
+                        file.createNewFile()
+                        fos = FileOutputStream(file)
+                        fos.write(text.toByteArray())
+                        fos.close()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                    MsgHelper.print(context, Defs.KEY_GET_LAUNCHERS, file.path)
                 }
 
                 Defs.KEY_GET_PACKAGES -> {
@@ -59,17 +77,22 @@ class BroadcastReceiver : BroadcastReceiver() {
                 }
 
                 Defs.KEY_LAUCH_ACTIVITY -> {
+                    val pm = context.packageManager
                     val pkg = intent.getStringExtra("package")!!
-                    val acty = intent.getStringExtra("activity")!!
+                    val appInfo = pm.getApplicationInfo(pkg, 0)
+                    val appIcon = pm.getApplicationIcon(appInfo)
+                    NotificationService.updater?.updateApp(pkg, appIcon)
+//                    val appLabel = pm.getApplicationLabel(appInfo).toString()
+                    var acty = intent.getStringExtra("activity")!!
                     val i = Intent()
+                    if (acty.isEmpty() || acty == "null") {
+                        i.action = Intent.ACTION_MAIN
+                        i.addCategory(Intent.CATEGORY_LAUNCHER)
+                        acty = pm.getLaunchIntentForPackage(pkg)?.component?.className!!
+                    }
                     i.component = ComponentName(pkg, acty)
                     i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     context.startActivity(i)
-                    val pm = context.packageManager
-                    val appInfo = pm.getApplicationInfo(pkg, 0)
-                    val appLabel = pm.getApplicationLabel(appInfo).toString()
-                    val appIcon = pm.getApplicationIcon(appInfo)
-                    NotificationService.updater?.updateApp(pkg, appIcon)
 
                 }
 

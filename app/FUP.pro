@@ -29,6 +29,7 @@ HEADERS += \
     AppAdder.h \
     Defs.h \
     Device.h \
+    DeviceListLoader.h \
     WrapLayout.h \
     config.h \
     mainwindow.h \

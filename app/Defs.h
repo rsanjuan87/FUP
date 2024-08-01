@@ -16,26 +16,32 @@ public:
     static  QString KEY_GET_PACKAGE_ICON;
 
     static  QString KEY_GET_LAUNCHERS;
+    static  QString KEY_GET_LABEL;
+    static  QString KEY_LAUNCHERS_FILE;
+
     static  QString KEY_SAVED_PACKAGE_ICON;
 
     static  QString KEY_RUN_PACKAGE;
 
-    static  QString KEY_START_SERVICE;
-    static  QString KEY_STOP_SERVICE;
+    static QString KEY_START_SERVICE;
+    static QString KEY_STOP_SERVICE;
 
-    static  QString KEY_LAUCH_ACTIVITY;
+    static QString KEY_LAUCH_ACTIVITY;
+
+    static QString KEY_APP_RESUMED;
 
     static  QString KEY_GET_NOTIFICATIONS_STATUS;
     static  QString KEY_GET_REQUEST_NOTIFICATIONS_ACCESS;
 
-    static  QString KEY_FUP_DIR;
-    static  QString KEY_FUP_ICONS_DIR;
+    static  QString remoteFupDir();
+    static  QString remoteFupIconsDir();
 
     static QString getPackagesKey();
 
     static QString actionHeader(QString);
 
-    static QString iconsPath();
+    static QString localIconsPath(QString id);
+    static QString localPath(QString id);
 };
 
 #endif // DEFS_H

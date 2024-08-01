@@ -10,14 +10,13 @@
 #include <QVBoxLayout>
 #include <QSystemTrayIcon>
 #include "Device.h"
+#include "DeviceListLoader.h"
 #include "WrapLayout.h"
 #include "config.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
-
-
 
 
 
@@ -29,13 +28,17 @@ public:
     MainWindow(QSystemTrayIcon *tray, QMenu *trayMenu, QWidget *parent = nullptr);
     ~MainWindow();
 
-    void getIcon(QString remotePath);
+    // void getIcon(QString remotePath);
+    Device *currentDevice();
 public slots:
-    void loadDeviceslist();
+    void clearLaunchers();
+    void loadLaunchers();
+    void reloadLaunchers();
 protected slots:
+    void loadDeviceslist(QStringList);
     void connectDevice();
-    void requestAction(QString action);
-    void requestAction(QString action, QMap<QString, QString> extras);
+    void requestAction(QString action, std::function<void (QProcess *)> onAdbFinished = nullptr);
+    void requestAction(QString action, QMap<QString, QString> extras, std::function<void (QProcess *)> onAdbFinished = nullptr);
     void init();
     //void updatePackages(QStringList list);
 
@@ -43,6 +46,9 @@ protected slots:
 
     void onAppClick(QWidget *w);
     void on_devices_currentIndexChanged(int index);
+
+private slots:
+    void on_devices_activated(int index);
 
 private:
     Ui::MainWindow *ui;
@@ -60,7 +66,9 @@ private:
     QList<Device*> devices;
     int currentDeviceIndex = -1;
     WrapLayout* appsLayout;
+    DeviceListLoader* deviceListLoader;
 };
+
 
 
 

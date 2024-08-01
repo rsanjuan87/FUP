@@ -4,8 +4,13 @@
 #include <QSystemTrayIcon>
 #include <QMenu>
 
+#include "models/launcherinfo.h"
+
 int main(int argc, char *argv[])
 {
+
+    qRegisterMetaType<QList<LauncherInfo*>>("QList<LauncherInfo*>");
+
     QApplication a(argc, argv);
     QSystemTrayIcon tray;
     tray.setIcon(QIcon(":tray_light"));

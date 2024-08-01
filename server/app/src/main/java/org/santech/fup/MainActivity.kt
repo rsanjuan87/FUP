@@ -1,7 +1,9 @@
 package org.santech.fup
 
+import android.app.ActivityOptions
 import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.provider.Settings
@@ -23,11 +25,14 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import org.santech.fup.ui.theme.FUPTheme
 import java.util.*
-import java.util.concurrent.Delayed
+
 
 class MainActivity : ComponentActivity(), UpdaterInterface {
     private var txt by mutableStateOf("")
     private var iconBitmap by mutableStateOf<ImageBitmap?>(null)
+    private var pkgName: String? = null
+    private var handled = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         NotificationService().setListener(this)
@@ -74,7 +79,9 @@ class MainActivity : ComponentActivity(), UpdaterInterface {
                             Image(
                                 bitmap = it,
                                 contentDescription = "App Icon",
-                                modifier = Modifier.fillMaxSize().padding(50.dp),
+                                modifier = Modifier.fillMaxSize().padding(
+                                    if (iconBitmap == null) 50.dp else 150.dp
+                                ),
                             )
                         }
                     }
@@ -82,14 +89,62 @@ class MainActivity : ComponentActivity(), UpdaterInterface {
             }
         }
         // Verificar acceso al servicio de escucha de notificaciones
-        if (!isNotificationServiceEnabled()) {
-            openNotificationAccessSettings()
-        } else {
-            // El servicio de escucha de notificaciones está habilitado
-        }
+//        if (!isNotificationServiceEnabled()) {
+//            openNotificationAccessSettings()
+//        } else {
+//            // El servicio de escucha de notificaciones está habilitado
+//        }
 
 //        this.startService(Intent(this, NotificationService::class.java))
+
+
+        handleIntent(intent)
     }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        try {
+            val pkg = intent.getStringExtra("package") ?: return
+            val appInfo = packageManager.getApplicationInfo(pkg, 0)
+            val appIcon = packageManager.getApplicationIcon(appInfo)
+            NotificationService.updater?.updateApp(pkg, appIcon)
+
+            val acty = intent.getStringExtra("activity")
+
+            var i = Intent()
+            if (acty.isNullOrEmpty() || acty == "null") {
+                i = packageManager.getLaunchIntentForPackage(pkg)!!
+            }else{
+                i.action = Intent.ACTION_MAIN
+                i.addCategory(Intent.CATEGORY_LAUNCHER)
+                i.component = ComponentName(pkg, acty)
+            }
+
+            handled = false
+
+            val options = ActivityOptions.makeBasic()
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                val displayId = intent.getStringExtra("display") ?: "0"
+                options.setLaunchDisplayId(displayId.toInt())
+                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+
+            startActivity(i, options.toBundle())
+        } catch (e: PackageManager.NameNotFoundException) {
+            // Manejo de errores si el paquete no se encuentra
+            e.printStackTrace()
+        } catch (e: Exception) {
+            // Manejo de cualquier otro error inesperado
+            e.printStackTrace()
+            intent.putExtra("activity", "null")
+            handleIntent(intent)
+        }
+    }
+
 
     private fun getIcon(): ImageBitmap? {
         return getDrawable(R.mipmap.ic_launcher_foreground)?.toBitmap(1024, 1024)?.asImageBitmap()
@@ -117,6 +172,11 @@ class MainActivity : ComponentActivity(), UpdaterInterface {
                 iconBitmap = null
             }
         }, 1000)
+        if(!handled && intent.extras?.getString("package") != null) {
+            handled=true;
+            return;
+        }
+        MsgHelper.print(this, Defs.KEY_APP_RESUMED, pkgName ?: "null")
     }
 
     fun openNotificationAccessSettings() {
@@ -130,11 +190,12 @@ class MainActivity : ComponentActivity(), UpdaterInterface {
         private const val default_notification_channel_id = "default"
     }
 
-    override fun updateApp(packageName: String?, drawableIcon: Drawable?) {
+    override fun updateApp(packageName: String?, icon: Drawable?) {
         txt += (" \n $packageName")
-        val bitmap = drawableIcon?.toBitmap()
+        val bitmap = icon?.toBitmap()
         val imageBitmap = bitmap?.asImageBitmap()
         iconBitmap = imageBitmap
+        pkgName = packageName
     }
 }
 

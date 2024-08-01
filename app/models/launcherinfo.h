@@ -15,4 +15,6 @@ public:
     QString icon;
 };
 
+Q_DECLARE_METATYPE(LauncherInfo*)
+
 #endif // LAUNCHERINFO_H

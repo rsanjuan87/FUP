@@ -15,7 +15,6 @@ import androidx.core.graphics.drawable.toBitmap
 import org.santech.fup.NotificationService.Companion.updater
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
 import kotlin.math.max
 
 
@@ -99,36 +98,6 @@ class MsgHelper {
             return pd.toBitmap(max(512, pd.intrinsicWidth), max(512, pd.intrinsicHeight), Bitmap.Config.ARGB_8888)
         }
 
-        /**
-         * @param dir you can get from many places like Environment.getExternalStorageDirectory() or mContext.getFilesDir() depending on where you want to save the image.
-         * @param fileName The file name.
-         * @param bm The Bitmap you want to save.
-         * @param format Bitmap.CompressFormat can be PNG,JPEG or WEBP.
-         * @param quality quality goes from 1 to 100. (Percentage).
-         * @return true if the Bitmap was saved successfully, false otherwise.
-         */
-        fun saveBitmapToFile(
-            dir: File?, fileName: String, bm: Bitmap,
-            format: CompressFormat, quality: Int
-        ): Boolean {
-            try {
-                val imageFile = File(dir, fileName)
-                var fos: FileOutputStream? = null
-                if (imageFile.exists() && imageFile.length() <= 1L) {
-                    imageFile.delete()
-                }
-                imageFile.createNewFile()
-                fos = FileOutputStream(imageFile)
-                bm.compress(format, quality, fos)
-                fos.close()
-                return true
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-            return false
-        }
-
-
         fun saveAppIcon(context: Context, pkgId: String): Drawable {
             val draw: Drawable =
                 (getPkgIcon(context, pkgId) ?: context.getDrawable(R.drawable.ic_launcher_foreground)) as Drawable
@@ -138,15 +107,15 @@ class MsgHelper {
 
         fun saveIcon(context: Context, name: String, draw: Drawable) {
             val bm = drawableToBitmap(draw)
-            val dir = File(Defs.KEY_FUP_ICONS_DIR)
+            val dir = Defs.KEY_FUP_ICONS_DIR(context)
+            val file = File(dir, name)
             if (!dir.exists()) {
                 dir.mkdirs()
             }
-            val fileName = "${Defs.KEY_FUP_ICONS_DIR}/$name"
-            if (File(fileName).length() <= 1L) {
-                print(context, Defs.KEY_GET_PACKAGE_ICON, fileName)
-                if (saveBitmapToFile(dir, name, bm, CompressFormat.PNG, 100)) {
-                    print(context, Defs.KEY_SAVED_PACKAGE_ICON, fileName)
+            if (file.length() <= 1L) {
+                print(context, Defs.KEY_GET_PACKAGE_ICON, file.path)
+                if (saveBitmapToFile(name, bm, CompressFormat.PNG, context)) {
+                    print(context, Defs.KEY_SAVED_PACKAGE_ICON, file.name)
                 } else {
                     Log.e("app", "Couldn't save icon.")
                 }
@@ -154,6 +123,40 @@ class MsgHelper {
                 Log.e("app", "Icon already saved.")
             }
 
+        }
+
+        /**
+         * @param dir you can get from many places like Environment.getExternalStorageDirectory() or mContext.getFilesDir() depending on where you want to save the image.
+         * @param fileName The file name.
+         * @param bm The Bitmap you want to save.
+         * @param format Bitmap.CompressFormat can be PNG,JPEG or WEBP.
+         * @param quality quality goes from 1 to 100. (Percentage).
+         * @return true if the Bitmap was saved successfully, false otherwise.
+         */
+        fun saveBitmapToFile(
+            fileName: String, bm: Bitmap,
+            format: CompressFormat,
+            context: Context
+        ): Boolean {
+            try {
+                val dir = Defs.KEY_FUP_ICONS_DIR(context)
+                val imageFile = File(dir, fileName)
+                if (!dir.exists()) {
+                    dir.mkdirs()
+                }
+                var fos: FileOutputStream? = null
+                if (imageFile.exists() && imageFile.length() <= 1L) {
+                    imageFile.delete()
+                }
+                imageFile.createNewFile()
+                fos = FileOutputStream(imageFile)
+                bm.compress(format, 100, fos)
+                fos.close()
+                return true
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return false
         }
 
     }

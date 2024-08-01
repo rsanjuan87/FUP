@@ -11,7 +11,7 @@ class NotificationHelper
 public:
     NotificationHelper(QSystemTrayIcon *t);
 
-    void parse(QString data);
+    void parse(QString data, QString deviceId);
 
 private:
     QSystemTrayIcon *tray;

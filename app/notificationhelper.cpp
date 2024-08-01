@@ -9,7 +9,7 @@ NotificationHelper::NotificationHelper(QSystemTrayIcon *t)
 
 }
 
-void NotificationHelper::parse(QString data)
+void NotificationHelper::parse(QString data, QString deviceId)
 {
     QString d = data.remove(Defs::KEY_NOTIFICACTION_CHANNEL+", ");
     QString key = "status";
@@ -35,8 +35,8 @@ void NotificationHelper::parse(QString data)
     if(status == "posted"){
         //if(!msg.isEmpty())
         QString iconPath = ":/imgs/tray/tray_dark";
-             if(QFileInfo::exists(Defs::iconsPath()+appId))
-                 iconPath = Defs::iconsPath()+appId;
+             if(QFileInfo::exists(Defs::localIconsPath(deviceId)+appId))
+                 iconPath = Defs::localIconsPath(deviceId)+appId;
              //qApp->setWindowIcon(QIcon(iconPath));
 
              tray->showMessage(appName,msg, QIcon(iconPath));

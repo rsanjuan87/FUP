@@ -1,5 +1,8 @@
 package org.santech.fup
 
+import android.content.Context
+import java.io.File
+
 class Defs {
     companion object {
         val KEY_NOTIFICACTION_CHANNEL = "NOTIFICATION_CHANNEL"
@@ -13,13 +16,22 @@ class Defs {
         val KEY_START_SERVICE = "fup:start_service"
         val KEY_STOP_SERVICE = "fup:stop_service"
 
+        val KEY_APP_RESUMED = "fup:app_resumed"
+
         val KEY_LAUCH_ACTIVITY = "fup:launch_activity"
 
         val KEY_GET_NOTIFICATIONS_STATUS = "fup:get_notifications_status"
         val KEY_GET_REQUEST_NOTIFICATIONS_ACCESS = "fup:request_notifications_access"
 
 
-        val KEY_FUP_DIR = "/data/local/tmp/fup"
-        val KEY_FUP_ICONS_DIR = "$KEY_FUP_DIR/icons"
+        val KEY_FUP_DIR_TMP = "/data/local/tmp/fup"
+
+        fun KEY_FUP_ICONS_DIR(context: Context) : File {
+            return File(context.filesDir, "icons")
+        }
+
+        fun KEY_FUP_DIR(context: Context) : File {
+            return File(context.filesDir.path)
+        }
     }
 }
