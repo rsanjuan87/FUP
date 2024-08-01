@@ -2,7 +2,7 @@
 FakeYourPhone
 
 ##dependencias
- - scrcpy github.com/genymobile/scrcpy
+ - scrcpy github.com/anirudhb/scrcpy with a unstable brach `virtual-display` (fork from github.com/Genymobile/scrcpy) 
  - adb 
 
 
