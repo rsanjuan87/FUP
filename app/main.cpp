@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
 {
 
     qRegisterMetaType<QList<LauncherInfo*>>("QList<LauncherInfo*>");
+    qRegisterMetaType<QSet<LauncherInfo*>>("QSet<LauncherInfo*>");
 
     QApplication a(argc, argv);
     QSystemTrayIcon tray;

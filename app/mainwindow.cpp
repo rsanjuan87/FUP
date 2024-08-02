@@ -14,6 +14,8 @@
 #include <QToolButton>
 #include <QMenu>
 #include <QMessageBox>
+#include <QApplication>
+#include <QScreen>
 
 
 MainWindow::MainWindow(QSystemTrayIcon *t, QMenu *trayMenu, QWidget *parent)    :
@@ -87,7 +89,7 @@ void MainWindow::connectDevice()
 {
     if(currentDeviceIndex != -1 && !devices.isEmpty() ){
         devices[currentDeviceIndex]->connectDevice();
-        reloadLaunchers();
+        // reloadLaunchers();
     }
 }
 
@@ -137,18 +139,28 @@ void MainWindow::on_toolButton_clicked()
 }
 
 
-void MainWindow::clearLaunchers(){
-    int count = appsLayout->count();
-    for (int i = 0; i < count; i++){
-        auto item = appsLayout->itemAt(0);
-        appsLayout->removeItem(item);
+void MainWindow::clearLaunchers(QString id){
+    if (currentDevice()->id() != id){
+        return;
+    }
+    launchers.clear();
+    while (QLayoutItem *item = appsLayout->takeAt(0)) {
+        if (QWidget *widget = item->widget()) {
+            widget->hide();
+            widget->deleteLater();
+        }
         delete item;
     }
-    delete appsLayout;
+    // ui->appListLayout->layout()->removeItem(appsLayout);
+    // delete appsLayout;
 }
 
 void MainWindow::on_devices_currentIndexChanged(int index)
 {
+    if (currentDeviceIndex != -1){
+        disconnect(currentDevice(), SIGNAL(addLauncher(LauncherInfo*,QString)));
+        disconnect(currentDevice(), SIGNAL(launchersClearred(QString)));
+    }
     currentDeviceIndex = index;
     connectDevice();
     reloadLaunchers();
@@ -156,35 +168,45 @@ void MainWindow::on_devices_currentIndexChanged(int index)
 
 
 void MainWindow::reloadLaunchers(){
-    clearLaunchers();
+    clearLaunchers(currentDevice()->id());
     loadLaunchers();
 }
 
 void MainWindow::loadLaunchers(){
-    appsLayout = new WrapLayout(0);
-    ui->appListLayout->insertLayout(0, appsLayout);
 
-    Device* device = devices[currentDeviceIndex];
-    int count = device->launchers().size();
-    for (int j = 0; j < count; j++) {
-        LauncherInfo* info = device->launchers().at(j);
-        QIcon icon(Defs::localIconsPath(device->id())+info->pkgId);
-        QToolButton *btn = new QToolButton(0);
-        btn->setIcon(icon);
-        btn->setIconSize(QSize(56, 56));
-        btn->setText(info->label);
-        btn->setProperty(Defs::KEY_GET_PACKAGES.toUtf8(), info->pkgId);
-        btn->setProperty(Defs::KEY_GET_LAUNCHERS.toUtf8(), info->activityId);
-        btn->setProperty(Defs::KEY_GET_LABEL.toUtf8(), info->label);
-        btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-        btn->setAutoRaise(false);
-        btn->setStyleSheet("background-color: rgba(0, 230, 255, 0);");
-        btn->setFixedWidth(70);
-        connect(btn, &QToolButton::clicked, this, [this, btn]() { onAppClick(btn); });
-        btn->setFocusPolicy(Qt::TabFocus);
-        appsLayout->addWidget(btn);
+    // appsLayout = new WrapLayout(0);
+    // ui->appListLayout->insertLayout(0, appsLayout);
+    connect(currentDevice(), SIGNAL(addLauncher(LauncherInfo*,QString)), this, SLOT(addLauncher(LauncherInfo*, QString)));
+    connect(currentDevice(), SIGNAL(launchersClearred(QString)), this, SLOT(clearLaunchers(QString)));
+    // Device* device = currentDevice();
+    // int count = device->launchers().size();
+    // for (int j = 0; j < count; j++) {
+    //     LauncherInfo* info = device->launchers().at(j);
+    //     addLauncher(info, device->id());
+    // }
+}
 
+void MainWindow::addLauncher(LauncherInfo* info, QString id){
+    QIcon icon(Defs::localIconsPath(id)+info->pkgId);
+    if(id != currentDevice()->id()){
+        return;
     }
+    if(launchers.contains(info))return;
+    launchers.insert(info);
+    QToolButton *btn = new QToolButton(0);
+    btn->setIcon(icon);
+    btn->setIconSize(QSize(56, 56));
+    btn->setText(info->label);
+    btn->setProperty(Defs::KEY_GET_PACKAGES.toUtf8(), info->pkgId);
+    btn->setProperty(Defs::KEY_GET_LAUNCHERS.toUtf8(), info->activityId);
+    btn->setProperty(Defs::KEY_GET_LABEL.toUtf8(), info->label);
+    btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    btn->setAutoRaise(false);
+    btn->setFixedWidth(70);
+    btn->setToolTip(info->label);
+    connect(btn, &QToolButton::clicked, this, [this, btn]() { onAppClick(btn); });
+    btn->setFocusPolicy(Qt::TabFocus);
+    appsLayout->addWidget(btn);
 }
 
 
@@ -227,8 +249,10 @@ void MainWindow::onAppClick(QWidget *w){
     extras.insert("activity", actyId);
     // requestAction(Defs::KEY_LAUCH_ACTIVITY, extras, [this, pkgId, actyId](QProcess* p){
         // QString out = p->readAll();
+    QString dpi = QString().setNum(currentDevice()->screenDpi().toDouble() / 2);
+    // dpi = QString().setNum(QApplication::primaryScreen()->logicalDotsPerInch());
 
-        currentDevice()->runInAdb("wm density "+currentDevice()->screenDpi()+" -d "+screenId);
+        currentDevice()->runInAdb("wm density "+dpi+" -d "+screenId);
         currentDevice()->runInAdb("am start --display " + screenId + " -n "+pkgId+"/"+actyId, [this, pkgId, screenId, actyId](QProcess* p){
             QString out = p->readAll();
             if (out.contains("Exception") || out.contains("Error")){

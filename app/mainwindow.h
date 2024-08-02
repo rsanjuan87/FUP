@@ -31,9 +31,10 @@ public:
     // void getIcon(QString remotePath);
     Device *currentDevice();
 public slots:
-    void clearLaunchers();
+    void clearLaunchers(QString);
     void loadLaunchers();
     void reloadLaunchers();
+    void addLauncher(LauncherInfo *info, QString id);
 protected slots:
     void loadDeviceslist(QStringList);
     void connectDevice();
@@ -67,6 +68,7 @@ private:
     int currentDeviceIndex = -1;
     WrapLayout* appsLayout;
     DeviceListLoader* deviceListLoader;
+    QSet<LauncherInfo*> launchers;
 };
 
 

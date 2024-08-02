@@ -13,6 +13,10 @@ public:
     QString activityId;
     QString label;
     QString icon;
+
+    bool operator == (LauncherInfo other){
+        return other.pkgId == pkgId && other.activityId == activityId && other.label == label;
+    }
 };
 
 Q_DECLARE_METATYPE(LauncherInfo*)

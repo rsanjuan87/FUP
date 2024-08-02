@@ -33,7 +33,7 @@ public:
     QString screenSize();
     QString screenDpi();
     QStringList screens();
-    QList<LauncherInfo*> launchers();
+    QSet<LauncherInfo*> launchers();
     QString remoteFupDir();
     QString remoteFupIconsDir();
 
@@ -58,7 +58,7 @@ public slots:
     QProcess::ProcessState scrcpyStatus(QString pkgId);
 
     void addedLauncherSlot(LauncherInfo *info);
-    void launchersSetSlot(QList<LauncherInfo *> list);
+    void launchersSetSlot(QSet<LauncherInfo *> list);
     void launchersClearredSlot();
     void loadApps(QString path);
 
@@ -82,7 +82,7 @@ private:
 signals:
     void addLauncher(LauncherInfo*, QString );
     void launchersClearred(QString );
-    void launchersSet(QList<LauncherInfo*>, QString );
+    void launchersSet(QSet<LauncherInfo*>, QString );
 
 private:
 };

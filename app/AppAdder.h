@@ -30,17 +30,19 @@ public:
         this->filePath = jsonFilePath;
     }
 
-    QList<LauncherInfo*> launchers;
+    QSet<LauncherInfo*> launchers;
     // void setList(QStringList out){
     //     this->out = out;
     // }
+    bool kill = false;
+    void stop() { kill = true; };
 
 signals:
     // void addApp(QString id);
 
     void addLauncher(LauncherInfo*);
     void launchersClearred();
-    void launchersSet(QList<LauncherInfo*>);
+    void launchersSet(QSet<LauncherInfo*>);
 
 protected:
     void run() override{
@@ -60,20 +62,22 @@ protected:
         QFileInfo ifn(filePath);
         QString remoteFupIconsDir = ifn.absoluteDir().path() + "/icons/";
         for (auto &&it : map) {
+            if (kill) return;
             QString pckg = it["LAUNCHER_PKG"];
             QString label = it["LAUNCHER_LABEL"];
             QString launch = it["LAUNCHER_ACTY"];
             getIcon(remoteFupIconsDir + pckg);
             LauncherInfo* info = new LauncherInfo(pckg, launch, label);
             //signaler.installOn(btn);
-            launchers.append(info);
+            launchers.insert(info);
             emit addLauncher(info);
+            if (kill) return;
         }
         if(!launchers.isEmpty()){
             emit launchersSet(launchers);
         }
-        // p.terminate();
-        // this->deleteLater();
+        p.terminate();
+        this->deleteLater();
     };
 
 

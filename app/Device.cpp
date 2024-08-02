@@ -119,7 +119,7 @@ QStringList Device::screens(){
     return res;
 }
 
-QList<LauncherInfo *> Device::launchers()
+QSet<LauncherInfo *> Device::launchers()
 {
     return appAdder->launchers;
 }
@@ -313,12 +313,13 @@ void Device::parseMessages(QStringList out){
 }
 
 void Device::loadApps(QString path){
-
+    if(appAdder != NULL && appAdder->isRunning()){
+        appAdder->stop();
+    }
     appAdder = new AppAdder(config, id(), path);
     connect(appAdder, SIGNAL(addLauncher(LauncherInfo*)), this, SLOT(addedLauncherSlot(LauncherInfo*)));
     connect(appAdder, SIGNAL(launchersClearred()), this, SLOT(launchersClearredSlot()));
-    connect(appAdder, SIGNAL(launchersSet(QList<LauncherInfo*>)), this, SLOT(launchersSetSlot(QList<LauncherInfo*>)));
-
+    connect(appAdder, SIGNAL(launchersSet(QSet<LauncherInfo*>)), this, SLOT(launchersSetSlot(QSet<LauncherInfo*>)));
     appAdder->start();
 }
 
@@ -328,7 +329,7 @@ void Device::addedLauncherSlot(LauncherInfo* info){
 }
 
 
-void Device::launchersSetSlot(QList<LauncherInfo*> list){
+void Device::launchersSetSlot(QSet<LauncherInfo*> list){
     emit launchersSet(list, id());
 }
 
