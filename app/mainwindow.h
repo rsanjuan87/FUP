@@ -35,9 +35,10 @@ public slots:
     void loadLaunchers();
     void reloadLaunchers();
     void addLauncher(LauncherInfo *info, QString id);
+    void diconectDevice(QString id);
 protected slots:
     void loadDeviceslist(QStringList);
-    void connectDevice();
+    void connectCurrentDevice();
     void requestAction(QString action, std::function<void (QProcess *)> onAdbFinished = nullptr);
     void requestAction(QString action, QMap<QString, QString> extras, std::function<void (QProcess *)> onAdbFinished = nullptr);
     void init();
@@ -64,11 +65,15 @@ private:
     Config config;
     QSystemTrayIcon *tray;
     QMenu *trayMenu;
-    QList<Device*> devices;
-    int currentDeviceIndex = -1;
+    QMap<QString, Device*> devices;
+    // int currentDeviceIndex = -1;
+    QString currentDeviceId;
     WrapLayout* appsLayout;
     DeviceListLoader* deviceListLoader;
     QSet<LauncherInfo*> launchers;
+
+signals:
+    void deviceDisconected(QString);
 };
 
 

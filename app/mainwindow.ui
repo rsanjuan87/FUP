@@ -53,22 +53,22 @@
         <string notr="true">QToolButton {
     background-color: transparent;
     border-radius: 10px;
-    border: 1px solid transparent;
+    border: 2px solid transparent;
 }
 
 QToolButton:hover {
-    background-color: rgba(palette(highlight).red(), palette(highlight).green(), palette(highlight).blue(), 128); /* Color de selección semitransparente */
-    border: 1px solid palette(highlight); /* Color de borde */
+    background-color: rgba(palette(highlight).red(), palette(highlight).green(), palette(highlight).blue(), 250); /* Color de selección semitransparente */
+    border: 2px solid palette(highlight); /* Color de borde */
 }
 
 QToolButton:focus {
-    background-color: rgba(palette(highlight).red(), palette(highlight).green(), palette(highlight).blue(), 128); /* Color de selección semitransparente */
-    border: 1px solid palette(highlight); /* Color de borde */
+    background-color: rgba(palette(highlight).red(), palette(highlight).green(), palette(highlight).blue(), 250); /* Color de selección semitransparente */
+    border: 2px solid palette(highlight); /* Color de borde */
 }
 
 QToolButton:pressed {
     background-color: palette(highlight); /* Color de selección completo */
-    border: 1px solid palette(highlight); /* Color de borde */
+    border: 2px solid palette(highlight); /* Color de borde */
 }
 </string>
        </property>

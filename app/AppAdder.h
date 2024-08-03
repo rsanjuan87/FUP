@@ -44,6 +44,8 @@ signals:
     void launchersClearred();
     void launchersSet(QSet<LauncherInfo*>);
 
+    void deviceDiconeected();
+
 protected:
     void run() override{
         //getFile(Defs::KEY_LAUNCHERS_FILE);
@@ -67,6 +69,7 @@ protected:
             QString label = it["LAUNCHER_LABEL"];
             QString launch = it["LAUNCHER_ACTY"];
             getIcon(remoteFupIconsDir + pckg);
+            if (kill) return;
             LauncherInfo* info = new LauncherInfo(pckg, launch, label);
             //signaler.installOn(btn);
             launchers.insert(info);
@@ -77,7 +80,7 @@ protected:
             emit launchersSet(launchers);
         }
         p.terminate();
-        this->deleteLater();
+        // this->deleteLater();
     };
 
 
@@ -139,6 +142,10 @@ protected:
         p.start(config->adbPath(),params);
         p.waitForFinished();
         QByteArray  out = p.readAll();
+        if(QString(out).contains("not found")){
+            stop();
+            emit deviceDiconeected();
+        }
 
         QFile file(localFolderIconPath + "/" + remoteInfo.fileName());
         if (file.open(QIODevice::WriteOnly)) {
@@ -149,6 +156,7 @@ protected:
         }
 
     }
+
 
 };
 

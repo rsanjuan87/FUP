@@ -11,6 +11,7 @@
 #include <QProcess>
 #include <QString>
 #include <QThread>
+#include <QException>
 
 #include "AppAdder.h"
 #include "config.h"
@@ -40,6 +41,7 @@ public:
 public slots:
 
     void connectDevice();
+    void disconnectDevice();
     void requestAction(QString action, std::function<void(QProcess*)> onAdbFinished = nullptr);
     void requestAction(QString action, QMap<QString, QString> extras, std::function<void (QProcess *)> onAdbFinished = nullptr);
     void getAppList();
@@ -72,7 +74,7 @@ private:
     // QProcess adb;
     QProcess logcat;
     QMap<QString, QProcess*> scrcpy;
-    AppAdder *appAdder;
+    AppAdder *appAdder = nullptr;
     NotificationHelper *notifHelper;
 
     QString line;
@@ -84,7 +86,16 @@ signals:
     void launchersClearred(QString );
     void launchersSet(QSet<LauncherInfo*>, QString );
 
-private:
+    void deviceDisconected(QString);
+
+protected slots:
+    void deviceDisconectedSlot();
+
+};
+
+class DeviceDisconectedException : QException{
+public:
+    DeviceDisconectedException():QException(){};
 };
 
 #endif // DEVICE_H

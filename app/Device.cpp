@@ -104,6 +104,9 @@ QStringList Device::screens(){
     p.start(config->adbPath(), params);
     p.waitForFinished();
     QString out = p.readAll();
+    if(out.contains("not found")){
+        throw DeviceDisconectedException();
+    }
     QSet<int> set;
     for(QString l : out.split("\n")){
         if(l.isEmpty())continue;
@@ -121,7 +124,13 @@ QStringList Device::screens(){
 
 QSet<LauncherInfo *> Device::launchers()
 {
-    return appAdder->launchers;
+    if (this != nullptr && appAdder != nullptr) {
+        return appAdder->launchers;
+    } else {
+        // Manejo cuando appAdder es nulo
+        return QSet<LauncherInfo*>();
+    }
+
 }
 
 QString Device::remoteFupDir(){
@@ -145,7 +154,7 @@ QString Device::remoteFupIconsDir(){
 
 void Device::connectDevice(){
 
-    if (logcat.state() == QProcess::Running) {
+    if (this == nullptr || logcat.state() == QProcess::Running) {
         return;
     }
 
@@ -176,6 +185,14 @@ void Device::connectDevice(){
 
     requestAction(Defs::KEY_START_SERVICE);
     requestAction(Defs::KEY_GET_LAUNCHERS);
+}
+
+void Device::disconnectDevice(){
+    logcat.terminate();
+    disconnect(&logcat, &QIODevice::readyRead, this, &Device::readLogcat);
+    disconnect(&logcat, &QProcess::readyReadStandardError, this, &Device::readLogcat);
+    disconnect(&logcat, &QProcess::readyReadStandardOutput, this, &Device::readLogcat);
+
 }
 
 void Device::requestAction(QString action, std::function<void(QProcess*)> onAdbFinished){
@@ -313,14 +330,25 @@ void Device::parseMessages(QStringList out){
 }
 
 void Device::loadApps(QString path){
-    if(appAdder != NULL && appAdder->isRunning()){
+    if(this != nullptr && appAdder != nullptr && appAdder->isRunning()){
+        disconnect(appAdder, SIGNAL(addLauncher(LauncherInfo*)), this, SLOT(addedLauncherSlot(LauncherInfo*)));
+        disconnect(appAdder, SIGNAL(launchersClearred()), this, SLOT(launchersClearredSlot()));
+        disconnect(appAdder, SIGNAL(launchersSet(QSet<LauncherInfo*>)), this, SLOT(launchersSetSlot(QSet<LauncherInfo*>)));
+        disconnect(appAdder, SIGNAL(deviceDiconeected()));
         appAdder->stop();
+        delete appAdder;
     }
     appAdder = new AppAdder(config, id(), path);
     connect(appAdder, SIGNAL(addLauncher(LauncherInfo*)), this, SLOT(addedLauncherSlot(LauncherInfo*)));
     connect(appAdder, SIGNAL(launchersClearred()), this, SLOT(launchersClearredSlot()));
     connect(appAdder, SIGNAL(launchersSet(QSet<LauncherInfo*>)), this, SLOT(launchersSetSlot(QSet<LauncherInfo*>)));
+    connect(appAdder, SIGNAL(deviceDiconeected()), this, SLOT(deviceDisconectedSlot()));
     appAdder->start();
+}
+
+
+void Device::deviceDisconectedSlot(){
+    emit deviceDisconected(id());
 }
 
 

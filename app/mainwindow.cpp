@@ -39,10 +39,10 @@ MainWindow::MainWindow(QSystemTrayIcon *t, QMenu *trayMenu, QWidget *parent)    
 MainWindow::~MainWindow()
 {
     delete ui;
-    int count = devices.size();
-    for (int i = 0; i < count ; i++) {
-        Device* dev = devices.at(0);
-        devices.removeFirst();
+    for (QString key: devices.keys()) {
+        Device* dev = devices.take(key);
+        // devices.removeFirst();
+        dev->disconnectDevice();
         delete dev;
     }
     tray->hide();
@@ -52,7 +52,7 @@ void MainWindow::init(){
     deviceListLoader = new DeviceListLoader(&config);
     connect(deviceListLoader, SIGNAL(devices(QStringList)), this, SLOT(loadDeviceslist(QStringList)));
 
-    trayMenu->addAction("Reconectar", this, &MainWindow::connectDevice);
+    trayMenu->addAction("Reconectar", this, &MainWindow::connectCurrentDevice);
     trayMenu->addSeparator();
     trayMenu->addAction("Mostrar Lanzador", this, SLOT(show()));
     trayMenu->addSeparator();
@@ -69,40 +69,42 @@ void MainWindow::loadDeviceslist(QStringList lines){
     foreach (QString l, lines) {
         if(l.contains("device ") || l.contains("offline ")){
             Device* dev = new Device(l, &config, tray);
-            devices.append(dev);
+            devices.insert(dev->id(), dev);
             QString status = "";
             if(l.contains("offline")){
                 status = ":off";
             }
-            ui->devices->addItem(dev->id()+status);
+            ui->devices->addItem(dev->id()+status, dev->id());
         }
     }
-    if (currentDeviceIndex == -1 && !devices.isEmpty() ){
-        currentDeviceIndex = 0;
-        on_devices_currentIndexChanged(currentDeviceIndex);
+    if (currentDeviceId.isEmpty() && !devices.isEmpty() ){
+        currentDeviceId = devices.firstKey();
+        on_devices_currentIndexChanged(0);
+    }else{
+        loadLaunchers();
     }
 
-    connectDevice();
+    // connectCurrentDevice();
 }
 
-void MainWindow::connectDevice()
+void MainWindow::connectCurrentDevice()
 {
-    if(currentDeviceIndex != -1 && !devices.isEmpty() ){
-        devices[currentDeviceIndex]->connectDevice();
+    if(currentDeviceId.isEmpty() && !devices.isEmpty() ){
+        devices.value(currentDeviceId)->connectDevice();
         // reloadLaunchers();
     }
 }
 
 
 void MainWindow::requestAction(QString action, std::function<void(QProcess*)> onAdbFinished){
-    if(currentDeviceIndex != -1 && !devices.isEmpty() ){
-        return devices[currentDeviceIndex]->requestAction(action, onAdbFinished);
+    if(currentDeviceId.isEmpty() && !devices.isEmpty() ){
+        return devices.value(currentDeviceId)->requestAction(action, onAdbFinished);
     }
 }
 
 void MainWindow::requestAction(QString action, QMap<QString, QString> extras, std::function<void(QProcess*)> onAdbFinished) {
-    if(currentDeviceIndex != -1 && !devices.isEmpty() ){
-        return devices[currentDeviceIndex]->requestAction(action, extras, onAdbFinished);
+    if(currentDeviceId.isEmpty() && !devices.isEmpty() ){
+        return devices.value(currentDeviceId)->requestAction(action, extras, onAdbFinished);
     }
 }
 
@@ -140,7 +142,7 @@ void MainWindow::on_toolButton_clicked()
 
 
 void MainWindow::clearLaunchers(QString id){
-    if (currentDevice()->id() != id){
+    if (currentDevice() != nullptr && currentDevice()->id() != id){
         return;
     }
     launchers.clear();
@@ -157,18 +159,20 @@ void MainWindow::clearLaunchers(QString id){
 
 void MainWindow::on_devices_currentIndexChanged(int index)
 {
-    if (currentDeviceIndex != -1){
+    if (!currentDeviceId.isEmpty()){
         disconnect(currentDevice(), SIGNAL(addLauncher(LauncherInfo*,QString)));
         disconnect(currentDevice(), SIGNAL(launchersClearred(QString)));
     }
-    currentDeviceIndex = index;
-    connectDevice();
+    QString id = ui->devices->itemData(index).toString();
+    currentDeviceId = id;
+    connectCurrentDevice();
     reloadLaunchers();
+
 }
 
 
 void MainWindow::reloadLaunchers(){
-    clearLaunchers(currentDevice()->id());
+    clearLaunchers(currentDeviceId);
     loadLaunchers();
 }
 
@@ -178,12 +182,11 @@ void MainWindow::loadLaunchers(){
     // ui->appListLayout->insertLayout(0, appsLayout);
     connect(currentDevice(), SIGNAL(addLauncher(LauncherInfo*,QString)), this, SLOT(addLauncher(LauncherInfo*, QString)));
     connect(currentDevice(), SIGNAL(launchersClearred(QString)), this, SLOT(clearLaunchers(QString)));
-    // Device* device = currentDevice();
-    // int count = device->launchers().size();
-    // for (int j = 0; j < count; j++) {
-    //     LauncherInfo* info = device->launchers().at(j);
-    //     addLauncher(info, device->id());
-    // }
+    connect(currentDevice(), SIGNAL(deviceDisconected(QString)), this, SLOT(diconectDevice(QString)));
+    Device* device = currentDevice();
+    for (LauncherInfo* info : device->launchers()) {
+        addLauncher(info, device->id());
+    }
 }
 
 void MainWindow::addLauncher(LauncherInfo* info, QString id){
@@ -212,7 +215,7 @@ void MainWindow::addLauncher(LauncherInfo* info, QString id){
 
 void MainWindow::onAppClick(QWidget *w){
 
-    if(currentDeviceIndex == -1 || devices.isEmpty() ){
+    if(currentDeviceId.isEmpty() || devices.isEmpty() ){
         return;
     }
 
@@ -223,52 +226,76 @@ void MainWindow::onAppClick(QWidget *w){
 
 
     QString id = config.coherenceMode ? pkgId : "_";
-    QProcess::ProcessState status = devices[currentDeviceIndex]->scrcpyStatus(id);
-    QString screenId = "0";
-    if(status != QProcess::Running){
-        devices[currentDeviceIndex]->stopScrcpy(id);
-        QStringList screens = devices[currentDeviceIndex]->screens();
-        devices[currentDeviceIndex]->runScrcpy(id, actyLabel);
-        QStringList screens1 = devices[currentDeviceIndex]->screens();
-        if (screens.length() == 0){
-            QMessageBox::critical(this, "Error", "Error getting displays on "+currentDevice()->id());
-            return;
+    try{
+        QProcess::ProcessState status = currentDevice()->scrcpyStatus(id);
+        QString screenId = "0";
+        if(status != QProcess::Running){
+            currentDevice()->stopScrcpy(id);
+            QStringList screens = currentDevice()->screens();
+            currentDevice()->runScrcpy(id, actyLabel);
+            QStringList screens1 = currentDevice()->screens();
+            if (screens.length() == 0){
+                QMessageBox::critical(this, "Error", "Error getting displays on "+currentDevice()->id());
+                return;
+            }
+            while(screens.length() >= screens1.length() ){
+                screens1 = currentDevice()->screens();
+            }
+            screenId = screens1.last();
         }
-        while(screens.length() >= screens1.length() ){
-            screens1 = devices[currentDeviceIndex]->screens();
-        }
-        screenId = screens1.last();
-    }
 
 
-    // devices[currentDeviceIndex]->runInAdb("monkey -p " + Defs::KEY_PACKAGE_ID + "  -c android.intent.category.LAUNCHER 1", [this, pkgId, actyId](QProcess* p){
-    // QString out = p->readAll();
-
-    QMap<QString, QString> extras;
-    extras.insert("package", pkgId);
-    extras.insert("activity", actyId);
-    // requestAction(Defs::KEY_LAUCH_ACTIVITY, extras, [this, pkgId, actyId](QProcess* p){
+        // devices[currentDeviceIndex]->runInAdb("monkey -p " + Defs::KEY_PACKAGE_ID + "  -c android.intent.category.LAUNCHER 1", [this, pkgId, actyId](QProcess* p){
         // QString out = p->readAll();
-    QString dpi = QString().setNum(currentDevice()->screenDpi().toDouble() / 2);
-    // dpi = QString().setNum(QApplication::primaryScreen()->logicalDotsPerInch());
+
+        QMap<QString, QString> extras;
+        extras.insert("package", pkgId);
+        extras.insert("activity", actyId);
+        // requestAction(Defs::KEY_LAUCH_ACTIVITY, extras, [this, pkgId, actyId](QProcess* p){
+        // QString out = p->readAll();
+        QString dpi = QString().setNum(currentDevice()->screenDpi().toDouble() / 2);
+        // dpi = QString().setNum(QApplication::primaryScreen()->logicalDotsPerInch());
 
         currentDevice()->runInAdb("wm density "+dpi+" -d "+screenId);
         currentDevice()->runInAdb("am start --display " + screenId + " -n "+pkgId+"/"+actyId, [this, pkgId, screenId, actyId](QProcess* p){
             QString out = p->readAll();
             if (out.contains("Exception") || out.contains("Error")){
                 currentDevice()->runInAdb("am start --display " + screenId + " -n "+Defs::KEY_PACKAGE_ID+"/.MainActivity"+
-                                                // " -f 0x04000000"+
-                                                " --es package "+ pkgId +
-                                                " --es activity " + actyId +
-                                                " --es display "+ screenId );
+                                          // " -f 0x04000000"+
+                                          " --es package "+ pkgId +
+                                          " --es activity " + actyId +
+                                          " --es display "+ screenId );
             }
         });
-    // });
-    // });
+        // });
+        // });
+    }catch(DeviceDisconectedException){
+        emit deviceDisconected(currentDevice()->id());
+    }
+}
+
+void MainWindow::diconectDevice(QString id){
+    Device* dev = devices.value(id);
+    dev->disconnectDevice();
+    dev->deleteLater();
+    int index = 0;
+    for (; index < ui->devices->count(); index++) {
+        if(ui->devices->itemData(index) == id){
+            ui->devices->removeItem(index);
+            break;
+        }
+    }
+    if(currentDeviceId == id){
+        clearLaunchers(id);
+    }
 }
 
 Device* MainWindow::currentDevice(){
-    return devices[currentDeviceIndex];
+    if (devices.contains(currentDeviceId)){
+        return devices.value(currentDeviceId);
+    } else {
+        return NULL;
+    }
 }
 
 void MainWindow::on_devices_activated(int index)
