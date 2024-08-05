@@ -18,7 +18,11 @@ public:
 
 private:
 
+#ifdef Q_OS_WIN
+    QString _adbPath = "C:/platform-tools/adb.exe";
+#else
     QString _adbPath = "/Users/san/Library/Android/sdk/platform-tools/adb";
+#endif
 
     // QString scrcpyPath = "/opt/homebrew/bin/scrcpy";
     QString _scrcpyPath = "/Users/san/Projects/contrib/scc/scrcpy/builddir/app/scrcpy";

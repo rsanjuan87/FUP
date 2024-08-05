@@ -9,10 +9,11 @@
 #include <QThread>
 #include <QVBoxLayout>
 #include <QSystemTrayIcon>
+
 #include "Device.h"
-#include "DeviceListLoader.h"
 #include "WrapLayout.h"
 #include "config.h"
+#include "devicesmanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,13 +32,17 @@ public:
     // void getIcon(QString remotePath);
     Device *currentDevice();
 public slots:
-    void clearLaunchers(QString);
+    void addLauncherSlot(LauncherInfo *info, QString id);
+    void launchersClearredSlot(QString);
+
     void loadLaunchers();
     void reloadLaunchers();
-    void addLauncher(LauncherInfo *info, QString id);
     void diconectDevice(QString id);
+    void loadDevices();
+
+    void launchersSetSlot(QSet<LauncherInfo *>, QString);
 protected slots:
-    void loadDeviceslist(QStringList);
+    // void loadDeviceslist(QStringList);
     void connectCurrentDevice();
     void requestAction(QString action, std::function<void (QProcess *)> onAdbFinished = nullptr);
     void requestAction(QString action, QMap<QString, QString> extras, std::function<void (QProcess *)> onAdbFinished = nullptr);
@@ -49,6 +54,8 @@ protected slots:
     void onAppClick(QWidget *w);
     void on_devices_currentIndexChanged(int index);
 
+    void addDevice(Device *dev);
+    void removeDevice(QString id);
 private slots:
     void on_devices_activated(int index);
 
@@ -65,12 +72,11 @@ private:
     Config config;
     QSystemTrayIcon *tray;
     QMenu *trayMenu;
-    QMap<QString, Device*> devices;
+
     // int currentDeviceIndex = -1;
     QString currentDeviceId;
     WrapLayout* appsLayout;
-    DeviceListLoader* deviceListLoader;
-    QSet<LauncherInfo*> launchers;
+    DevicesManager* devicesManager;
 
 signals:
     void deviceDisconected(QString);

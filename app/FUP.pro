@@ -20,6 +20,7 @@ SOURCES += \
     Device.cpp \
     WrapLayout.cpp \
     config.cpp \
+    devicesmanager.cpp \
     main.cpp \
     mainwindow.cpp \
     models/launcherinfo.cpp \
@@ -29,9 +30,9 @@ HEADERS += \
     AppAdder.h \
     Defs.h \
     Device.h \
-    DeviceListLoader.h \
     WrapLayout.h \
     config.h \
+    devicesmanager.h \
     mainwindow.h \
     models/launcherinfo.h \
     notificationhelper.h

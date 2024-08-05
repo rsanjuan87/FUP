@@ -57,7 +57,7 @@ QLayoutItem *WrapLayout::takeAt(int index) {
 }
 
 Qt::Orientations WrapLayout::expandingDirections() const {
-    return 0;
+    return Qt::Horizontal;
 }
 
 bool WrapLayout::hasHeightForWidth() const {
@@ -73,7 +73,9 @@ QSize WrapLayout::minimumSize() const {
     for (QLayoutItem *item : itemList) {
         size = size.expandedTo(item->minimumSize());
     }
-    size += QSize(2 * margin(), 2 * margin());
+    int marginX = 10;// margin();
+    int marginY = 10; //margin();
+    size += QSize(2 * marginX, 2 * marginY);
     return size;
 }
 

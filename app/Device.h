@@ -28,9 +28,8 @@ class Device : public QObject {
 
 public:
     //from adb devices -l
-    explicit Device(QString line, Config* conf, QSystemTrayIcon *t, QObject* parent = 0);
+    explicit Device(QString line, Config* conf, QSystemTrayIcon *t, QObject* parent);
     ~Device();
-    QString id();
     QString screenSize();
     QString screenDpi();
     QStringList screens();
@@ -38,6 +37,16 @@ public:
     QString remoteFupDir();
     QString remoteFupIconsDir();
 
+    QString id();
+    QString status();
+    QString product();
+    QString device();
+    QString model();
+    QString transportId();
+    void setLine(QString line);
+    bool nulled(){
+        return config == nullptr;
+    }
 public slots:
 
     void connectDevice();
@@ -55,13 +64,13 @@ public slots:
 
     // void getIcon(QString remotePath);
 
-    void runScrcpy(QString pkgId,QString title, QStringList params = QStringList());
+    void runScrcpy(QString pkgId, QString title, QStringList params = QStringList());
     void stopScrcpy(QString pkgId);
     QProcess::ProcessState scrcpyStatus(QString pkgId);
 
     void addedLauncherSlot(LauncherInfo *info);
     void launchersSetSlot(QSet<LauncherInfo *> list);
-    void launchersClearredSlot();
+    void Cleared();
     void loadApps(QString path);
 
 private:
@@ -77,7 +86,7 @@ private:
     AppAdder *appAdder = nullptr;
     NotificationHelper *notifHelper;
 
-    QString line;
+    QString _line;
     Config* config;
     bool accessToNotif = false;
 
@@ -87,6 +96,7 @@ signals:
     void launchersSet(QSet<LauncherInfo*>, QString );
 
     void deviceDisconected(QString);
+    void deviceUpdated(QString);
 
 protected slots:
     void deviceDisconectedSlot();

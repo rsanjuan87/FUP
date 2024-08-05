@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
 
     qRegisterMetaType<QList<LauncherInfo*>>("QList<LauncherInfo*>");
     qRegisterMetaType<QSet<LauncherInfo*>>("QSet<LauncherInfo*>");
+    qRegisterMetaType<QProcess::ExitStatus>("QProcess::ExitStatus");
 
     QApplication a(argc, argv);
     QSystemTrayIcon tray;
@@ -18,7 +19,7 @@ int main(int argc, char *argv[])
     tray.show();
 #ifdef Q_OS_MAC
     qApp->setWindowIcon(QIcon(":/imgs/icon_mac"));
-#elif
+#else
     qApp->setWindowIcon(QIcon(":/imgs/icon"));
 #endif
 

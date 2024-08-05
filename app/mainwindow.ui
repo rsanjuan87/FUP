@@ -6,23 +6,49 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>532</width>
-    <height>451</height>
+    <width>630</width>
+    <height>552</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/imgs/icon.png</normaloff>:/imgs/icon.png</iconset>
+   <iconset resource="imgs.qrc">
+    <normaloff>:/icon</normaloff>:/icon</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="enabled">
     <bool>true</bool>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QToolButton {
+    background-color: transparent;
+    border-radius: 10px;
+    border: 2px solid transparent;
+}
+
+QToolButton:hover {
+    background-color: rgba(palette(highlight).red(), palette(highlight).green(), palette(highlight).blue(), 250); /* Color de selección semitransparente */
+    border: 2px solid palette(highlight); /* Color de borde */
+}
+
+QToolButton:focus {
+    background-color: rgba(palette(highlight).red(), palette(highlight).green(), palette(highlight).blue(), 250); /* Color de selección semitransparente */
+    border: 2px solid palette(highlight); /* Color de borde */
+}
+
+QToolButton:pressed {
+    background-color: palette(highlight); /* Color de selección completo */
+    border: 2px solid palette(highlight); /* Color de borde */
+}
+</string>
+   </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <item row="0" column="1">
+     <widget class="QComboBox" name="devices"/>
+    </item>
+    <item row="0" column="2">
      <widget class="QToolButton" name="toolButton">
       <property name="text">
        <string>↺</string>
@@ -32,10 +58,7 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QComboBox" name="devices"/>
-    </item>
-    <item row="1" column="0" colspan="2">
+    <item row="1" column="0" colspan="3">
      <widget class="QScrollArea" name="scrollArea">
       <property name="widgetResizable">
        <bool>true</bool>
@@ -45,8 +68,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>506</width>
-         <height>389</height>
+         <width>604</width>
+         <height>490</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -93,6 +116,8 @@ QToolButton:pressed {
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="imgs.qrc"/>
+ </resources>
  <connections/>
 </ui>

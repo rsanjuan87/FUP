@@ -39,18 +39,11 @@ MainWindow::MainWindow(QSystemTrayIcon *t, QMenu *trayMenu, QWidget *parent)    
 MainWindow::~MainWindow()
 {
     delete ui;
-    for (QString key: devices.keys()) {
-        Device* dev = devices.take(key);
-        // devices.removeFirst();
-        dev->disconnectDevice();
-        delete dev;
-    }
+    delete devicesManager;
     tray->hide();
 }
 
 void MainWindow::init(){
-    deviceListLoader = new DeviceListLoader(&config);
-    connect(deviceListLoader, SIGNAL(devices(QStringList)), this, SLOT(loadDeviceslist(QStringList)));
 
     trayMenu->addAction("Reconectar", this, &MainWindow::connectCurrentDevice);
     trayMenu->addSeparator();
@@ -60,51 +53,104 @@ void MainWindow::init(){
 
     trayMenu->setDefaultAction(trayMenu->actions().first());
 
-    deviceListLoader->start();
+    devicesManager = new DevicesManager(&config, tray, this);
+    connect(devicesManager, &DevicesManager::deviceAdded, this, &MainWindow::addDevice);
+    connect(devicesManager, &DevicesManager::deviceUpdated, this, &MainWindow::addDevice);
+    connect(devicesManager, &DevicesManager::deviceRemoved, this, &MainWindow::removeDevice);
+
+    connect(devicesManager, &DevicesManager::addLauncher, this, &MainWindow::addLauncherSlot);
+    connect(devicesManager, &DevicesManager::launchersClearred, this, &MainWindow::launchersClearredSlot);
+    connect(devicesManager, &DevicesManager::launchersSet, this, &MainWindow::launchersSetSlot);
+
+
+    loadDevices();
 }
 
-void MainWindow::loadDeviceslist(QStringList lines){
-    devices.clear();
+void MainWindow::loadDevices(){
+    devicesManager->load();
+}
 
-    foreach (QString l, lines) {
-        if(l.contains("device ") || l.contains("offline ")){
-            Device* dev = new Device(l, &config, tray);
-            devices.insert(dev->id(), dev);
-            QString status = "";
-            if(l.contains("offline")){
-                status = ":off";
-            }
-            ui->devices->addItem(dev->id()+status, dev->id());
+void MainWindow::addDevice(Device* dev){
+    QIcon icon(":/imgs/status/"+dev->status());
+    for (int i = 0; i < ui->devices->count(); i++) {
+        if(ui->devices->itemData(i).toString() == dev->id()){
+            ui->devices->setItemText(i, dev->model());
+            ui->devices->setItemIcon(i, icon);
+            return;
         }
     }
-    if (currentDeviceId.isEmpty() && !devices.isEmpty() ){
-        currentDeviceId = devices.firstKey();
-        on_devices_currentIndexChanged(0);
-    }else{
-        loadLaunchers();
+    ui->devices->addItem(icon, dev->model(), dev->id());
+}
+
+void MainWindow::removeDevice(QString id){
+    int c = ui->devices->count();
+    for (int i = 0; i < c; ++i) {
+        QString _id = ui->devices->itemData(i).toString();
+        if(_id == id){
+            ui->devices->removeItem(i);
+            devicesManager->deviceRemovedSlot(id);
+            break;
+        }
     }
 
-    // connectCurrentDevice();
+    if(currentDeviceId == id){
+        if (c > 0){
+            currentDeviceId = ui->devices->itemData(0).toString();
+        }else{
+            currentDeviceId = "";
+        }
+    }
 }
+
+// void MainWindow::loadDeviceslist(QStringList lines){
+//     // if (lastDevices == lines){
+//     //     return;
+//     // }
+//     // lastDevices = lines;
+//     // ui->devices->clear();
+//     // devices.clear();
+
+//     foreach (QString l, lines) {
+//         if(l.contains("device ") || l.contains("offline ")){
+//             Device* dev = new Device(l, &config, tray);
+//             devices.insert(dev->id(), dev);
+//             QString status = "";
+//             if(l.contains("offline")){
+//                 status = ":off";
+//             }
+//             ui->devices->addItem(dev->id()+status, dev->id());
+//         }
+//     }
+//     if (currentDeviceId.isEmpty() && !devices.isEmpty() ){
+//         currentDeviceId = devices.firstKey();
+//         on_devices_currentIndexChanged(0);
+//     }else{
+//         loadLaunchers();
+//     }
+//     disconnect(deviceListLoader, SIGNAL(devices(QStringList)), this, SLOT(loadDeviceslist(QStringList)));
+//     delete deviceListLoader;
+
+//     // connectCurrentDevice();
+// }
 
 void MainWindow::connectCurrentDevice()
 {
-    if(currentDeviceId.isEmpty() && !devices.isEmpty() ){
-        devices.value(currentDeviceId)->connectDevice();
+    if(currentDeviceId.isEmpty() && !devicesManager->isEmpty() ){
+        devicesManager->value(currentDeviceId)->connectDevice();
         // reloadLaunchers();
     }
 }
 
 
 void MainWindow::requestAction(QString action, std::function<void(QProcess*)> onAdbFinished){
-    if(currentDeviceId.isEmpty() && !devices.isEmpty() ){
-        return devices.value(currentDeviceId)->requestAction(action, onAdbFinished);
+    if(currentDeviceId.isEmpty() && !devicesManager->isEmpty() ){
+        return devicesManager->value(currentDeviceId)->requestAction(action, onAdbFinished);
     }
 }
 
 void MainWindow::requestAction(QString action, QMap<QString, QString> extras, std::function<void(QProcess*)> onAdbFinished) {
-    if(currentDeviceId.isEmpty() && !devices.isEmpty() ){
-        return devices.value(currentDeviceId)->requestAction(action, extras, onAdbFinished);
+    if(currentDeviceId.isEmpty() && !devicesManager->isEmpty() ){
+        return devicesManager->value(currentDeviceId)->requestAction(action, extras, onAdbFinished);
     }
 }
 
@@ -136,20 +182,20 @@ void MainWindow::requestAction(QString action, QMap<QString, QString> extras, st
 
 void MainWindow::on_toolButton_clicked()
 {
-    //requestAction(Defs::KEY_GET_LAUNCHERS);
-    reloadLaunchers();
+    loadDevices();
 }
 
 
-void MainWindow::clearLaunchers(QString id){
-    if (currentDevice() != nullptr && currentDevice()->id() != id){
+void MainWindow::launchersClearredSlot(QString id){
+    if (currentDeviceId != "" && currentDevice() != nullptr && currentDevice()->id() != id){
         return;
     }
-    launchers.clear();
+    // launchers.clear();
     while (QLayoutItem *item = appsLayout->takeAt(0)) {
         if (QWidget *widget = item->widget()) {
             widget->hide();
-            widget->deleteLater();
+            // widget->deleteLater();
+            delete widget;
         }
         delete item;
     }
@@ -159,10 +205,13 @@ void MainWindow::clearLaunchers(QString id){
 
 void MainWindow::on_devices_currentIndexChanged(int index)
 {
-    if (!currentDeviceId.isEmpty()){
-        disconnect(currentDevice(), SIGNAL(addLauncher(LauncherInfo*,QString)));
-        disconnect(currentDevice(), SIGNAL(launchersClearred(QString)));
-    }
+    // if (!currentDeviceId.isEmpty()){
+    //     Device* dev = currentDevice();
+    //     if(dev != nullptr){
+    //         disconnect(dev, SIGNAL(addLauncher(LauncherInfo*,QString)));
+    //         disconnect(dev, SIGNAL(launchersClearred(QString)));
+    //     }
+    // }
     QString id = ui->devices->itemData(index).toString();
     currentDeviceId = id;
     connectCurrentDevice();
@@ -172,30 +221,48 @@ void MainWindow::on_devices_currentIndexChanged(int index)
 
 
 void MainWindow::reloadLaunchers(){
-    clearLaunchers(currentDeviceId);
+    launchersClearredSlot(currentDeviceId);
     loadLaunchers();
 }
 
 void MainWindow::loadLaunchers(){
-
+    if(currentDeviceId.isEmpty()){
+        return;
+    }
     // appsLayout = new WrapLayout(0);
     // ui->appListLayout->insertLayout(0, appsLayout);
-    connect(currentDevice(), SIGNAL(addLauncher(LauncherInfo*,QString)), this, SLOT(addLauncher(LauncherInfo*, QString)));
-    connect(currentDevice(), SIGNAL(launchersClearred(QString)), this, SLOT(clearLaunchers(QString)));
-    connect(currentDevice(), SIGNAL(deviceDisconected(QString)), this, SLOT(diconectDevice(QString)));
-    Device* device = currentDevice();
-    for (LauncherInfo* info : device->launchers()) {
-        addLauncher(info, device->id());
+    connect(currentDevice(), &Device::addLauncher, this, &MainWindow::addLauncherSlot);
+    connect(currentDevice(), &Device::launchersClearred, this, &MainWindow::launchersClearredSlot);
+    connect(currentDevice(), &Device::deviceDisconected, this, &MainWindow::diconectDevice);
+    launchersSetSlot(currentDevice()->launchers(), currentDeviceId);
+}
+
+void MainWindow::launchersSetSlot(QSet<LauncherInfo*> launchers, QString deviceId){
+    if(deviceId != currentDevice()->id()){
+        return;
+    }
+    foreach (LauncherInfo *info, launchers) {
+        addLauncherSlot(info, deviceId);
     }
 }
 
-void MainWindow::addLauncher(LauncherInfo* info, QString id){
-    QIcon icon(Defs::localIconsPath(id)+info->pkgId);
+void MainWindow::addLauncherSlot(LauncherInfo* info, QString id){
+    QString iconPath = Defs::localIconsPath(id)+info->pkgId;
+    QIcon icon(iconPath);
     if(id != currentDevice()->id()){
         return;
     }
-    if(launchers.contains(info))return;
-    launchers.insert(info);
+    for (int i = 0; i < appsLayout->count(); i++) {
+        auto item = appsLayout->itemAt(i);
+        QWidget* btn = item->widget();
+        if (btn->property(Defs::KEY_GET_PACKAGES.toUtf8()) == info->pkgId &&
+            btn->property(Defs::KEY_GET_LAUNCHERS.toUtf8()) == info->activityId &&
+            btn->property(Defs::KEY_GET_LABEL.toUtf8()) == info->label) {
+            return;
+        }
+    }
+    // if(launchers.contains(info))return;
+    // launchers.insert(info);
     QToolButton *btn = new QToolButton(0);
     btn->setIcon(icon);
     btn->setIconSize(QSize(56, 56));
@@ -203,6 +270,7 @@ void MainWindow::addLauncher(LauncherInfo* info, QString id){
     btn->setProperty(Defs::KEY_GET_PACKAGES.toUtf8(), info->pkgId);
     btn->setProperty(Defs::KEY_GET_LAUNCHERS.toUtf8(), info->activityId);
     btn->setProperty(Defs::KEY_GET_LABEL.toUtf8(), info->label);
+    btn->setProperty("deviceId", id);
     btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     btn->setAutoRaise(false);
     btn->setFixedWidth(70);
@@ -215,7 +283,7 @@ void MainWindow::addLauncher(LauncherInfo* info, QString id){
 
 void MainWindow::onAppClick(QWidget *w){
 
-    if(currentDeviceId.isEmpty() || devices.isEmpty() ){
+    if(currentDeviceId.isEmpty() || devicesManager->isEmpty() ){
         return;
     }
 
@@ -223,7 +291,10 @@ void MainWindow::onAppClick(QWidget *w){
     QString pkgId = w->property(Defs::KEY_GET_PACKAGES.toUtf8()).toString();
     QString actyId = w->property(Defs::KEY_GET_LAUNCHERS.toUtf8()).toString();
     QString actyLabel = w->property(Defs::KEY_GET_LABEL.toUtf8()).toString();
-
+    QString deviceId = w->property("deviceId").toString();
+    if(deviceId != currentDeviceId){
+        return;
+    }
 
     QString id = config.coherenceMode ? pkgId : "_";
     try{
@@ -246,19 +317,19 @@ void MainWindow::onAppClick(QWidget *w){
 
 
         // devices[currentDeviceIndex]->runInAdb("monkey -p " + Defs::KEY_PACKAGE_ID + "  -c android.intent.category.LAUNCHER 1", [this, pkgId, actyId](QProcess* p){
-        // QString out = p->readAll();
+        // QString out = QString(p.readAll()).remove("\r");
 
         QMap<QString, QString> extras;
         extras.insert("package", pkgId);
         extras.insert("activity", actyId);
         // requestAction(Defs::KEY_LAUCH_ACTIVITY, extras, [this, pkgId, actyId](QProcess* p){
-        // QString out = p->readAll();
+        // QString out = QString(p.readAll()).remove("\r");
         QString dpi = QString().setNum(currentDevice()->screenDpi().toDouble() / 2);
         // dpi = QString().setNum(QApplication::primaryScreen()->logicalDotsPerInch());
 
         currentDevice()->runInAdb("wm density "+dpi+" -d "+screenId);
         currentDevice()->runInAdb("am start --display " + screenId + " -n "+pkgId+"/"+actyId, [this, pkgId, screenId, actyId](QProcess* p){
-            QString out = p->readAll();
+            QString out = QString(p->readAll()).remove("\r");
             if (out.contains("Exception") || out.contains("Error")){
                 currentDevice()->runInAdb("am start --display " + screenId + " -n "+Defs::KEY_PACKAGE_ID+"/.MainActivity"+
                                           // " -f 0x04000000"+
@@ -269,15 +340,13 @@ void MainWindow::onAppClick(QWidget *w){
         });
         // });
         // });
-    }catch(DeviceDisconectedException){
-        emit deviceDisconected(currentDevice()->id());
+    }catch(QException e){
+        qDebug() << e.what();
     }
 }
 
 void MainWindow::diconectDevice(QString id){
-    Device* dev = devices.value(id);
-    dev->disconnectDevice();
-    dev->deleteLater();
+    devicesManager->diconectDevice(id);
     int index = 0;
     for (; index < ui->devices->count(); index++) {
         if(ui->devices->itemData(index) == id){
@@ -286,16 +355,15 @@ void MainWindow::diconectDevice(QString id){
         }
     }
     if(currentDeviceId == id){
-        clearLaunchers(id);
+        launchersClearredSlot(id);
     }
 }
 
 Device* MainWindow::currentDevice(){
-    if (devices.contains(currentDeviceId)){
-        return devices.value(currentDeviceId);
-    } else {
-        return NULL;
+    if(currentDeviceId.isEmpty()){
+        return nullptr;
     }
+    return devicesManager->value(currentDeviceId);
 }
 
 void MainWindow::on_devices_activated(int index)

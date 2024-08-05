@@ -22,14 +22,16 @@ class AppAdder : public QThread{
     Config *config;
     QStringList out;
     QString id;
-    QString filePath;
 public:
-    AppAdder(Config *config, QString deviceId, QString jsonFilePath){
+    AppAdder(Config *config, QString deviceId, QString jsonFilePath, QObject* parent)
+        : QThread(parent)
+    {
         this->config = config;
         this->id = deviceId;
         this->filePath = jsonFilePath;
     }
 
+    QString filePath;
     QSet<LauncherInfo*> launchers;
     // void setList(QStringList out){
     //     this->out = out;
@@ -38,13 +40,11 @@ public:
     void stop() { kill = true; };
 
 signals:
-    // void addApp(QString id);
-
     void addLauncher(LauncherInfo*);
     void launchersClearred();
     void launchersSet(QSet<LauncherInfo*>);
 
-    void deviceDiconeected();
+    void deviceDiconected();
 
 protected:
     void run() override{
@@ -55,14 +55,13 @@ protected:
         QStringList params;
         params << "-s" << id << "shell" << "run-as"<<  Defs::KEY_PACKAGE_ID <<"cat" << filePath;
         p.start(config->adbPath(), params);
-        qDebug() << "app adder";
         p.waitForFinished();
         QString str = p.readAll();
         launchers.clear();
         emit launchersClearred();
         QList<QMap<QString, QString>> map = convertirJsonAListaDeMapas(str);
         QFileInfo ifn(filePath);
-        QString remoteFupIconsDir = ifn.absoluteDir().path() + "/icons/";
+        QString remoteFupIconsDir = ifn.dir().path() + "/icons/";
         for (auto &&it : map) {
             if (kill) return;
             QString pckg = it["LAUNCHER_PKG"];
@@ -136,18 +135,37 @@ protected:
         QString localFolderIconPath = Defs::localIconsPath(id);
         QDir().mkpath(localFolderIconPath);
         QFileInfo remoteInfo(remotePath);
+        QFile file(localFolderIconPath + "/" + remoteInfo.fileName());
+//check if exists and same size in bits
+        if(file.exists()){
+            QStringList params;
+            params << "-s" << id << "shell" << "run-as "+ Defs::KEY_PACKAGE_ID+" wc -c < " + remotePath;
+            p.start(config->adbPath(),params);
+            p.waitForFinished();
+            QString out = QString(p.readAll());
+            qint64 sizeBits = out.remove(" ").remove("\n").remove("\r").toInt();
+            if(sizeBits == file.size()){
+                return;
+            }else{
+                file.remove();
+            }
+        }
+
+//load
         QStringList params;
         params << "-s" << id << "shell" << "run-as "+ Defs::KEY_PACKAGE_ID+" cat " + remotePath;
         // qDebug() << "get icon";
         p.start(config->adbPath(),params);
         p.waitForFinished();
         QByteArray  out = p.readAll();
+#ifdef Q_OS_WIN
+        out = out.replace("\r\n", "\n");
+#endif
         if(QString(out).contains("not found")){
             stop();
-            emit deviceDiconeected();
+            emit deviceDiconected();
         }
 
-        QFile file(localFolderIconPath + "/" + remoteInfo.fileName());
         if (file.open(QIODevice::WriteOnly)) {
             file.write(out);
             file.close();

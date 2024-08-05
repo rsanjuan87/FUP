@@ -40,8 +40,8 @@ public:
 
     static QString actionHeader(QString);
 
-    static QString localIconsPath(QString id);
-    static QString localPath(QString id);
+    static QString localIconsPath(const QString id);
+    static QString localPath(const QString id);
 };
 
 #endif // DEFS_H

@@ -32,10 +32,12 @@ QString Defs::getPackagesKey(){return Defs::actionHeader(Defs::KEY_GET_PACKAGES)
 
 QString Defs::actionHeader(QString action){return "echo \""+action+"\" &&";}
 
-QString Defs::localIconsPath(QString id){
-    return QStandardPaths::writableLocation(QStandardPaths::TempLocation)+"/"+id+"/icons/";
+QString Defs::localIconsPath(const QString id){
+    QString _id = QString(id).replace(":", "_");
+    return QStandardPaths::writableLocation(QStandardPaths::TempLocation)+"/"+_id+"/icons/";
 }
 
-QString Defs::localPath(QString id){
-    return QStandardPaths::writableLocation(QStandardPaths::TempLocation)+"/"+id+"/icons/";
+QString Defs::localPath(const QString id){
+    QString _id = QString(id).replace(":", "_");
+    return QStandardPaths::writableLocation(QStandardPaths::TempLocation)+"/"+_id+"/icons/";
 }

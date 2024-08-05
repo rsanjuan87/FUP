@@ -4,5 +4,11 @@
         <file alias="tray_light">imgs/tray/tray_light.png</file>
         <file alias="icon">imgs/icon.png</file>
         <file alias="icon_mac">imgs/icon_mac.png</file>
+        <file>imgs/status/device.png</file>
+        <file>imgs/status/offline.png</file>
+        <file>imgs/status/permissions.png</file>
+        <file>imgs/status/recovery.png</file>
+        <file>imgs/status/sideload.png</file>
+        <file>imgs/status/unauthorized.png</file>
     </qresource>
 </RCC>

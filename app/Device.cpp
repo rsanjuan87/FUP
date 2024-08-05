@@ -6,6 +6,7 @@
 #include <QtCore/qjsonarray.h>
 #include <QtCore/qjsonobject.h>
 #include <QMap>
+#include <QProcess>
 #include <QSet>
 
 Device::Device(QString line, Config *conf, QSystemTrayIcon *t, QObject *parent)
@@ -17,7 +18,7 @@ Device::Device(QString line, Config *conf, QSystemTrayIcon *t, QObject *parent)
         line = line.replace("  ", " ");
     }
     line= line.trimmed();
-    this->line = line;
+    this->_line = line;
     this->config = conf;
     init();
 }
@@ -32,7 +33,14 @@ void Device::init(){
     connect(&logcat, &QProcess::readyReadStandardError, this, &Device::readLogcat);
     connect(&logcat, &QProcess::readyReadStandardOutput, this, &Device::readLogcat);
 
-    loadApps(remoteFupDir()+"/launchers.json");
+    appAdder = new AppAdder(config, id(), remoteFupDir()+"/launchers.json", parent());
+    connect(appAdder, &AppAdder::addLauncher, this, &Device::addedLauncherSlot);
+    connect(appAdder, &AppAdder::launchersClearred, this, &Device::Cleared);
+    connect(appAdder, &AppAdder::launchersSet, this, &Device::launchersSetSlot);
+
+    connect(appAdder, &AppAdder::deviceDiconected, this, &Device::deviceDisconectedSlot);
+
+    appAdder->start();
     screenSize();
     screenDpi();
 }
@@ -45,14 +53,47 @@ Device::~Device(){
         QProcess * p = scrcpy.take(key);
         if(p != nullptr){
             p->terminate();
-            p->deleteLater();
+            // p->deleteLater();
+            delete p;
         }
     }
     logcat.terminate();
 }
 
 QString Device::id(){
-    return line.split(" ").first();
+    return _line.split(" ").first();
+}
+
+QString Device::status()
+{
+    if (nulled()) {
+        return "offline";
+    }
+    if(_line.contains("product")){
+        return _line.split(" product:").first().split(" ").last();
+    }else{
+        return _line.split(" transport_id:").first().split(" ").last();
+    }
+}
+
+QString Device::product(){
+    return _line.split(" product:").last().split(" model:").first();
+}
+
+QString Device::model(){
+    if(_line.contains("model:")){
+        return _line.split(" model:").last().split(" device:").first();
+    }else{
+        return id();
+    }
+}
+
+QString Device::device(){
+    return _line.split(" device:").last().split(" transport_id:").first();
+}
+
+QString Device::transportId(){
+    return _line.split(" transport_id:").last();
 }
 
 
@@ -64,7 +105,7 @@ QString Device::screenSize(){
         params << "-s" << id() << "shell" << "wm" << "size";
         p.start(config->adbPath(), params);
         p.waitForFinished();
-        QString out = p.readAll();
+        QString out = QString(p.readAll()).remove("\r");
         QString line = out.trimmed();
         _screenSize = QString(line.split(": ").last().remove("\n"));
     }
@@ -80,7 +121,7 @@ QString Device::screenDpi(){
         params << "-s" << id() << "shell" << "wm" << "density";
         p.start(config->adbPath(), params);
         p.waitForFinished();
-        QString out = p.readAll();
+        QString out = QString(p.readAll()).remove("\r");
         QStringList lines = out.trimmed().split("\n");
         for(QString line: lines){
             if(line.contains("Physical")){
@@ -103,9 +144,10 @@ QStringList Device::screens(){
     params << "-s" << id() << "shell" << "dumpsys" << "display" << "|" << "grep" << "mDisplayId=";
     p.start(config->adbPath(), params);
     p.waitForFinished();
-    QString out = p.readAll();
+    QString out = QString(p.readAll()).remove("\r");
     if(out.contains("not found")){
-        throw DeviceDisconectedException();
+        emit deviceDisconected(id());
+        // throw DeviceDisconectedException();
     }
     QSet<int> set;
     for(QString l : out.split("\n")){
@@ -141,7 +183,7 @@ QString Device::remoteFupDir(){
         params << "-s" << id() << "shell" << "run-as org.santech.fup pwd";
         p.start(config->adbPath(), params);
         p.waitForFinished();
-        QString out = p.readAll();
+        QString out = QString(p.readAll()).remove("\r");
         out = out.trimmed()+"/files";
         _fupDir = out;
     }
@@ -166,15 +208,15 @@ void Device::connectDevice(){
     // params << "-s" << id() << "shell mkdir -p " + Defs::remoteFupIconsDir() + " && chmod 777 -R " + Defs::remoteFupDir();
     // p.start(config->adbPath(), cmd.split(" "));
     // p.waitForFinished();
-    // QString out = p.readAll();
+    // QString out = QString(p.readAll()).remove("\r");
 
     // //clean p readstream
-    // p.readAll();
+    // QString(p.readAll()).remove("\r");
 
     //get remote date
     p.start(config->adbPath() , QString("-s "+ id() +" shell date +'%m-%d %H:%M:%S.000'").split(" "));
     p.waitForFinished();
-    QString time = p.readAll().replace("\n", "");
+    QString time = QString(p.readAll()).remove("\r").replace("\n", "");
     //to connnect logcat with that date
     QStringList params;
     // QString("-s "+ id() +" shell logcat -s "+ Defs::KEY_PACKAGE_ID + " -T '"+time+"'").split(" ")
@@ -188,11 +230,14 @@ void Device::connectDevice(){
 }
 
 void Device::disconnectDevice(){
+    if(config == nullptr)
+        return;
     logcat.terminate();
     disconnect(&logcat, &QIODevice::readyRead, this, &Device::readLogcat);
-    disconnect(&logcat, &QProcess::readyReadStandardError, this, &Device::readLogcat);
-    disconnect(&logcat, &QProcess::readyReadStandardOutput, this, &Device::readLogcat);
-
+    disconnect(&logcat, &QProcess::readyReadStandardError, this,
+               &Device::readLogcat);
+    disconnect(&logcat, &QProcess::readyReadStandardOutput, this,
+               &Device::readLogcat);
 }
 
 void Device::requestAction(QString action, std::function<void(QProcess*)> onAdbFinished){
@@ -200,7 +245,7 @@ void Device::requestAction(QString action, std::function<void(QProcess*)> onAdbF
 }
 
 void Device::requestAction(QString action, QMap<QString, QString> extras, std::function<void(QProcess*)> onAdbFinished) {
-    QProcess* p = new QProcess();
+    QProcess* p = new QProcess(0);
     p->setProcessChannelMode(QProcess::MergedChannels);
     QStringList params = QStringList()
                          << "-s" << id() <<"shell" << "am" << "broadcast" << "-a"
@@ -216,7 +261,8 @@ void Device::requestAction(QString action, QMap<QString, QString> extras, std::f
             if(onAdbFinished != nullptr){
                 onAdbFinished(p);
             }
-            p->deleteLater(); // Liberamos p después de su uso
+            // p->deleteLater();
+            delete p;
         }, Qt::QueuedConnection);
     });
     p->start(config->adbPath(), params);
@@ -230,19 +276,19 @@ void Device::getAppList(){
 }
 
 // void Device::readAdb(int){
-//     QStringList out = QString(adb.readAll()).split('\n');
+//     QStringList out = QString(adb.readAll().remove("\r")).split('\n');
 //     parse(out);
 // }
 
 void Device::readLogcat(){
-    QStringList out = QString(logcat.readAll()).split('\n');
+    QStringList out = QString(QString(logcat.readAll()).remove("\r")).split('\n');
     parseMessages(out);
 }
 
 void Device::runInAdb(QString shell, std::function<void(QProcess*)> onAdbFinished){
     QStringList params;
     params << "-s" << id() << "shell" << shell;
-    QProcess* p = new QProcess(this); // Aseguramos que p sea hijo de Device para manejar su ciclo de vida
+    QProcess* p = new QProcess(0);
     p->setProcessChannelMode(QProcess::MergedChannels);
 
     QObject::connect(p, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, [this, p, onAdbFinished](int, QProcess::ExitStatus){
@@ -250,7 +296,8 @@ void Device::runInAdb(QString shell, std::function<void(QProcess*)> onAdbFinishe
             if(onAdbFinished != nullptr){
                 onAdbFinished(p);
             }
-            p->deleteLater(); // Liberamos p después de su uso
+            // p->deleteLater();
+            delete p;
         }, Qt::QueuedConnection);
     });
 
@@ -265,7 +312,7 @@ void Device::runInAdb(QString shell, std::function<void(QProcess*)> onAdbFinishe
 // void Device::runInAdb(QString shell, std::function<void(QProcess*)> onAdbFinished){
 //     QStringList params;
 //     params << "-s" << id() << "shell" << shell;
-//     QProcess* p = new QProcess();
+//     QProcess* p = new QProcess(0);
 //     p->setProcessChannelMode(QProcess::MergedChannels);
 //     // connect(p, SIGNAL(finished(int)), this,  SLOT([p &onAdbFinished](int exitCode) {
 //         // onAdbFinished(p);
@@ -331,18 +378,9 @@ void Device::parseMessages(QStringList out){
 
 void Device::loadApps(QString path){
     if(this != nullptr && appAdder != nullptr && appAdder->isRunning()){
-        disconnect(appAdder, SIGNAL(addLauncher(LauncherInfo*)), this, SLOT(addedLauncherSlot(LauncherInfo*)));
-        disconnect(appAdder, SIGNAL(launchersClearred()), this, SLOT(launchersClearredSlot()));
-        disconnect(appAdder, SIGNAL(launchersSet(QSet<LauncherInfo*>)), this, SLOT(launchersSetSlot(QSet<LauncherInfo*>)));
-        disconnect(appAdder, SIGNAL(deviceDiconeected()));
-        appAdder->stop();
-        delete appAdder;
+        return;
     }
-    appAdder = new AppAdder(config, id(), path);
-    connect(appAdder, SIGNAL(addLauncher(LauncherInfo*)), this, SLOT(addedLauncherSlot(LauncherInfo*)));
-    connect(appAdder, SIGNAL(launchersClearred()), this, SLOT(launchersClearredSlot()));
-    connect(appAdder, SIGNAL(launchersSet(QSet<LauncherInfo*>)), this, SLOT(launchersSetSlot(QSet<LauncherInfo*>)));
-    connect(appAdder, SIGNAL(deviceDiconeected()), this, SLOT(deviceDisconectedSlot()));
+    appAdder->filePath = path;
     appAdder->start();
 }
 
@@ -361,7 +399,7 @@ void Device::launchersSetSlot(QSet<LauncherInfo*> list){
     emit launchersSet(list, id());
 }
 
-void Device::launchersClearredSlot(){
+void Device::Cleared(){
     emit launchersClearred(id());
 }
 
@@ -375,7 +413,7 @@ void Device::launchersClearredSlot(){
 //     params << "-s" << id() << "shell" << "run-as "+ Defs::KEY_PACKAGE_ID+" cat " + remotePath;
 //     p.start(config->adbPath(),params);
 //     p.waitForFinished();
-//     QByteArray  out = p.readAll();
+//     QByteArray  out = QString(p.readAll()).remove("\r");
 
 //     QFile file(localFolderIconPath + "/" + remoteInfo.fileName());
 //     if (file.open(QIODevice::WriteOnly)) {
@@ -413,15 +451,29 @@ void Device::stopScrcpy(QString pkgId){
     QProcess *p = scrcpy.take(pkgId);
     if (p != nullptr){
         p->kill();
-        p->deleteLater();
+        // p->deleteLater();
+        delete p;
     }
 }
 
 void Device::runScrcpy(QString pkgId, QString title, QStringList params){
     QStringList args;
     args << "-s" << id() << "--no-cleanup";
-    QProcess* p = new QProcess();
-    p->setProgram(config->scrcpyPath());
+    QProcess mklink;
+    QFileInfo appLink(Defs::localPath(id())+"/apps/"+title);
+    if(!appLink.dir().exists()){
+        QDir().mkdir(appLink.dir().path());
+    }
+    mklink.setProcessChannelMode(QProcess::MergedChannels);
+#ifdef Q_OS_WIN
+    mklink.start("mklink", QStringList() << appLink.filePath() << config->scrcpyPath());
+#else
+    mklink.start("ln", QStringList() << "-s" << config->scrcpyPath() << appLink.filePath());
+#endif
+    mklink.waitForFinished();
+    // QString out = mklink.readAll();
+
+    QProcess* p = new QProcess(0);
     QProcessEnvironment env = p->processEnvironment();
     env.insert("PATH", env.value("PATH")+":"+QFileInfo(config->adbPath()).dir().path());
     if(config->coherenceMode){
@@ -430,15 +482,26 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params){
     }
     env.insert("SCRCPY_SERVER_PATH", config->scrcpyServePath());
     p->setProcessEnvironment(env);
+    p->setProcessChannelMode(QProcess::MergedChannels);
     scrcpy.insert(pkgId, p);
-    QObject::connect(p, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, [this, p, pkgId](int, QProcess::ExitStatus){
+    connect(p, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, [this, p, pkgId](int, QProcess::ExitStatus){
         QMetaObject::invokeMethod(this, [p, pkgId, this]() {
             scrcpy.take(pkgId);
-            QString out = p->readAll();
-            p->deleteLater();
+            QString out = QString(p->readAll()).remove("\r");
+            qDebug() << p->exitCode()<< p->exitStatus() << out;
+            // p->deleteLater();
+            delete p;
         }, Qt::QueuedConnection);
     });
+
+
     args << params;
     args << "--window-title="+title;
-    p->start(config->scrcpyPath(), args);
+    p->setWorkingDirectory(QFileInfo(config->scrcpyPath()).dir().absolutePath());
+    p->start(appLink.absoluteFilePath(), args);
+}
+
+void Device::setLine(QString line) {
+    _line = line;
+    emit deviceUpdated(id());
 }
