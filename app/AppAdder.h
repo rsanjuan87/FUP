@@ -139,12 +139,18 @@ protected:
 //check if exists and same size in bits
         if(file.exists()){
             QStringList params;
-            params << "-s" << id << "shell" << "run-as "+ Defs::KEY_PACKAGE_ID+" wc -c < " + remotePath;
+            params << "-s" << id << "shell"
+                   << "run-as " + Defs::KEY_PACKAGE_ID +
+                          " ls -la " + remotePath;
             p.start(config->adbPath(),params);
             p.waitForFinished();
             QString out = QString(p.readAll());
-            qint64 sizeBits = out.remove(" ").remove("\n").remove("\r").toInt();
-            if(sizeBits == file.size()){
+            while(out.contains("  ")){
+                out = out.replace("  ", " ");
+            }
+            out = out.split(" ").at(4);
+            qint64 sizeBits = out.toInt();
+            if(sizeBits == file.size() && file.size() > 0){
                 return;
             }else{
                 file.remove();

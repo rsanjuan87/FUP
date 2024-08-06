@@ -45,20 +45,7 @@ QToolButton:pressed {
 </string>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="1">
-     <widget class="QComboBox" name="devices"/>
-    </item>
-    <item row="0" column="2">
-     <widget class="QToolButton" name="toolButton">
-      <property name="text">
-       <string>↺</string>
-      </property>
-      <property name="icon">
-       <iconset theme="system-reboot"/>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" colspan="3">
+    <item row="1" column="0" colspan="4">
      <widget class="QScrollArea" name="scrollArea">
       <property name="widgetResizable">
        <bool>true</bool>
@@ -69,7 +56,7 @@ QToolButton:pressed {
          <x>0</x>
          <y>0</y>
          <width>604</width>
-         <height>490</height>
+         <height>401</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -113,11 +100,173 @@ QToolButton:pressed {
       </widget>
      </widget>
     </item>
+    <item row="0" column="1" colspan="2">
+     <widget class="QComboBox" name="devices"/>
+    </item>
    </layout>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>630</width>
+     <height>37</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuDevice">
+    <property name="title">
+     <string>Devices</string>
+    </property>
+    <widget class="QMenu" name="menuCast">
+     <property name="title">
+      <string>Cast</string>
+     </property>
+     <addaction name="actionCast_main_screen"/>
+     <addaction name="actionCast_virtual_desktop_size_screen"/>
+     <addaction name="separator"/>
+     <addaction name="actionSound"/>
+    </widget>
+    <addaction name="actionReload_list"/>
+    <addaction name="separator"/>
+    <addaction name="menuCast"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuDevice"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::ToolBarArea::BottomToolBarArea|Qt::ToolBarArea::TopToolBarArea</set>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>24</width>
+     <height>24</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionReload_list"/>
+   <addaction name="separator"/>
+   <addaction name="actionCast_main_screen"/>
+   <addaction name="actionCast_virtual_desktop_size_screen"/>
+  </widget>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::QuitRole</enum>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::AboutRole</enum>
+   </property>
+  </action>
+  <action name="actionReload_list">
+   <property name="text">
+    <string>↺ Reload list</string>
+   </property>
+   <property name="toolTip">
+    <string>Reload devices list</string>
+   </property>
+  </action>
+  <action name="actionCast_main_screen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="imgs.qrc">
+     <normaloff>:/tray_light</normaloff>:/tray_light</iconset>
+   </property>
+   <property name="text">
+    <string>📱Device screen</string>
+   </property>
+   <property name="iconText">
+    <string>Device screen</string>
+   </property>
+   <property name="toolTip">
+    <string>Cast device main screen</string>
+   </property>
+  </action>
+  <action name="actionCast_virtual_desktop_size_screen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="computer"/>
+   </property>
+   <property name="text">
+    <string>🖥️ Virtual screen desktop size</string>
+   </property>
+   <property name="iconText">
+    <string>Virtual screen desktop size</string>
+   </property>
+   <property name="toolTip">
+    <string>Cast virtual screen desktop size</string>
+   </property>
+  </action>
+  <action name="actionSound">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Sound</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="imgs.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionReload_list</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>loadDevices()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>314</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>loadDevices()</slot>
+ </slots>
 </ui>

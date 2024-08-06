@@ -8,6 +8,8 @@
 #include <QMap>
 #include <QProcess>
 #include <QSet>
+#include <QGuiApplication>
+#include <QScreen>
 
 Device::Device(QString line, Config *conf, QSystemTrayIcon *t, QObject *parent)
     : QObject{parent},
@@ -48,9 +50,9 @@ void Device::init(){
 
 Device::~Device(){
     // adb.terminate();
-    const QStringList keys = scrcpy.keys();
+    const QStringList keys = scrcpyProcess.keys();
     for(const QString &key: keys){
-        QProcess * p = scrcpy.take(key);
+        QProcess * p = scrcpyProcess.take(key);
         if(p != nullptr){
             p->terminate();
             // p->deleteLater();
@@ -364,7 +366,7 @@ void Device::parseMessages(QStringList out){
             }else if (data.startsWith(Defs::KEY_APP_RESUMED)){
                 QString pkgId = data.remove(Defs::KEY_APP_RESUMED + ", ");
                 if (config->coherenceMode){
-                    QProcess* p = scrcpy.take(pkgId);
+                    QProcess* p = scrcpyProcess.take(pkgId);
                     if(p != nullptr){
                         p->terminate();
                     }
@@ -440,23 +442,37 @@ void Device::Cleared(){
 // }
 
 QProcess::ProcessState Device::scrcpyStatus(QString pkgId){
-    if (scrcpy.contains(pkgId)){
-        return scrcpy.value(pkgId)->state();
+    if (scrcpyProcess.contains(pkgId)){
+        return scrcpyProcess.value(pkgId)->state();
     }
     return QProcess::NotRunning;
 }
 
 
 void Device::stopScrcpy(QString pkgId){
-    QProcess *p = scrcpy.take(pkgId);
-    if (p != nullptr){
-        p->kill();
-        // p->deleteLater();
-        delete p;
+    if(scrcpyProcess.contains(pkgId)){
+        QProcess *p = scrcpyProcess.take(pkgId);
+        if (p != nullptr){
+            p->kill();
+            // p->deleteLater();
+            // delete p;
+        }
     }
 }
 
-void Device::runScrcpy(QString pkgId, QString title, QStringList params){
+void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString screenSize){
+
+    if(title == ""){
+        title = model();
+    }
+    if(pkgId == "desktop"){
+        QSize s = QGuiApplication::primaryScreen()->size();
+        screenSize =
+            QString().setNum(s.width()) + "x" + QString().setNum(s.height());
+    }
+    if(screenSize ==""){
+        screenSize = this->screenSize();
+    }
     QStringList args;
     args << "-s" << id() << "--no-cleanup";
     QProcess mklink;
@@ -473,32 +489,33 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params){
     mklink.waitForFinished();
     // QString out = mklink.readAll();
 
-    QProcess* p = new QProcess(0);
-    QProcessEnvironment env = p->processEnvironment();
+    QProcess* scrcpy = new QProcess(0);
+    QProcessEnvironment env = scrcpy->processEnvironment();
     env.insert("PATH", env.value("PATH")+":"+QFileInfo(config->adbPath()).dir().path());
     if(config->coherenceMode){
         env.insert("SCRCPY_ICON_PATH", Defs::localIconsPath(id())+"/"+pkgId);
-        args << "--create-new-display="+screenSize();
+        if(pkgId != "_"){
+            args << "--create-new-display="+screenSize;
+        }
     }
     env.insert("SCRCPY_SERVER_PATH", config->scrcpyServePath());
-    p->setProcessEnvironment(env);
-    p->setProcessChannelMode(QProcess::MergedChannels);
-    scrcpy.insert(pkgId, p);
-    connect(p, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, [this, p, pkgId](int, QProcess::ExitStatus){
-        QMetaObject::invokeMethod(this, [p, pkgId, this]() {
-            scrcpy.take(pkgId);
-            QString out = QString(p->readAll()).remove("\r");
-            qDebug() << p->exitCode()<< p->exitStatus() << out;
+    scrcpy->setProcessEnvironment(env);
+    scrcpy->setProcessChannelMode(QProcess::MergedChannels);
+    scrcpyProcess.insert(pkgId, scrcpy);
+    connect(scrcpy, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, [this, scrcpy, pkgId](int, QProcess::ExitStatus){
+        QMetaObject::invokeMethod(this, [scrcpy, pkgId, this]() {
+            scrcpyProcess.take(pkgId);
+            QString out = QString(scrcpy->readAll()).remove("\r");
+            qDebug() << scrcpy->exitCode()<< scrcpy->exitStatus() << out;
             // p->deleteLater();
-            delete p;
+            delete scrcpy;
+            emit appClosed(pkgId);
         }, Qt::QueuedConnection);
     });
-
-
     args << params;
     args << "--window-title="+title;
-    p->setWorkingDirectory(QFileInfo(config->scrcpyPath()).dir().absolutePath());
-    p->start(appLink.absoluteFilePath(), args);
+    scrcpy->setWorkingDirectory(QFileInfo(config->scrcpyPath()).dir().absolutePath());
+    scrcpy->start(appLink.absoluteFilePath(), args);
 }
 
 void Device::setLine(QString line) {

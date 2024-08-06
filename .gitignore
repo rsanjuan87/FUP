@@ -2,3 +2,4 @@
 app/build/*
 server/build/*
 .idea/*
+/app/mainwindow.ui.autosave

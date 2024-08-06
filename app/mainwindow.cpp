@@ -27,7 +27,7 @@ MainWindow::MainWindow(QSystemTrayIcon *t, QMenu *trayMenu, QWidget *parent)    
 
 {
     ui->setupUi(this);
-
+    ui->toolBar->insertWidget(ui->actionCast_main_screen, ui->devices);
     init();
 
     //getAppList();
@@ -180,12 +180,6 @@ void MainWindow::requestAction(QString action, QMap<QString, QString> extras, st
 //adb shell 'am broadcast -a android.intent.action.VIEW -n org.santech.notifyme/org.santech.notifyme.BroadcastReceiver --es sms_body "test from adb"'
 
 
-void MainWindow::on_toolButton_clicked()
-{
-    loadDevices();
-}
-
-
 void MainWindow::launchersClearredSlot(QString id){
     if (currentDeviceId != "" && currentDevice() != nullptr && currentDevice()->id() != id){
         return;
@@ -234,7 +228,18 @@ void MainWindow::loadLaunchers(){
     connect(currentDevice(), &Device::addLauncher, this, &MainWindow::addLauncherSlot);
     connect(currentDevice(), &Device::launchersClearred, this, &MainWindow::launchersClearredSlot);
     connect(currentDevice(), &Device::deviceDisconected, this, &MainWindow::diconectDevice);
+    connect(currentDevice(), &Device::appClosed, this, &MainWindow::appClosedSlot);
     launchersSetSlot(currentDevice()->launchers(), currentDeviceId);
+}
+
+void MainWindow::appClosedSlot(QString pkgid){
+    if(pkgid == "_"){
+        ui->actionCast_main_screen->setChecked(false);
+    }else if(pkgid == "desktop"){
+        ui->actionCast_virtual_desktop_size_screen->setChecked(false);
+    }else{
+        currentDevice()->stopScrcpy(pkgid);
+    }
 }
 
 void MainWindow::launchersSetSlot(QSet<LauncherInfo*> launchers, QString deviceId){
@@ -369,5 +374,26 @@ Device* MainWindow::currentDevice(){
 void MainWindow::on_devices_activated(int index)
 {
     on_devices_currentIndexChanged(index);
+}
+
+
+void MainWindow::on_actionCast_main_screen_toggled(bool v)
+{
+    if(v){
+        currentDevice()->runScrcpy("_");
+    }else{
+        currentDevice()->stopScrcpy("_");
+    }
+}
+
+
+
+void MainWindow::on_actionCast_virtual_desktop_size_screen_toggled(bool v)
+{
+    if(v){
+        currentDevice()->runScrcpy("desktop", "Desktop");
+    }else{
+        currentDevice()->stopScrcpy("desktop");
+    }
 }
 

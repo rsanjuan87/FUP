@@ -49,16 +49,17 @@ protected slots:
     void init();
     //void updatePackages(QStringList list);
 
-    void on_toolButton_clicked();
 
     void onAppClick(QWidget *w);
     void on_devices_currentIndexChanged(int index);
 
     void addDevice(Device *dev);
     void removeDevice(QString id);
+    void appClosedSlot(QString pkgid);
 private slots:
     void on_devices_activated(int index);
-
+    void on_actionCast_main_screen_toggled(bool);
+    void on_actionCast_virtual_desktop_size_screen_toggled(bool v);
 private:
     Ui::MainWindow *ui;
 

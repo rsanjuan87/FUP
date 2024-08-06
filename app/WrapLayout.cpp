@@ -2,6 +2,10 @@
 
 #include "WrapLayout.h"
 
+#include "Defs.h"
+
+#include <QVariant>
+
 WrapLayout::WrapLayout(QWidget *parent, int margin, int hSpacing, int vSpacing)
     : QLayout(parent), m_hSpace(hSpacing), m_vSpace(vSpacing) {
     setContentsMargins(margin, margin, margin, margin);
@@ -22,8 +26,28 @@ WrapLayout::~WrapLayout() {
 
 
 void WrapLayout::addItem(QLayoutItem *item) {
-    itemList.append(item);
+    // Obtener la propiedad del widget actual para compararla con las existentes
+    QString currentLabel = item->widget()->property(Defs::KEY_GET_LABEL.toUtf8()).toString();
+
+    // Buscar la posición correcta para insertar este widget basándose en su propiedad
+    int insertIndex = -1;
+    for (int i = 0; i < itemList.size(); ++i) {
+        QString existingLabel = itemList.at(i)->widget()->property(Defs::KEY_GET_LABEL.toUtf8()).toString();
+        if (currentLabel.compare(existingLabel, Qt::CaseInsensitive) <= 0) {
+            insertIndex = i;
+            break;
+        }
+    }
+
+    // Si no se encontró una posición adecuada, agregar al final de la lista
+    if (insertIndex == -1) {
+        itemList.append(item);
+    } else {
+        // Insertar el widget en la posición correcta para mantener el orden
+        itemList.insert(insertIndex, item);
+    }
 }
+
 
 int WrapLayout::horizontalSpacing() const {
     if (m_hSpace >= 0) {

@@ -64,7 +64,7 @@ public slots:
 
     // void getIcon(QString remotePath);
 
-    void runScrcpy(QString pkgId, QString title, QStringList params = QStringList());
+    void runScrcpy(QString pkgId, QString title = "", QStringList params = QStringList(), QString screenSize="");
     void stopScrcpy(QString pkgId);
     QProcess::ProcessState scrcpyStatus(QString pkgId);
 
@@ -82,7 +82,7 @@ private:
 
     // QProcess adb;
     QProcess logcat;
-    QMap<QString, QProcess*> scrcpy;
+    QMap<QString, QProcess*> scrcpyProcess;
     AppAdder *appAdder = nullptr;
     NotificationHelper *notifHelper;
 
@@ -94,6 +94,8 @@ signals:
     void addLauncher(LauncherInfo*, QString );
     void launchersClearred(QString );
     void launchersSet(QSet<LauncherInfo*>, QString );
+
+    void appClosed(QString pkgid);
 
     void deviceDisconected(QString);
     void deviceUpdated(QString);
