@@ -461,11 +461,22 @@ void Device::stopScrcpy(QString pkgId){
 }
 
 void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString screenSize){
+    if(scrcpyProcess.contains(pkgId)){
+        QProcess* scrcpy = scrcpyProcess.value(pkgId, nullptr);
+        if(scrcpy != nullptr){
+            if (scrcpy->state() == QProcess::NotRunning) {
+                stopScrcpy(pkgId);
+            }else{
+                //todo raise window
+                return;
+            }
+        }
+    }
 
     if(title == ""){
         title = model();
     }
-    if(pkgId == "desktop"){
+    if(pkgId == "_desktop"){
         QSize s = QGuiApplication::primaryScreen()->size();
         screenSize =
             QString().setNum(s.width()) + "x" + QString().setNum(s.height());
@@ -494,7 +505,7 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
     env.insert("PATH", env.value("PATH")+":"+QFileInfo(config->adbPath()).dir().path());
     if(config->coherenceMode){
         env.insert("SCRCPY_ICON_PATH", Defs::localIconsPath(id())+"/"+pkgId);
-        if(pkgId != "_"){
+        if(pkgId != "_mainScreen" && pkgId != "_audio"){
             args << "--create-new-display="+screenSize;
         }
     }
@@ -514,6 +525,7 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
     });
     args << params;
     args << "--window-title="+title;
+    scrcpy->setProcessEnvironment(env);
     scrcpy->setWorkingDirectory(QFileInfo(config->scrcpyPath()).dir().absolutePath());
     scrcpy->start(appLink.absoluteFilePath(), args);
 }

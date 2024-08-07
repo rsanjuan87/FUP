@@ -233,9 +233,9 @@ void MainWindow::loadLaunchers(){
 }
 
 void MainWindow::appClosedSlot(QString pkgid){
-    if(pkgid == "_"){
+    if(pkgid == "_mainScreen"){
         ui->actionCast_main_screen->setChecked(false);
-    }else if(pkgid == "desktop"){
+    }else if(pkgid == "_desktop"){
         ui->actionCast_virtual_desktop_size_screen->setChecked(false);
     }else{
         currentDevice()->stopScrcpy(pkgid);
@@ -301,7 +301,7 @@ void MainWindow::onAppClick(QWidget *w){
         return;
     }
 
-    QString id = config.coherenceMode ? pkgId : "_";
+    QString id = config.coherenceMode ? pkgId : "_mainScreen";
     try{
         QProcess::ProcessState status = currentDevice()->scrcpyStatus(id);
         QString screenId = "0";
@@ -380,9 +380,9 @@ void MainWindow::on_devices_activated(int index)
 void MainWindow::on_actionCast_main_screen_toggled(bool v)
 {
     if(v){
-        currentDevice()->runScrcpy("_");
+        currentDevice()->runScrcpy("_mainScreen");
     }else{
-        currentDevice()->stopScrcpy("_");
+        currentDevice()->stopScrcpy("_mainScreen");
     }
 }
 
@@ -391,9 +391,25 @@ void MainWindow::on_actionCast_main_screen_toggled(bool v)
 void MainWindow::on_actionCast_virtual_desktop_size_screen_toggled(bool v)
 {
     if(v){
-        currentDevice()->runScrcpy("desktop", "Desktop");
+        currentDevice()->runScrcpy("_desktop", "Desktop");
     }else{
-        currentDevice()->stopScrcpy("desktop");
+        currentDevice()->stopScrcpy("_desktop");
     }
+}
+
+
+void MainWindow::on_actionSound_toggled(bool v)
+{
+    if(v){
+        currentDevice()->castAudioStart();
+    }else{
+        currentDevice()->castAudioStop();
+    }
+}
+
+
+void MainWindow::on_actionClear_cache_triggered()
+{
+    QDir().remove(Defs::localPath(""));
 }
 

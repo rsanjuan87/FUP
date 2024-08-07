@@ -33,11 +33,10 @@ QString Defs::getPackagesKey(){return Defs::actionHeader(Defs::KEY_GET_PACKAGES)
 QString Defs::actionHeader(QString action){return "echo \""+action+"\" &&";}
 
 QString Defs::localIconsPath(const QString id){
-    QString _id = QString(id).replace(":", "_");
-    return QStandardPaths::writableLocation(QStandardPaths::TempLocation)+"/"+_id+"/icons/";
+    return localPath(id)+"/icons/";
 }
 
 QString Defs::localPath(const QString id){
     QString _id = QString(id).replace(":", "_");
-    return QStandardPaths::writableLocation(QStandardPaths::TempLocation)+"/"+_id+"/icons/";
+    return QStandardPaths::writableLocation(QStandardPaths::TempLocation)+"/"+Defs::KEY_PACKAGE_ID+"/"+_id+"/";
 }

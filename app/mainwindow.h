@@ -60,6 +60,10 @@ private slots:
     void on_devices_activated(int index);
     void on_actionCast_main_screen_toggled(bool);
     void on_actionCast_virtual_desktop_size_screen_toggled(bool v);
+    void on_actionSound_toggled(bool v);
+
+    void on_actionClear_cache_triggered();
+
 private:
     Ui::MainWindow *ui;
 

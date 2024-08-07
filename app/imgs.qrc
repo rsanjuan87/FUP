@@ -10,5 +10,9 @@
         <file>imgs/status/recovery.png</file>
         <file>imgs/status/sideload.png</file>
         <file>imgs/status/unauthorized.png</file>
+        <file alias="phone">imgs/phone.svg</file>
+        <file alias="computer">imgs/video-display.svg</file>
+        <file alias="refresh">imgs/view-refresh.svg</file>
+        <file alias="sound">imgs/sound.svg</file>
     </qresource>
 </RCC>

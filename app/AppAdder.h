@@ -148,7 +148,8 @@ protected:
             while(out.contains("  ")){
                 out = out.replace("  ", " ");
             }
-            out = out.split(" ").at(4);
+            if(!out.isEmpty())
+                out = out.split(" ").at(4);
             qint64 sizeBits = out.toInt();
             if(sizeBits == file.size() && file.size() > 0){
                 return;

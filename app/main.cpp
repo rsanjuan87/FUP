@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[])
 {
-
+    QIcon::setFallbackSearchPaths(QIcon::fallbackSearchPaths() << ":/imgs/elementary_icons");
     qRegisterMetaType<QList<LauncherInfo*>>("QList<LauncherInfo*>");
     qRegisterMetaType<QSet<LauncherInfo*>>("QSet<LauncherInfo*>");
     qRegisterMetaType<QProcess::ExitStatus>("QProcess::ExitStatus");

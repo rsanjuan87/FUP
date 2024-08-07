@@ -25,8 +25,8 @@ private:
 #endif
 
     // QString scrcpyPath = "/opt/homebrew/bin/scrcpy";
-    QString _scrcpyPath = "/Users/san/Projects/contrib/scc/scrcpy/builddir/app/scrcpy";
-    QString _scrpcpyServerPath = "/Users/san/Projects/contrib/scc/scrcpy/builddir/server/scrcpy-server";
+    QString _scrcpyPath = "/Users/san/Projects/FUP/app/scrcpy/builddir/app/scrcpy";
+    QString _scrpcpyServerPath = "/Users/san/Projects/FUP/app/scrcpy/builddir/server/scrcpy-server";
 
 signals:
 

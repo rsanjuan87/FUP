@@ -47,6 +47,14 @@ public:
     bool nulled(){
         return config == nullptr;
     }
+    void castAudioStart(){
+        QStringList params;
+        params << "--no-video" << "--no-control" << "--no-window";
+        runScrcpy("_audio", "audio", params);
+    }
+    void castAudioStop() {
+        stopScrcpy("_audio");
+    }
 public slots:
 
     void connectDevice();
