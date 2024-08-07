@@ -1,5 +1,9 @@
 #include "Defs.h"
 
+QString Defs::ActionMainScreen = "_mainScreen";
+QString Defs::ActionVirtualDesktop = "_desktop";
+QString Defs::ActionAudio = Defs::ActionAudio;
+
 
 QString Defs::KEY_NOTIFICACTION_CHANNEL = "NOTIFICATION_CHANNEL";
 QString Defs::KEY_PACKAGE_ID = "org.santech.fup";

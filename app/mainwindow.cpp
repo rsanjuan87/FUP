@@ -135,7 +135,7 @@ void MainWindow::removeDevice(QString id){
 
 void MainWindow::connectCurrentDevice()
 {
-    if(currentDeviceId.isEmpty() && !devicesManager->isEmpty() ){
+    if(!currentDeviceId.isEmpty() && !devicesManager->isEmpty() ){
         devicesManager->value(currentDeviceId)->connectDevice();
         // reloadLaunchers();
     }
@@ -233,9 +233,9 @@ void MainWindow::loadLaunchers(){
 }
 
 void MainWindow::appClosedSlot(QString pkgid){
-    if(pkgid == "_mainScreen"){
+    if(pkgid == Defs::ActionMainScreen){
         ui->actionCast_main_screen->setChecked(false);
-    }else if(pkgid == "_desktop"){
+    }else if(pkgid == Defs::ActionVirtualDesktop){
         ui->actionCast_virtual_desktop_size_screen->setChecked(false);
     }else{
         currentDevice()->stopScrcpy(pkgid);
@@ -301,7 +301,7 @@ void MainWindow::onAppClick(QWidget *w){
         return;
     }
 
-    QString id = config.coherenceMode ? pkgId : "_mainScreen";
+    QString id = config.coherenceMode ? pkgId : Defs::ActionMainScreen;
     try{
         QProcess::ProcessState status = currentDevice()->scrcpyStatus(id);
         QString screenId = "0";
@@ -318,8 +318,12 @@ void MainWindow::onAppClick(QWidget *w){
                 screens1 = currentDevice()->screens();
             }
             screenId = screens1.last();
+        }else{
+            currentDevice()->raiseWindow(pkgId, actyLabel);
+            screenId = currentDevice()->screenId(pkgId);
         }
 
+        ///resend app to de window
 
         // devices[currentDeviceIndex]->runInAdb("monkey -p " + Defs::KEY_PACKAGE_ID + "  -c android.intent.category.LAUNCHER 1", [this, pkgId, actyId](QProcess* p){
         // QString out = QString(p.readAll()).remove("\r");
@@ -329,10 +333,6 @@ void MainWindow::onAppClick(QWidget *w){
         extras.insert("activity", actyId);
         // requestAction(Defs::KEY_LAUCH_ACTIVITY, extras, [this, pkgId, actyId](QProcess* p){
         // QString out = QString(p.readAll()).remove("\r");
-        QString dpi = QString().setNum(currentDevice()->screenDpi().toDouble() / 2);
-        // dpi = QString().setNum(QApplication::primaryScreen()->logicalDotsPerInch());
-
-        currentDevice()->runInAdb("wm density "+dpi+" -d "+screenId);
         currentDevice()->runInAdb("am start --display " + screenId + " -n "+pkgId+"/"+actyId, [this, pkgId, screenId, actyId](QProcess* p){
             QString out = QString(p->readAll()).remove("\r");
             if (out.contains("Exception") || out.contains("Error")){
@@ -380,9 +380,9 @@ void MainWindow::on_devices_activated(int index)
 void MainWindow::on_actionCast_main_screen_toggled(bool v)
 {
     if(v){
-        currentDevice()->runScrcpy("_mainScreen");
+        currentDevice()->runScrcpy(Defs::ActionMainScreen);
     }else{
-        currentDevice()->stopScrcpy("_mainScreen");
+        currentDevice()->stopScrcpy(Defs::ActionMainScreen);
     }
 }
 
@@ -391,9 +391,9 @@ void MainWindow::on_actionCast_main_screen_toggled(bool v)
 void MainWindow::on_actionCast_virtual_desktop_size_screen_toggled(bool v)
 {
     if(v){
-        currentDevice()->runScrcpy("_desktop", "Desktop");
+        currentDevice()->runScrcpy(Defs::ActionVirtualDesktop, "Desktop");
     }else{
-        currentDevice()->stopScrcpy("_desktop");
+        currentDevice()->stopScrcpy(Defs::ActionVirtualDesktop);
     }
 }
 

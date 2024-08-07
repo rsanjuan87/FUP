@@ -1,5 +1,6 @@
 
 #include "Defs.h"
+#include "Defs.h"
 #include "Device.h"
 
 #include <QJsonDocument>
@@ -10,6 +11,13 @@
 #include <QSet>
 #include <QGuiApplication>
 #include <QScreen>
+#include <QSvgRenderer>
+#include <QPainter>
+#include <QMessageBox>
+
+#ifdef Q_OS_WIN
+    #include <windows.h>
+#endif
 
 Device::Device(QString line, Config *conf, QSystemTrayIcon *t, QObject *parent)
     : QObject{parent},
@@ -45,6 +53,7 @@ void Device::init(){
     appAdder->start();
     screenSize();
     screenDpi();
+    lastScreenId();
 }
 
 
@@ -99,28 +108,30 @@ QString Device::transportId(){
 }
 
 
-QString Device::screenSize(){
-    if(_screenSize.isEmpty()){
+QString Device::screenSize(QString screenId){
+    // if(_screenSize.isEmpty()){
+    QString _screenSize;
         QProcess p;
         p.setProcessChannelMode(QProcess::MergedChannels);
         QStringList params;
-        params << "-s" << id() << "shell" << "wm" << "size";
+        params << "-s" << id() << "shell" << "wm" << "size" << "-d" << screenId;
         p.start(config->adbPath(), params);
         p.waitForFinished();
         QString out = QString(p.readAll()).remove("\r");
         QString line = out.trimmed();
         _screenSize = QString(line.split(": ").last().remove("\n"));
-    }
+    // }
     return _screenSize;
 }
 
 
-QString Device::screenDpi(){
-    if(_dpi.isEmpty()){
+QString Device::screenDpi(QString screenId){
+    // if(_dpi.isEmpty()){
+        QString _dpi;
         QProcess p;
         p.setProcessChannelMode(QProcess::MergedChannels);
         QStringList params;
-        params << "-s" << id() << "shell" << "wm" << "density";
+        params << "-s" << id() << "shell" << "wm" << "density" << "-d" << screenId;
         p.start(config->adbPath(), params);
         p.waitForFinished();
         QString out = QString(p.readAll()).remove("\r");
@@ -134,7 +145,7 @@ QString Device::screenDpi(){
         if(_dpi.isEmpty()){
             _dpi = QString(out.split(": ").last().remove("\n"));
         }
-    }
+    // }
     return _dpi;
 }
 
@@ -460,14 +471,99 @@ void Device::stopScrcpy(QString pkgId){
     }
 }
 
+QPixmap svgToPix(QString path){
+    QSvgRenderer renderer(*new QString(path));
+    QPixmap pixmap(renderer.defaultSize());
+    QPainter* painter =new QPainter(&pixmap);
+    renderer.render(painter);
+    painter->end();
+    return pixmap;
+}
+
+void Device::raiseWindow(QString pkgid, QString title){
+    return raiseWindow(title, scrcpyProcess.value(pkgid)->processId());
+}
+
+void Device::raiseWindow(QString title, int pid){
+#ifdef Q_OS_WIN
+    // Obtener la ventana de la aplicación hija
+    HWND hwndHijo = FindWindow(NULL, title);
+
+    if (hwndHijo != NULL)
+    {
+        // Permitir que la ventana hija tome el foco
+        if (!AllowSetForegroundWindow(hwndHijo))
+        {
+            // Manejo de error si AllowSetForegroundWindow falla
+        }
+
+        DWORD dwResult = 0;
+        BOOL bSuccess = SendMessageTimeout(hwndHijo, WM_USER + 1, 0, 0, SMTO_NORMAL, 1000, &dwResult);
+        bool ok = bSuccess && dwResult == 0;
+        // Enviar el mensaje personalizado para activar la ventana
+        if (!ok)
+        {
+            // Manejo de error si enviarMensajeAPrimeroPlano falla
+        }
+    }
+#elif defined Q_OS_MAC
+    QString scriptAppleScript = R"(
+    tell application "System Events"
+        if exists (processes where name is ")" + title + R"(") then
+            tell process ")" + title + R"("
+                set frontmost to true
+            end tell
+        end if
+    end tell
+)";
+
+    QProcess procesoAppleScript;
+    procesoAppleScript.startDetached("osascript", {"-e", scriptAppleScript});
+
+
+    // QString scriptAppleScript = R"(
+    //     tell application ")" + title + R"("
+    //         activate
+    //     end tell
+    // )";
+
+// QProcess procesoAppleScript;
+// procesoAppleScript.startDetached("osascript", {"-e", scriptAppleScript});
+#elif defined Q_OS_LINUX
+    // Utilizar xdotool para activar la ventana
+    QProcess activateWindowProcess;
+    activateWindowProcess.startDetached("xdotool", QStringList()
+                                               << "windowactivate"
+                                               << "--sync"
+                                               << QString().number(pid));
+#else
+    // ???
+#endif
+    qDebug()<< "window " + title + " raise send pid:" + QString().setNum(pid);
+}
+
+QString Device::screenId(QString pkgId){
+    return scrcpyProcess.value(pkgId)->property("screenId").toString();
+}
+
 void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString screenSize){
+    if(pkgId == Defs::ActionVirtualDesktop){
+        QPixmap pixmap(":/computer");
+        if (pixmap.save(Defs::localIconsPath(id())+"/"+pkgId, "png"))
+            qDebug() << Defs::localIconsPath(id())+"/"+pkgId;
+    }else if(pkgId == Defs::ActionMainScreen){
+        QPixmap pixmap(":/phone");
+        if (pixmap.save(Defs::localIconsPath(id())+"/"+pkgId, "png"))
+            qDebug() << Defs::localIconsPath(id())+"/"+pkgId;
+    }
+
     if(scrcpyProcess.contains(pkgId)){
         QProcess* scrcpy = scrcpyProcess.value(pkgId, nullptr);
         if(scrcpy != nullptr){
             if (scrcpy->state() == QProcess::NotRunning) {
                 stopScrcpy(pkgId);
             }else{
-                //todo raise window
+                raiseWindow(title, scrcpy->processId());
                 return;
             }
         }
@@ -476,7 +572,7 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
     if(title == ""){
         title = model();
     }
-    if(pkgId == "_desktop"){
+    if(pkgId == Defs::ActionVirtualDesktop){
         QSize s = QGuiApplication::primaryScreen()->size();
         screenSize =
             QString().setNum(s.width()) + "x" + QString().setNum(s.height());
@@ -505,13 +601,15 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
     env.insert("PATH", env.value("PATH")+":"+QFileInfo(config->adbPath()).dir().path());
     if(config->coherenceMode){
         env.insert("SCRCPY_ICON_PATH", Defs::localIconsPath(id())+"/"+pkgId);
-        if(pkgId != "_mainScreen" && pkgId != "_audio"){
+        if(pkgId != Defs::ActionMainScreen && pkgId != Defs::ActionAudio){
             args << "--create-new-display="+screenSize;
         }
     }
     env.insert("SCRCPY_SERVER_PATH", config->scrcpyServePath());
     scrcpy->setProcessEnvironment(env);
     scrcpy->setProcessChannelMode(QProcess::MergedChannels);
+    QString screenId = QString().setNum(lastScreenId().toInt()+1);
+    scrcpy->setProperty("screenId", screenId);
     scrcpyProcess.insert(pkgId, scrcpy);
     connect(scrcpy, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, [this, scrcpy, pkgId](int, QProcess::ExitStatus){
         QMetaObject::invokeMethod(this, [scrcpy, pkgId, this]() {
@@ -523,6 +621,58 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
             emit appClosed(pkgId);
         }, Qt::QueuedConnection);
     });
+
+    connect(scrcpy, &QProcess::readyRead, this, [this, pkgId]() {
+        QMetaObject::invokeMethod(
+            this,
+            [pkgId, this]() {
+                if (pkgId != Defs::ActionMainScreen) {
+                    QString screenId = "N/A";
+                    QString out = scrcpyProcess.value(pkgId)->readAll();
+                    qDebug() << out;
+                    if(out.contains("Virtual display id is "))
+                    screenId = out.split("Virtual display id is ").last().split("\n").first().remove("\r");
+                    _lastScreenId = screenId;
+                    QString dpi = QString().setNum(screenDpi().toDouble() / 2);
+                    if (screenId != "0" && screenId != "N/A")
+                        runInAdb("wm density " + dpi + " -d " + screenId);
+                }
+            },
+            Qt::QueuedConnection);
+    });
+
+
+    // connect(scrcpy, &QProcess::started, this, [this, pkgId]() {
+    //     QMetaObject::invokeMethod(
+    //         this,
+    //         [pkgId, this]() {
+    //             if (pkgId != Defs::ActionMainScreen) {
+    //                 QString screenId = "N/A";
+    //                 // QStringList screen = screens();
+    //                 // if (screen.length() == 0) {
+    //                 //     QMessageBox::critical(0, "Error",
+    //                 //                           "Error getting displays on " + id());
+    //                 //     return;
+    //                 // }
+    //                 // QStringList screens1 = screens();
+    //                 // int i = 0;
+    //                 // while (screen.length() >= screens1.length() && i++ > 5) {
+    //                 //     screens1 = screens();
+    //                 // }
+    //                 // screenId = screens1.last();
+    //                 screenId = lastScreenId();
+
+    //                 QString dpi = QString().setNum(screenDpi().toDouble() / 2);
+    //                 if (screenId != "0" && screenId != "N/A")
+    //                     runInAdb("wm density " + dpi + " -d " + screenId);
+    //             }
+    //         },
+    //         Qt::QueuedConnection);
+    // });
+
+    if(pkgId != Defs::ActionAudio){
+        args << "--no-audio";
+    }
     args << params;
     args << "--window-title="+title;
     scrcpy->setProcessEnvironment(env);
@@ -533,4 +683,36 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
 void Device::setLine(QString line) {
     _line = line;
     emit deviceUpdated(id());
+}
+
+QString Device::lastScreenId() {
+    if (_lastScreenId.isEmpty()) {
+        QProcess p;
+        p.setProcessChannelMode(QProcess::MergedChannels);
+        QProcessEnvironment env = p.processEnvironment();
+        env.insert("PATH", env.value("PATH") + ":" +
+                               QFileInfo(config->adbPath()).dir().path());
+        env.insert("SCRCPY_SERVER_PATH", config->scrcpyServePath());
+
+        QPixmap pixmap(":/refresh");
+        QString path = Defs::localIconsPath(id())+"/refresh";
+        pixmap.save(path, "png");
+        env.insert("SCRCPY_ICON_PATH", path);
+        p.setProcessEnvironment(env);
+
+#ifdef Q_OS_MACOS
+        p.start("open", {"-j", config->scrcpyPath(), "--create-new-display=10x10"});
+#else
+        p.start(config->scrcpyPath(), {"--create-new-display=10x10"});
+#endif
+        p.waitForFinished();
+        // Virtual display id is
+        QString out = p.readAll();
+        _lastScreenId = out.split("Virtual display id is ")
+                            .last()
+                            .split("\n")
+                            .first()
+                            .remove("\r");
+    }
+    return _lastScreenId;
 }

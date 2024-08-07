@@ -30,8 +30,8 @@ public:
     //from adb devices -l
     explicit Device(QString line, Config* conf, QSystemTrayIcon *t, QObject* parent);
     ~Device();
-    QString screenSize();
-    QString screenDpi();
+    QString screenSize(QString screenId = "0");
+    QString screenDpi(QString screenId = "0");
     QStringList screens();
     QSet<LauncherInfo*> launchers();
     QString remoteFupDir();
@@ -50,11 +50,12 @@ public:
     void castAudioStart(){
         QStringList params;
         params << "--no-video" << "--no-control" << "--no-window";
-        runScrcpy("_audio", "audio", params);
+        runScrcpy(Defs::ActionAudio, "audio", params);
     }
     void castAudioStop() {
-        stopScrcpy("_audio");
+        stopScrcpy(Defs::ActionAudio);
     }
+    QString screenId(QString pkgId);
 public slots:
 
     void connectDevice();
@@ -81,11 +82,17 @@ public slots:
     void Cleared();
     void loadApps(QString path);
 
+    void raiseWindow(QString title, int pid);
+    void raiseWindow(QString pkgid, QString title);
+
+    QString lastScreenId();
+
 private:
     //loaded from adb
-    QString _screenSize;
-    QString _dpi;
+    // QString _screenSize;
+    // QString _dpi;
     QString _fupDir;
+    QString _lastScreenId;
 
 
     // QProcess adb;
@@ -97,7 +104,6 @@ private:
     QString _line;
     Config* config;
     bool accessToNotif = false;
-
 signals:
     void addLauncher(LauncherInfo*, QString );
     void launchersClearred(QString );
