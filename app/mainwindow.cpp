@@ -313,27 +313,34 @@ void MainWindow::onAppClick(QWidget *w){
     if(deviceId != currentDeviceId){
         return;
     }
+    QString id = pkgId;
+    QString label = actyLabel;
+    if(config.coherenceMode){
+        label = actyLabel;
+    }else{
+        label = currentDevice()->model();
+        id = Defs::ActionMainScreen;
+    }
 
-    QString id = config.coherenceMode ? pkgId : Defs::ActionMainScreen;
     try{
         QProcess::ProcessState status = currentDevice()->scrcpyStatus(id);
         QString screenId = "0";
         if(status != QProcess::Running){
             currentDevice()->stopScrcpy(id);
             QStringList screens = currentDevice()->screens();
-            currentDevice()->runScrcpy(id, actyLabel);
+            currentDevice()->runScrcpy(id, label);
             QStringList screens1 = currentDevice()->screens();
             if (screens.length() == 0){
                 QMessageBox::critical(this, "Error", "Error getting displays on "+currentDevice()->id());
                 return;
             }
-            while(screens.length() >= screens1.length() ){
-                screens1 = currentDevice()->screens();
-            }
-            screenId = screens1.last();
+                while(screens.length() >= screens1.length() ){
+                    screens1 = currentDevice()->screens();
+                }
+                screenId = screens1.last();
         }else{
-            currentDevice()->raiseWindow(pkgId, actyLabel);
-            screenId = currentDevice()->screenId(pkgId);
+            currentDevice()->raiseWindow(id, label);
+            screenId = currentDevice()->screenId(id);
         }
 
         ///resend app to de window
@@ -344,6 +351,9 @@ void MainWindow::onAppClick(QWidget *w){
         QMap<QString, QString> extras;
         extras.insert("package", pkgId);
         extras.insert("activity", actyId);
+        if(!config.coherenceMode){
+            screenId = "0";
+        }
         // requestAction(Defs::KEY_LAUCH_ACTIVITY, extras, [this, pkgId, actyId](QProcess* p){
         // QString out = QString(p.readAll()).remove("\r");
         currentDevice()->runInAdb("am start --display " + screenId + " -n "+pkgId+"/"+actyId, [this, pkgId, screenId, actyId](QProcess* p){

@@ -30,6 +30,10 @@ ConfigDialog::~ConfigDialog()
     delete ui;
 }
 
+void ConfigDialog::setCoherenceMode(bool v){
+    config->coherenceMode = v;
+}
+
 void ConfigDialog::accept(){
     config->save();
     QDialog::accept();

@@ -28,6 +28,8 @@ public slots:
     void setAdbPath(QString v);
     void setScrcpyPath(QString v);
     void setScrcpyServerPath(QString v);
+    void setCoherenceMode(bool v);
+
 private:
     Ui::ConfigDialog *ui;
     Config* config;

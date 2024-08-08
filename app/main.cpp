@@ -55,7 +55,7 @@ void DeviceAdded(void* refCon, io_iterator_t iterator) {
         if (deviceName) {
             char deviceNameCString[256];
             CFStringGetCString(deviceName, deviceNameCString, 256, kCFStringEncodingUTF8);
-            qDebug() << "Device connected: " << deviceNameCString;
+            // qDebug() << "Device connected: " << deviceNameCString;
             if(init){
                 w->requestLoadDevices();
             }else{

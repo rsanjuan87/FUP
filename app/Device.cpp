@@ -547,7 +547,7 @@ void Device::raiseWindow(QString title, int pid){
 #else
     // ???
 #endif
-    qDebug()<< "window " + title + " raise send pid:" + QString().setNum(pid);
+    // qDebug()<< "window " + title + " raise send pid:" + QString().setNum(pid);
 }
 
 QString Device::screenId(QString pkgId){
@@ -555,6 +555,9 @@ QString Device::screenId(QString pkgId){
 }
 
 void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString screenSize){
+    if(nulled()){
+        return;
+    }
     if(pkgId == Defs::ActionVirtualDesktop){
         QPixmap pixmap(":/computer");
         if (pixmap.save(Defs::localIconsPath(id())+"/"+pkgId, "png"))
@@ -607,8 +610,8 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
     QProcess* scrcpy = new QProcess(0);
     QProcessEnvironment env = scrcpy->processEnvironment();
     env.insert("PATH", env.value("PATH")+":"+QFileInfo(config->adbPath()).dir().path());
+    env.insert("SCRCPY_ICON_PATH", Defs::localIconsPath(id())+"/"+pkgId);
     if(config->coherenceMode){
-        env.insert("SCRCPY_ICON_PATH", Defs::localIconsPath(id())+"/"+pkgId);
         if(pkgId != Defs::ActionMainScreen && pkgId != Defs::ActionAudio){
             args << "--create-new-display="+screenSize;
         }
@@ -639,10 +642,11 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
                     QProcess* scr = scrcpyProcess.value(pkgId);
                     if(scr != nullptr){
                         QString out = scr->readAll();
-                        qDebug() << out;
-                        if(out.contains("Virtual display id is "))
+                        // qDebug() << out;
+                        if(out.contains("Virtual display id is ")){
                             screenId = out.split("Virtual display id is ").last().split("\n").first().remove("\r");
-                        _lastScreenId = screenId;
+                            _lastScreenId = screenId;
+                        }
                         QString dpi = QString().setNum(screenDpi().toDouble() / 2);
                         if (screenId != "0" && screenId != "N/A")
                             runInAdb("wm density " + dpi + " -d " + screenId);
@@ -683,19 +687,26 @@ QString Device::lastScreenId() {
         env.insert("SCRCPY_ICON_PATH", path);
         p.setProcessEnvironment(env);
 
-#ifdef Q_OS_MACOS
-        p.start("open", {"-j", config->scrcpyPath(), "--create-new-display=10x10"});
-#else
         p.start(config->scrcpyPath(), {"--create-new-display=10x10"});
-#endif
-        p.waitForFinished();
-        // Virtual display id is
-        QString out = p.readAll();
-        _lastScreenId = out.split("Virtual display id is ")
-                            .last()
-                            .split("\n")
-                            .first()
-                            .remove("\r");
+        while (p.waitForReadyRead()) {
+            // Virtual display id is
+            QString out = p.readAll();
+            if(out.contains("Virtual display id is ")){
+                _lastScreenId = out.split("Virtual display id is ")
+                .last()
+                    .split("\n")
+                    .first()
+                    .remove("\r");
+                p.terminate();
+                p.kill();
+                break;
+            }else{
+                continue;
+            }
+            if(p.state()!= QProcess::Running){
+                break;
+            }
+        }
     }
     return _lastScreenId;
 }
