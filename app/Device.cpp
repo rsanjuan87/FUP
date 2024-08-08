@@ -42,6 +42,9 @@ void Device::init(){
     connect(&logcat, &QIODevice::readyRead, this, &Device::readLogcat);
     connect(&logcat, &QProcess::readyReadStandardError, this, &Device::readLogcat);
     connect(&logcat, &QProcess::readyReadStandardOutput, this, &Device::readLogcat);
+    connect(&logcat, &QProcess::finished, this, [this]{
+        emit deviceDisconected(id());
+    });
 
     appAdder = new AppAdder(config, id(), remoteFupDir()+"/launchers.json", parent());
     connect(appAdder, &AppAdder::addLauncher, this, &Device::addedLauncherSlot);
@@ -55,6 +58,7 @@ void Device::init(){
     screenDpi();
     lastScreenId();
 }
+
 
 
 Device::~Device(){
@@ -75,16 +79,20 @@ QString Device::id(){
     return _line.split(" ").first();
 }
 
-QString Device::status()
-{
-    if (nulled()) {
-        return "offline";
+QString Device::status(){
+    try{
+        if (nulled()) {
+            throw QException();
+        }
+        if(_line.contains("product")){
+            return _line.split(" product:").first().split(" ")[1];
+        }else{
+            return _line.split(" transport_id:").first().split(" ").last();
+        }
+    }catch(QException e){
+        qDebug() << e.what();
     }
-    if(_line.contains("product")){
-        return _line.split(" product:").first().split(" ").last();
-    }else{
-        return _line.split(" transport_id:").first().split(" ").last();
-    }
+    return "offline";
 }
 
 QString Device::product(){
@@ -243,7 +251,7 @@ void Device::connectDevice(){
 }
 
 void Device::disconnectDevice(){
-    if(config == nullptr)
+    if(nulled())
         return;
     logcat.terminate();
     disconnect(&logcat, &QIODevice::readyRead, this, &Device::readLogcat);
@@ -605,7 +613,7 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
             args << "--create-new-display="+screenSize;
         }
     }
-    env.insert("SCRCPY_SERVER_PATH", config->scrcpyServePath());
+    env.insert("SCRCPY_SERVER_PATH", config->scrcpyServerPath());
     scrcpy->setProcessEnvironment(env);
     scrcpy->setProcessChannelMode(QProcess::MergedChannels);
     QString screenId = QString().setNum(lastScreenId().toInt()+1);
@@ -628,47 +636,22 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
             [pkgId, this]() {
                 if (pkgId != Defs::ActionMainScreen) {
                     QString screenId = "N/A";
-                    QString out = scrcpyProcess.value(pkgId)->readAll();
-                    qDebug() << out;
-                    if(out.contains("Virtual display id is "))
-                    screenId = out.split("Virtual display id is ").last().split("\n").first().remove("\r");
-                    _lastScreenId = screenId;
-                    QString dpi = QString().setNum(screenDpi().toDouble() / 2);
-                    if (screenId != "0" && screenId != "N/A")
-                        runInAdb("wm density " + dpi + " -d " + screenId);
+                    QProcess* scr = scrcpyProcess.value(pkgId);
+                    if(scr != nullptr){
+                        QString out = scr->readAll();
+                        qDebug() << out;
+                        if(out.contains("Virtual display id is "))
+                            screenId = out.split("Virtual display id is ").last().split("\n").first().remove("\r");
+                        _lastScreenId = screenId;
+                        QString dpi = QString().setNum(screenDpi().toDouble() / 2);
+                        if (screenId != "0" && screenId != "N/A")
+                            runInAdb("wm density " + dpi + " -d " + screenId);
+                    }
                 }
             },
             Qt::QueuedConnection);
     });
 
-
-    // connect(scrcpy, &QProcess::started, this, [this, pkgId]() {
-    //     QMetaObject::invokeMethod(
-    //         this,
-    //         [pkgId, this]() {
-    //             if (pkgId != Defs::ActionMainScreen) {
-    //                 QString screenId = "N/A";
-    //                 // QStringList screen = screens();
-    //                 // if (screen.length() == 0) {
-    //                 //     QMessageBox::critical(0, "Error",
-    //                 //                           "Error getting displays on " + id());
-    //                 //     return;
-    //                 // }
-    //                 // QStringList screens1 = screens();
-    //                 // int i = 0;
-    //                 // while (screen.length() >= screens1.length() && i++ > 5) {
-    //                 //     screens1 = screens();
-    //                 // }
-    //                 // screenId = screens1.last();
-    //                 screenId = lastScreenId();
-
-    //                 QString dpi = QString().setNum(screenDpi().toDouble() / 2);
-    //                 if (screenId != "0" && screenId != "N/A")
-    //                     runInAdb("wm density " + dpi + " -d " + screenId);
-    //             }
-    //         },
-    //         Qt::QueuedConnection);
-    // });
 
     if(pkgId != Defs::ActionAudio){
         args << "--no-audio";
@@ -692,7 +675,7 @@ QString Device::lastScreenId() {
         QProcessEnvironment env = p.processEnvironment();
         env.insert("PATH", env.value("PATH") + ":" +
                                QFileInfo(config->adbPath()).dir().path());
-        env.insert("SCRCPY_SERVER_PATH", config->scrcpyServePath());
+        env.insert("SCRCPY_SERVER_PATH", config->scrcpyServerPath());
 
         QPixmap pixmap(":/refresh");
         QString path = Defs::localIconsPath(id())+"/refresh";

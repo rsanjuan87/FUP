@@ -31,6 +31,7 @@ public:
 
     // void getIcon(QString remotePath);
     Device *currentDevice();
+    void requestLoadDevices();
 public slots:
     void addLauncherSlot(LauncherInfo *info, QString id);
     void launchersClearredSlot(QString);
@@ -64,6 +65,10 @@ private slots:
 
     void on_actionClear_cache_triggered();
 
+    void on_actionSettings_triggered();
+
+    void on_actionExit_triggered();
+
 private:
     Ui::MainWindow *ui;
 
@@ -85,6 +90,7 @@ private:
 
 signals:
     void deviceDisconected(QString);
+    void reloadDevices();
 };
 
 

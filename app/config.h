@@ -9,13 +9,23 @@ class Config : public QObject
     Q_OBJECT
 public:
     explicit Config(QObject *parent = nullptr);
-    inline QString adbPath() {return _adbPath;}
-    inline QString scrcpyPath() {return _scrcpyPath;}
-    inline QString scrcpyServePath(){return _scrpcpyServerPath;}
+    QString adbPath(bool forRun = true);
+    QString scrcpyPath(bool forRun = true);
+    QString scrcpyServerPath(bool forRun = true);
+
+    static QString adbDefaultPath;
+    static QString scrcpyDefaultPath;
+    static QString scrcpyServerDefaultPath;
 
     //true -> open the apps on new virtual display
     bool coherenceMode = true;
 
+    void setAdbPath(QString v);
+    void setScrcpyPath(QString v);
+    void setScrcpyServerPath(QString v);
+public slots:
+    void load();
+    void save();
 private:
 
 #ifdef Q_OS_WIN
@@ -26,9 +36,11 @@ private:
 
     // QString scrcpyPath = "/opt/homebrew/bin/scrcpy";
     QString _scrcpyPath = "/Users/san/Projects/FUP/app/scrcpy/builddir/app/scrcpy";
-    QString _scrpcpyServerPath = "/Users/san/Projects/FUP/app/scrcpy/builddir/server/scrcpy-server";
+    QString _scrpcyServerPath = "/Users/san/Projects/FUP/app/scrcpy/builddir/server/scrcpy-server";
 
 signals:
+    void loaded();
+    void saved();
 
 };
 

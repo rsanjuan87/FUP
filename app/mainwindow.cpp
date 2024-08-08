@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Defs.h"
+#include "configdialog.h"
 
 #include <QFileInfo>
 #include <QDir>
@@ -17,6 +18,12 @@
 #include <QApplication>
 #include <QScreen>
 
+bool isDarkTheme() {
+    QPalette palette = qApp->palette();
+    QColor backgroundColor = palette.color(QPalette::Window);
+    int brightness = qGray(backgroundColor.rgb());
+    return brightness < 128;
+}
 
 MainWindow::MainWindow(QSystemTrayIcon *t, QMenu *trayMenu, QWidget *parent)    :
     QMainWindow(parent),
@@ -29,6 +36,12 @@ MainWindow::MainWindow(QSystemTrayIcon *t, QMenu *trayMenu, QWidget *parent)    
     ui->setupUi(this);
     ui->toolBar->insertWidget(ui->actionCast_main_screen, ui->devices);
     init();
+    connect(this, &MainWindow::reloadDevices, this, &MainWindow::loadDevices);
+
+    if(isDarkTheme()){
+        ui->actionReload_list->setIcon(QIcon(":/refresh-light"));
+        ui->actionSound->setIcon(QIcon(":/imgs/audio-on-light"));
+    }
 
     //getAppList();
     requestAction(Defs::KEY_GET_LAUNCHERS);
@@ -397,19 +410,29 @@ void MainWindow::on_actionCast_virtual_desktop_size_screen_toggled(bool v)
     }
 }
 
-
-void MainWindow::on_actionSound_toggled(bool v)
-{
-    if(v){
+void MainWindow::on_actionSound_toggled(bool v) {
+    if (v) {
         currentDevice()->castAudioStart();
-    }else{
+    } else {
         currentDevice()->castAudioStop();
     }
 }
 
-
-void MainWindow::on_actionClear_cache_triggered()
-{
+void MainWindow::on_actionClear_cache_triggered() {
     QDir().remove(Defs::localPath(""));
+}
+
+void MainWindow::requestLoadDevices() { emit reloadDevices(); }
+
+void MainWindow::on_actionSettings_triggered() {
+    ConfigDialog configDlg;
+    if(configDlg.exec()){
+        config.load();
+    }
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+    exit(0);
 }
 

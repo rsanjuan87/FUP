@@ -45,6 +45,18 @@ QToolButton:pressed {
 </string>
    </property>
    <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>3</number>
+    </property>
+    <property name="topMargin">
+     <number>3</number>
+    </property>
+    <property name="rightMargin">
+     <number>3</number>
+    </property>
+    <property name="bottomMargin">
+     <number>3</number>
+    </property>
     <item row="1" column="0" colspan="4">
      <widget class="QScrollArea" name="scrollArea">
       <property name="widgetResizable">
@@ -55,8 +67,8 @@ QToolButton:pressed {
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>604</width>
-         <height>421</height>
+         <width>622</width>
+         <height>435</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -124,14 +136,17 @@ QToolButton:pressed {
      <x>0</x>
      <y>0</y>
      <width>630</width>
-     <height>33</height>
+     <height>37</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="separator"/>
+    <addaction name="actionSettings"/>
     <addaction name="actionClear_cache"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuDevice">
@@ -216,13 +231,25 @@ QToolButton:pressed {
      <normaloff>:/refresh</normaloff>:/refresh</iconset>
    </property>
    <property name="text">
-    <string>↺ Reload list</string>
+    <string>Reload list</string>
    </property>
    <property name="iconText">
     <string>Reload list</string>
    </property>
    <property name="toolTip">
     <string>Reload devices list</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ShortcutContext::ApplicationShortcut</enum>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+   <property name="shortcutVisibleInContextMenu">
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionCast_main_screen">
@@ -239,6 +266,12 @@ QToolButton:pressed {
    <property name="toolTip">
     <string>Cast device main screen</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+   <property name="shortcutVisibleInContextMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="actionCast_virtual_desktop_size_screen">
    <property name="checkable">
@@ -253,6 +286,12 @@ QToolButton:pressed {
    </property>
    <property name="toolTip">
     <string>Cast virtual screen desktop size</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+   <property name="shortcutVisibleInContextMenu">
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionSound">
@@ -269,13 +308,24 @@ QToolButton:pressed {
    <property name="toolTip">
     <string>Cast audio</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+   <property name="shortcutVisibleInContextMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="actionClear_cache">
    <property name="text">
     <string>Clear cache</string>
    </property>
    <property name="menuRole">
-    <enum>QAction::MenuRole::NoRole</enum>
+    <enum>QAction::MenuRole::AboutQtRole</enum>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
    </property>
   </action>
  </widget>

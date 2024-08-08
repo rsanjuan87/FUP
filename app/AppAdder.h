@@ -113,7 +113,7 @@ protected:
         }
 
         QJsonArray jsonArray = doc.array();
-        foreach (const QJsonValue &jsonValue, jsonArray) {
+        for(const QJsonValue &jsonValue : jsonArray) {
             QMap<QString, QString> mapa;
             if (!jsonValue.isObject()) continue;
             QJsonObject jsonObject = jsonValue.toObject();
@@ -148,8 +148,12 @@ protected:
             while(out.contains("  ")){
                 out = out.replace("  ", " ");
             }
-            if(!out.isEmpty())
-                out = out.split(" ").at(4);
+            if(!out.isEmpty()){
+                QStringList spl = out.split(" ");
+                if(spl.length() >= 5){
+                    out = spl.at(4);
+                }
+            }
             qint64 sizeBits = out.toInt();
             if(sizeBits == file.size() && file.size() > 0){
                 return;

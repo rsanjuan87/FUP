@@ -15,5 +15,7 @@
         <file>imgs/audio-off.svg</file>
         <file>imgs/audio-on.svg</file>
         <file alias="refresh">imgs/view-refresh.png</file>
+        <file alias="refresh-light">imgs/view-refresh-light.png</file>
+        <file>imgs/audio-on-light.svg</file>
     </qresource>
 </RCC>

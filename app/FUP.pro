@@ -20,6 +20,7 @@ SOURCES += \
     Device.cpp \
     WrapLayout.cpp \
     config.cpp \
+    configdialog.cpp \
     devicesmanager.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -32,12 +33,14 @@ HEADERS += \
     Device.h \
     WrapLayout.h \
     config.h \
+    configdialog.h \
     devicesmanager.h \
     mainwindow.h \
     models/launcherinfo.h \
     notificationhelper.h
 
 FORMS += \
+    configdialog.ui \
     mainwindow.ui
 
 TRANSLATIONS += \

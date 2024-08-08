@@ -45,12 +45,12 @@ public:
     QString transportId();
     void setLine(QString line);
     bool nulled(){
-        return config == nullptr;
+        return this == nullptr || config == nullptr;
     }
     void castAudioStart(){
         QStringList params;
         params << "--no-video" << "--no-control" << "--no-window";
-        runScrcpy(Defs::ActionAudio, "audio", params);
+        runScrcpy(Defs::ActionAudio, Defs::ActionAudio, params);
     }
     void castAudioStop() {
         stopScrcpy(Defs::ActionAudio);

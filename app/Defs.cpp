@@ -2,7 +2,7 @@
 
 QString Defs::ActionMainScreen = "_mainScreen";
 QString Defs::ActionVirtualDesktop = "_desktop";
-QString Defs::ActionAudio = Defs::ActionAudio;
+QString Defs::ActionAudio = "_audio";
 
 
 QString Defs::KEY_NOTIFICACTION_CHANNEL = "NOTIFICATION_CHANNEL";

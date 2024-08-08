@@ -21,7 +21,7 @@ Device *DevicesManager::value(QString id){
 }
 
 void DevicesManager::diconectDevice(QString id){
-    Device* dev = devices.value(id);
+    Device* dev = devices.take(id);
     dev->disconnectDevice();
     // dev->deleteLater();
     delete dev;
@@ -71,10 +71,12 @@ void DevicesManager::readOut(int){
         }
     }
     QStringList keys = devices.keys();
-    foreach (QString key , keys) {
-        if (!out.contains(key)) {
-            deviceRemovedSlot(key);
-            emit deviceRemoved(key);
+    if (!out.isEmpty()) {
+        foreach (QString key, keys) {
+            if (!out.contains(key)) {
+                deviceRemovedSlot(key);
+                emit deviceRemoved(key);
+            }
         }
     }
     emit devicesConnected(devices.values());
