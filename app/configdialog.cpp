@@ -22,7 +22,15 @@ ConfigDialog::ConfigDialog(QWidget *parent)
         config->scrcpyServerPath(false).startsWith("!"));
 
 
-    ui->castAudioCheck->setChecked(config->coherenceMode);
+    ui->coherenceCheck->setChecked(config->coherenceMode);
+    bool a = !config->customScreenSize(false).isEmpty();
+    bool b = !config->customScreenSize(false).startsWith("!");
+    ui->customScreenSizeCheck->setChecked(a && b);
+    if(!config->customScreenSize(false).isEmpty()){
+        QStringList l = config->customScreenSize(false).remove("!").split("x");
+        ui->widthEdit->setValue(l.first().toInt());
+        ui->heightEdit->setValue(l.last().toInt());
+    }
 }
 
 ConfigDialog::~ConfigDialog()
@@ -104,4 +112,19 @@ void ConfigDialog::setScrcpyPath(QString v){
 
 void ConfigDialog::setScrcpyServerPath(QString v){
     config->setScrcpyServerPath(v);
+}
+
+void ConfigDialog::on_customScreenSizeCheck_toggled(bool checked) {
+    config->customScreenSize(checked ? config->customScreenSize(false).remove("!")
+                                     : ("!" + config->customScreenSize(false)));
+}
+
+void ConfigDialog::on_widthEdit_valueChanged(int) {
+    config->customScreenSize(QString().setNum(ui->widthEdit->value()) + "x" +
+                             QString().setNum(ui->heightEdit->value()));
+}
+
+void ConfigDialog::on_heightEdit_valueChanged(int) {
+    config->customScreenSize(QString().setNum(ui->widthEdit->value()) + "x" +
+                             QString().setNum(ui->heightEdit->value()));
 }

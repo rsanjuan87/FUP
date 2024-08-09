@@ -589,6 +589,12 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
             QString().setNum(s.width()) + "x" + QString().setNum(s.height());
     }
     if(screenSize ==""){
+        screenSize = config->screenSize4Pkg(id(), pkgId);
+    }
+    if(screenSize ==""){
+        screenSize = config->customScreenSize();
+    }
+    if(screenSize ==""){
         screenSize = this->screenSize();
     }
     QStringList args;
@@ -647,6 +653,17 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
                             screenId = out.split("Virtual display id is ").last().split("\n").first().remove("\r");
                             _lastScreenId = screenId;
                         }
+                        if(out.contains("Texture: ")){
+                            QString size = out.split("Texture: ").last().split("\n").first().trimmed();
+                            config->setScreenSize4Pkg(id(), size, pkgId);
+                        }
+                        //"[server] DEBUG: New size is 816x912 dpi=210\n"
+                        if(out.contains("New size is ")){
+                            QString size = out.split("New size is ").last()
+                                               .split(" ").first()
+                                               .split("\n").first().trimmed();
+                            config->setScreenSize4Pkg(id(), size, pkgId);
+                        }
                         QString dpi = QString().setNum(screenDpi().toDouble() / 2);
                         if (screenId != "0" && screenId != "N/A")
                             runInAdb("wm density " + dpi + " -d " + screenId);
@@ -657,7 +674,7 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
     });
 
 
-    if(pkgId != Defs::ActionAudio){
+    if(pkgId != Defs::ActionAudio && config->coherenceMode){
         args << "--no-audio";
     }
     args << params;
@@ -710,3 +727,4 @@ QString Device::lastScreenId() {
     }
     return _lastScreenId;
 }
+int Device::scrcpyCount() { return scrcpyProcess.count(); }

@@ -56,6 +56,7 @@ public:
         stopScrcpy(Defs::ActionAudio);
     }
     QString screenId(QString pkgId);
+    int scrcpyCount();
 public slots:
 
     void connectDevice();

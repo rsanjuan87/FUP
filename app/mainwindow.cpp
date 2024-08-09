@@ -253,6 +253,10 @@ void MainWindow::appClosedSlot(QString pkgid){
     }else{
         currentDevice()->stopScrcpy(pkgid);
     }
+    if(config.coherenceMode && currentDevice()->scrcpyCount() <= 1){
+        currentDevice()->castAudioStop();
+        ui->actionSound->setChecked(false);
+    }
 }
 
 void MainWindow::launchersSetSlot(QSet<LauncherInfo*> launchers, QString deviceId){
@@ -317,10 +321,14 @@ void MainWindow::onAppClick(QWidget *w){
     QString label = actyLabel;
     if(config.coherenceMode){
         label = actyLabel;
+        currentDevice()->castAudioStart();
+        ui->actionSound->setChecked(true);
     }else{
         label = currentDevice()->model();
         id = Defs::ActionMainScreen;
+        ui->actionSound->setChecked(true);
     }
+
 
     try{
         QProcess::ProcessState status = currentDevice()->scrcpyStatus(id);
@@ -353,21 +361,37 @@ void MainWindow::onAppClick(QWidget *w){
         extras.insert("activity", actyId);
         if(!config.coherenceMode){
             screenId = "0";
-        }
+            currentDevice()->runInAdb(
+                "am start --display " + screenId + " -n " + pkgId + "/" +
+                    actyId,
+                [this, pkgId, screenId, actyId](QProcess *p) {
+                    QString out = QString(p->readAll()).remove("\r");
+                    if (out.contains("Exception") || out.contains("Error")) {
+                        currentDevice()->runInAdb(
+                            "am start --display " + screenId + " -n " +
+                            Defs::KEY_PACKAGE_ID + "/.MainActivity" +
+                            // " -f 0x04000000"+
+                            " --es package " + pkgId +
+                            " --es activity " + actyId +
+                            " --es display " + screenId);
+                    }
+                });
+        }else{
         // requestAction(Defs::KEY_LAUCH_ACTIVITY, extras, [this, pkgId, actyId](QProcess* p){
         // QString out = QString(p.readAll()).remove("\r");
-        currentDevice()->runInAdb("am start --display " + screenId + " -n "+pkgId+"/"+actyId, [this, pkgId, screenId, actyId](QProcess* p){
-            QString out = QString(p->readAll()).remove("\r");
-            if (out.contains("Exception") || out.contains("Error")){
+        // currentDevice()->runInAdb("am start --display " + screenId + " -n "+pkgId+"/"+actyId, [this, pkgId, screenId, actyId](QProcess* p){
+            // QString out = QString(p->readAll()).remove("\r");
+            // if (out.contains("Exception") || out.contains("Error")){
                 currentDevice()->runInAdb("am start --display " + screenId + " -n "+Defs::KEY_PACKAGE_ID+"/.MainActivity"+
                                           // " -f 0x04000000"+
                                           " --es package "+ pkgId +
                                           " --es activity " + actyId +
                                           " --es display "+ screenId );
-            }
-        });
+            // }
         // });
         // });
+        // });
+        }
     }catch(QException e){
         qDebug() << e.what();
     }

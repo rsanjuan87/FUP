@@ -30,6 +30,13 @@ public slots:
     void setScrcpyServerPath(QString v);
     void setCoherenceMode(bool v);
 
+private slots:
+    void on_customScreenSizeCheck_toggled(bool checked);
+
+    void on_widthEdit_valueChanged(int);
+
+    void on_heightEdit_valueChanged(int);
+
 private:
     Ui::ConfigDialog *ui;
     Config* config;
