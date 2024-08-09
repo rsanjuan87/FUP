@@ -10,6 +10,9 @@ Macos Sonoma
 
 Whatsapp mobile app in a virtual desktop desktoped size
 
+<img  width="350" alt="🖼 Chrome mobile desktop size" src="https://github.com/user-attachments/assets/9188c89a-67ce-497b-9275-57d04dac73e3"/>
+
+Chrome as desktop size 
 
 <img width="350" alt="🖼 Contacts, Phone, Chrome mobile app" src="https://github.com/user-attachments/assets/93038654-5d2b-44ad-b92f-c0ae0447509c"/>
 
