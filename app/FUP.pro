@@ -1,5 +1,6 @@
 QT       += core gui svg
 
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -19,6 +20,7 @@ SOURCES += \
     Defs.cpp \
     Device.cpp \
     WrapLayout.cpp \
+    application.cpp \
     config.cpp \
     configdialog.cpp \
     devicesmanager.cpp \
@@ -32,6 +34,7 @@ HEADERS += \
     Defs.h \
     Device.h \
     WrapLayout.h \
+    application.h \
     config.h \
     configdialog.h \
     devicesmanager.h \
@@ -53,3 +56,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     imgs.qrc
+
+include (QSingleApp/singleapplication.pri)
+include (QAutostart/QAutostart.pri)
+

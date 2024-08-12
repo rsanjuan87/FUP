@@ -13,15 +13,24 @@ Config::Config(QObject *parent) : QObject(parent)
 }
 
 QString Config::adbPath(bool forRun) {
-    return _adbPath.startsWith("!") && forRun ? adbDefaultPath : _adbPath;
+    if(_adbPath.startsWith("!") && forRun){
+        return adbDefaultPath ;
+    }
+    return _adbPath;
 }
 
 QString Config::scrcpyPath(bool forRun) {
-    return _scrcpyPath.startsWith("!") && forRun ? scrcpyDefaultPath : _scrcpyPath;
+    if(_scrcpyPath.startsWith("!") && forRun) {
+        return   scrcpyDefaultPath ;
+    }
+    return _scrcpyPath;
 }
 
 QString Config::scrcpyServerPath(bool forRun) {
-    return _scrpcyServerPath.startsWith("!") && forRun ? scrcpyServerDefaultPath : _scrpcyServerPath;
+    if(_scrpcyServerPath.startsWith("!") && forRun){
+        return scrcpyServerDefaultPath ;
+    }
+    return _scrpcyServerPath;
 }
 
 QString Config::customScreenSize(bool forRun){

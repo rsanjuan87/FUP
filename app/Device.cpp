@@ -614,16 +614,21 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
     // QString out = mklink.readAll();
 
     QProcess* scrcpy = new QProcess(0);
-    QProcessEnvironment env = scrcpy->processEnvironment();
-    env.insert("PATH", env.value("PATH")+":"+QFileInfo(config->adbPath()).dir().path());
-    env.insert("SCRCPY_ICON_PATH", Defs::localIconsPath(id())+"/"+pkgId);
-    if(config->coherenceMode){
-        if(pkgId != Defs::ActionMainScreen && pkgId != Defs::ActionAudio){
-            args << "--create-new-display="+screenSize;
-        }
+
+
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    env.insert("PATH", env.value("PATH") + ":" +
+                           QFileInfo(config->adbPath()).dir().path());
+
+    env.insert("SCRCPY_ICON_PATH", Defs::localIconsPath(id()) + "/" + pkgId);
+    if (config->coherenceMode) {
+                              if (pkgId != Defs::ActionMainScreen &&
+            pkgId != Defs::ActionAudio) {
+            args << "--create-new-display=" + screenSize;
+                              }
     }
     env.insert("SCRCPY_SERVER_PATH", config->scrcpyServerPath());
-    scrcpy->setProcessEnvironment(env);
+
     scrcpy->setProcessChannelMode(QProcess::MergedChannels);
     QString screenId = QString().setNum(lastScreenId().toInt()+1);
     scrcpy->setProperty("screenId", screenId);
@@ -632,7 +637,12 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
         QMetaObject::invokeMethod(this, [scrcpy, pkgId, this]() {
             scrcpyProcess.take(pkgId);
             QString out = QString(scrcpy->readAll()).remove("\r");
-            qDebug() << scrcpy->exitCode()<< scrcpy->exitStatus() << out;
+            for(QString &l: out.split("\n")){
+                if(l.isEmpty())
+                    continue;
+                qDebug() << "dev: "+ id() +" pkg: "+ pkgId +" > "+l;
+            }
+            qDebug() << scrcpy->exitCode()<< scrcpy->exitStatus();
             // p->deleteLater();
             delete scrcpy;
             emit appClosed(pkgId);
@@ -648,7 +658,11 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
                     QProcess* scr = scrcpyProcess.value(pkgId);
                     if(scr != nullptr){
                         QString out = scr->readAll();
-                        // qDebug() << out;
+                        for(const QString &l: out.split("\n")){
+                            if(l.isEmpty())
+                                continue;
+                            qDebug() << "dev: "+ id() +" pkg: "+ pkgId +" > "+l;
+                        }
                         if(out.contains("Virtual display id is ")){
                             screenId = out.split("Virtual display id is ").last().split("\n").first().remove("\r");
                             _lastScreenId = screenId;
@@ -679,6 +693,7 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
     }
     args << params;
     args << "--window-title="+title;
+    QStringList l = env.toStringList();
     scrcpy->setProcessEnvironment(env);
     scrcpy->setWorkingDirectory(QFileInfo(config->scrcpyPath()).dir().absolutePath());
     scrcpy->start(appLink.absoluteFilePath(), args);
@@ -691,36 +706,42 @@ void Device::setLine(QString line) {
 
 QString Device::lastScreenId() {
     if (_lastScreenId.isEmpty()) {
-        QProcess p;
-        p.setProcessChannelMode(QProcess::MergedChannels);
-        QProcessEnvironment env = p.processEnvironment();
+        QProcess *p = new QProcess();
+        p->setProcessChannelMode(QProcess::MergedChannels);
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
         env.insert("PATH", env.value("PATH") + ":" +
                                QFileInfo(config->adbPath()).dir().path());
         env.insert("SCRCPY_SERVER_PATH", config->scrcpyServerPath());
-
+        QStringList l = env.toStringList();
         QPixmap pixmap(":/refresh");
         QString path = Defs::localIconsPath(id())+"/refresh";
         pixmap.save(path, "png");
         env.insert("SCRCPY_ICON_PATH", path);
-        p.setProcessEnvironment(env);
+        p->setProcessEnvironment(env);
 
-        p.start(config->scrcpyPath(), {"--create-new-display=10x10"});
-        while (p.waitForReadyRead()) {
+        p->start(config->scrcpyPath(), {"--create-new-display=10x10"});
+        while (p->waitForReadyRead()) {
             // Virtual display id is
-            QString out = p.readAll();
+            QString out = p->readAll();
+            for(const QString &l: out.split("\n")){
+                if(l.isEmpty())
+                    continue;
+                qDebug() << "dev: "+ id() +" pkgid: _lastscreen > "+l;
+            }
             if(out.contains("Virtual display id is ")){
                 _lastScreenId = out.split("Virtual display id is ")
                 .last()
                     .split("\n")
                     .first()
                     .remove("\r");
-                p.terminate();
-                p.kill();
+                qDebug() << "Last screen found: " +_lastScreenId+" -> ending";
+                p->terminate();
+                p->kill();
                 break;
             }else{
                 continue;
             }
-            if(p.state()!= QProcess::Running){
+            if(p->state()!= QProcess::Running){
                 break;
             }
         }

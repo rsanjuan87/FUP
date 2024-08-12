@@ -42,6 +42,11 @@ public slots:
     void loadDevices();
 
     void launchersSetSlot(QSet<LauncherInfo *>, QString);
+
+    void parceReceivedMessage(quint32, QByteArray){
+        // TODO todo
+    }
+
 protected slots:
     // void loadDeviceslist(QStringList);
     void connectCurrentDevice();

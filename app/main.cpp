@@ -32,12 +32,12 @@
 // }
 
 #include "mainwindow.h"
+#include "application.h"
 
 #include <QApplication>
 #include <QSystemTrayIcon>
 #include <QMenu>
 #include <QTimer>
-
 
 #ifdef Q_OS_MAC
 #include <CoreFoundation/CoreFoundation.h>
@@ -170,12 +170,17 @@ void startDeviceMonitor() {
 #endif
 
 int main(int argc, char *argv[]) {
-    QIcon::setFallbackSearchPaths(QIcon::fallbackSearchPaths() << ":/imgs/elementary_icons");
+    QString arg0(argv[0]);
+    // qputenv("QT_QPA_PLATFORM_PLUGIN_PATH", QString(QFileInfo(argv[0]).dir().path()+"/Plugins").toUtf8());
+    Application app(argc, argv, true);
+    QStringList argl = app.arguments();
+
+    QString args = argl.join(' ').remove(arg0).trimmed();
+
     qRegisterMetaType<QList<LauncherInfo*>>("QList<LauncherInfo*>");
     qRegisterMetaType<QSet<LauncherInfo*>>("QSet<LauncherInfo*>");
     qRegisterMetaType<QProcess::ExitStatus>("QProcess::ExitStatus");
 
-    QApplication a(argc, argv);
     QSystemTrayIcon tray;
     tray.setIcon(QIcon(":tray_light"));
     tray.show();
@@ -189,7 +194,7 @@ int main(int argc, char *argv[]) {
     tray.setContextMenu(&menu);
     w = new MainWindow (&tray, &menu);
     w->show();
-    a.setQuitOnLastWindowClosed(false);
+    app.setQuitOnLastWindowClosed(false);
 
     QTimer::singleShot(5000, []{
 #ifdef Q_OS_MAC
@@ -203,6 +208,14 @@ int main(int argc, char *argv[]) {
 #endif
     });
 
+    QObject::connect(&app, SIGNAL(instanceStarted()), w, SLOT(show()));
+    QObject::connect(&app, SIGNAL(receivedMessage(quint32, QByteArray)), w, SLOT(parceReceivedMessage(quint32, QByteArray)));
 
-    return a.exec();
+#ifdef Q_OS_MACOS
+    QObject::connect(&app, SIGNAL(clickedOnDock()), w, SLOT(show()));
+#endif
+    w->parceReceivedMessage(0, args.toUtf8());
+
+
+    return app.exec();
 }
