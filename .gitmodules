@@ -1,6 +1,3 @@
-[submodule "app/imgs/elementary_icons"]
-	path = app/imgs/elementary_icons
-	url = https://github.com/elementary/icons/
 [submodule "app/scrcpy"]
 	path = app/scrcpy
 	url = https://github.com/rsanjuan87/scrcpy
