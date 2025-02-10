@@ -17,5 +17,8 @@
         <file alias="refresh">imgs/view-refresh.png</file>
         <file alias="refresh-light">imgs/view-refresh-light.png</file>
         <file>imgs/audio-on-light.svg</file>
+        <file>imgs/notif_on.png</file>
+        <file>imgs/notif_warn.png</file>
+        <file>imgs/settings.png</file>
     </qresource>
 </RCC>

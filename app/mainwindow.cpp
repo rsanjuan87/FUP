@@ -17,6 +17,7 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <QScreen>
+#include <QMessageBox>
 
 bool isDarkTheme() {
     QPalette palette = qApp->palette();
@@ -25,13 +26,13 @@ bool isDarkTheme() {
     return brightness < 128;
 }
 
-MainWindow::MainWindow(QSystemTrayIcon *t, QMenu *trayMenu, QWidget *parent)    :
+MainWindow::MainWindow(QSystemTrayIcon *t, QMenu *trayMenu, HttpServer *server, QWidget *parent)    :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     tray(t),
     trayMenu(trayMenu),
-    appsLayout(new WrapLayout(0))
-
+    appsLayout(new WrapLayout(0)),
+    server(server)
 {
     ui->setupUi(this);
     ui->toolBar->insertWidget(ui->actionCast_main_screen, ui->devices);
@@ -67,6 +68,7 @@ void MainWindow::init(){
     trayMenu->setDefaultAction(trayMenu->actions().first());
 
     devicesManager = new DevicesManager(&config, tray, this);
+    server->setManager(devicesManager);
     connect(devicesManager, &DevicesManager::deviceAdded, this, &MainWindow::addDevice);
     connect(devicesManager, &DevicesManager::deviceUpdated, this, &MainWindow::addDevice);
     connect(devicesManager, &DevicesManager::deviceRemoved, this, &MainWindow::removeDevice);
@@ -84,6 +86,7 @@ void MainWindow::loadDevices(){
 }
 
 void MainWindow::addDevice(Device* dev){
+    updateNotifStatus();
     QIcon icon(":/imgs/status/"+dev->status());
     for (int i = 0; i < ui->devices->count(); i++) {
         if(ui->devices->itemData(i).toString() == dev->id()){
@@ -92,6 +95,7 @@ void MainWindow::addDevice(Device* dev){
             return;
         }
     }
+
     ui->devices->addItem(icon, dev->model(), dev->id());
 }
 
@@ -149,7 +153,7 @@ void MainWindow::removeDevice(QString id){
 void MainWindow::connectCurrentDevice()
 {
     if(!currentDeviceId.isEmpty() && !devicesManager->isEmpty() ){
-        devicesManager->value(currentDeviceId)->connectDevice();
+        devicesManager->get(currentDeviceId)->connectDevice();
         // reloadLaunchers();
     }
 }
@@ -157,13 +161,13 @@ void MainWindow::connectCurrentDevice()
 
 void MainWindow::requestAction(QString action, std::function<void(QProcess*)> onAdbFinished){
     if(currentDeviceId.isEmpty() && !devicesManager->isEmpty() ){
-        return devicesManager->value(currentDeviceId)->requestAction(action, onAdbFinished);
+        return devicesManager->get(currentDeviceId)->requestAction(action, onAdbFinished);
     }
 }
 
 void MainWindow::requestAction(QString action, QMap<QString, QString> extras, std::function<void(QProcess*)> onAdbFinished) {
     if(currentDeviceId.isEmpty() && !devicesManager->isEmpty() ){
-        return devicesManager->value(currentDeviceId)->requestAction(action, extras, onAdbFinished);
+        return devicesManager->get(currentDeviceId)->requestAction(action, extras, onAdbFinished);
     }
 }
 
@@ -415,7 +419,7 @@ Device* MainWindow::currentDevice(){
     if(currentDeviceId.isEmpty()){
         return nullptr;
     }
-    return devicesManager->value(currentDeviceId);
+    return devicesManager->get(currentDeviceId);
 }
 
 void MainWindow::on_devices_activated(int index)
@@ -468,5 +472,46 @@ void MainWindow::on_actionSettings_triggered() {
 void MainWindow::on_actionExit_triggered()
 {
     exit(0);
+}
+
+void MainWindow::updateNotifStatus(){
+    Device* dev = currentDevice();
+    if(dev == nullptr)
+        return;
+    bool allowed =  dev->allowedAccessNotif();
+    bool notifHere = dev->notifHere;
+    ui->actionNotifications->setChecked(notifHere && allowed);
+
+    ui->actionNotifications->setIcon(QIcon(
+        allowed?
+            ":/imgs/notif_on.png":
+            ":/imgs/notif_warn.png"
+        )
+                                     );
+}
+
+
+void MainWindow::on_actionNotifications_triggered(bool checked)
+{
+    Device* dev = currentDevice();
+    if(dev == nullptr)
+        return;
+    dev->notifHere = !dev->notifHere;
+    updateNotifStatus();
+    if(!currentDevice()->allowedAccessNotif() && checked &&
+        (QMessageBox::question(this, "Notification service",
+                               "For this action you need to allow to access to notification on your device") == QMessageBox::Yes)){
+
+        //"com.android.settings/.Settings$NotificationListenerSettingsActivity";
+
+        QWidget w;
+        w.setProperty(Defs::KEY_GET_PACKAGES.toUtf8(), "com.android.settings");
+        w.setProperty(Defs::KEY_GET_LAUNCHERS.toUtf8(), "com.android.settings.Settings/$NotificationListenerSettingsActivity");
+        w.setProperty(Defs::KEY_GET_LABEL.toUtf8(), "Allow Notifications Access");
+        w.setProperty("deviceId", currentDeviceId);
+        onAppClick(&w);
+        currentDevice()->requestNotificationsAccess();
+        return;
+    }
 }
 

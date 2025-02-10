@@ -44,9 +44,7 @@ public:
     QString model();
     QString transportId();
     void setLine(QString line);
-    bool nulled(){
-        return this == nullptr || config == nullptr;
-    }
+    bool nulled();
     void castAudioStart(){
         QStringList params;
         params << "--no-video" << "--no-control" << "--no-window";
@@ -57,6 +55,14 @@ public:
     }
     QString screenId(QString pkgId);
     int scrcpyCount();
+    void processLaunchers(const QString strJson);
+    void saveIcon(const QString fileName, const QByteArray body);
+    bool checkIcon(const QString fileName, const int size);
+    void parseNotif(const QString body, QString deviceId);
+    void parseStatus(const QString);
+    void requestNotificationsAccess();
+
+    bool notifHere = true;
 public slots:
 
     void connectDevice();
@@ -87,7 +93,8 @@ public slots:
     void raiseWindow(QString pkgid, QString title);
 
     QString lastScreenId();
-
+    void setAllowedNotif(bool tf);
+    bool allowedAccessNotif();
 private:
     //loaded from adb
     // QString _screenSize;
@@ -101,19 +108,20 @@ private:
     QMap<QString, QProcess*> scrcpyProcess;
     AppAdder *appAdder = nullptr;
     NotificationHelper *notifHelper;
+    bool nofitEnabled;
 
     QString _line;
     Config* config;
-    bool accessToNotif = false;
+    bool allowAccessToNotif = false;
 signals:
     void addLauncher(LauncherInfo*, QString );
     void launchersClearred(QString );
     void launchersSet(QSet<LauncherInfo*>, QString );
 
-    void appClosed(QString pkgid);
+    void appClosed(QString id, QString pkgid);
 
-    void deviceDisconected(QString);
-    void deviceUpdated(QString);
+    void deviceDisconected(QString id);
+    void deviceUpdated(QString id);
 
 protected slots:
     void deviceDisconectedSlot();

@@ -46,6 +46,8 @@ public:
 
     static QString localIconsPath(const QString id);
     static QString localPath(const QString id);
+
+    static int serverPort;
 };
 
 #endif // DEFS_H

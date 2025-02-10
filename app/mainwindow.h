@@ -14,6 +14,7 @@
 #include "WrapLayout.h"
 #include "config.h"
 #include "devicesmanager.h"
+#include "server.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,7 +27,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QSystemTrayIcon *tray, QMenu *trayMenu, QWidget *parent = nullptr);
+    MainWindow(QSystemTrayIcon *tray, QMenu *trayMenu, HttpServer *server, QWidget *parent = nullptr);
     ~MainWindow();
 
     // void getIcon(QString remotePath);
@@ -47,6 +48,7 @@ public slots:
         // TODO todo
     }
 
+    void updateNotifStatus();
 protected slots:
     // void loadDeviceslist(QStringList);
     void connectCurrentDevice();
@@ -74,6 +76,8 @@ private slots:
 
     void on_actionExit_triggered();
 
+    void on_actionNotifications_triggered(bool checked);
+
 private:
     Ui::MainWindow *ui;
 
@@ -92,6 +96,7 @@ private:
     QString currentDeviceId;
     WrapLayout* appsLayout;
     DevicesManager* devicesManager;
+    HttpServer *server;
 
 signals:
     void deviceDisconected(QString);

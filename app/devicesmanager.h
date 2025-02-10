@@ -16,7 +16,7 @@ public:
     ~DevicesManager();
 
     bool isEmpty();
-    Device* value(QString id);
+    Device* get(QString id);
     void deviceRemovedSlot(QString id);
 public slots:
     void load(){
@@ -35,11 +35,13 @@ protected:
 
 protected slots:
 
-    // void addLauncherSlot(LauncherInfo*, QString );
-    // void launchersClearredSlot(QString );
-    // void launchersSetSlot(QSet<LauncherInfo*>, QString );
+    void addLauncherSlot(LauncherInfo*, QString );
+    void launchersClearredSlot(QString );
+    void launchersSetSlot(QSet<LauncherInfo*>, QString);
+    void appClosedSlot(QString devId, QString pkgId);
 
     void deviceDisconectedSlot(QString);
+    void deviceUpdatedIdSlot(QString);
 
     void start();
     void readOut(int);
@@ -53,6 +55,8 @@ signals:
     void addLauncher(LauncherInfo*, QString );
     void launchersClearred(QString );
     void launchersSet(QSet<LauncherInfo*>, QString );
+
+    void appClosed(Device* dev, QString pkgId);
 
     void deviceDisconected(QString);
 private:

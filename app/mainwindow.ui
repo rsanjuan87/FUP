@@ -68,7 +68,7 @@ QToolButton:pressed {
          <x>0</x>
          <y>0</y>
          <width>622</width>
-         <height>435</height>
+         <height>434</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -102,7 +102,7 @@ QToolButton:pressed {
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>20</width>
+            <width>10</width>
             <height>0</height>
            </size>
           </property>
@@ -136,7 +136,7 @@ QToolButton:pressed {
      <x>0</x>
      <y>0</y>
      <width>630</width>
-     <height>37</height>
+     <height>38</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -161,6 +161,8 @@ QToolButton:pressed {
      <addaction name="actionCast_virtual_desktop_size_screen"/>
      <addaction name="separator"/>
      <addaction name="actionSound"/>
+     <addaction name="actionNotifications"/>
+     <addaction name="actionDevice_settings"/>
     </widget>
     <addaction name="actionReload_list"/>
     <addaction name="separator"/>
@@ -208,6 +210,8 @@ QToolButton:pressed {
    <addaction name="actionCast_main_screen"/>
    <addaction name="actionCast_virtual_desktop_size_screen"/>
    <addaction name="actionSound"/>
+   <addaction name="actionNotifications"/>
+   <addaction name="actionDevice_settings"/>
   </widget>
   <action name="actionExit">
    <property name="text">
@@ -324,8 +328,45 @@ QToolButton:pressed {
    </property>
   </action>
   <action name="actionSettings">
+   <property name="icon">
+    <iconset resource="imgs.qrc">
+     <normaloff>:/imgs/settings.png</normaloff>:/imgs/settings.png</iconset>
+   </property>
    <property name="text">
     <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionNotifications">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="imgs.qrc">
+     <normaloff>:/imgs/notif_on.png</normaloff>:/imgs/notif_on.png</iconset>
+   </property>
+   <property name="text">
+    <string>Notifications</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionDevice_settings">
+   <property name="icon">
+    <iconset resource="imgs.qrc">
+     <normaloff>:/imgs/settings.png</normaloff>:/imgs/settings.png</iconset>
+   </property>
+   <property name="text">
+    <string>Device settings</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::TextHeuristicRole</enum>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
    </property>
   </action>
  </widget>

@@ -31,6 +31,7 @@ QString Defs::KEY_LAUCH_ACTIVITY = "fup:launch_activity";
 QString Defs::KEY_GET_NOTIFICATIONS_STATUS = "fup:get_notifications_status";
 QString Defs::KEY_GET_REQUEST_NOTIFICATIONS_ACCESS = "fup:request_notifications_access";
 
+int Defs::serverPort = 44333;
 
 QString Defs::getPackagesKey(){return Defs::actionHeader(Defs::KEY_GET_PACKAGES);};
 

@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="517a4e0b-13ad-4e7d-adf1-96921314c611" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/server.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitmodules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppAdder.h" beforeDir="false" afterPath="$PROJECT_DIR$/AppAdder.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Defs.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Defs.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Defs.h" beforeDir="false" afterPath="$PROJECT_DIR$/Defs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Device.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Device.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Device.h" beforeDir="false" afterPath="$PROJECT_DIR$/Device.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FUP.pro" beforeDir="false" afterPath="$PROJECT_DIR$/FUP.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FUP.pro.user" beforeDir="false" afterPath="$PROJECT_DIR$/FUP.pro.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FUP.pro.user.15976f4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FUP.pro.user.239865e" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FUP_en_US.ts" beforeDir="false" afterPath="$PROJECT_DIR$/FUP_en_US.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QAutostart/QAutostart" beforeDir="false" afterPath="$PROJECT_DIR$/QAutostart/QAutostart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QAutostart/QAutostart.pri" beforeDir="false" afterPath="$PROJECT_DIR$/QAutostart/QAutostart.pri" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QAutostart/qautostart.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/QAutostart/qautostart.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QAutostart/qautostart.h" beforeDir="false" afterPath="$PROJECT_DIR$/QAutostart/qautostart.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QSingleApp/SingleApplication" beforeDir="false" afterPath="$PROJECT_DIR$/QSingleApp/SingleApplication" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QSingleApp/singleapplication.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/QSingleApp/singleapplication.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QSingleApp/singleapplication.h" beforeDir="false" afterPath="$PROJECT_DIR$/QSingleApp/singleapplication.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QSingleApp/singleapplication.pri" beforeDir="false" afterPath="$PROJECT_DIR$/QSingleApp/singleapplication.pri" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QSingleApp/singleapplication_p.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/QSingleApp/singleapplication_p.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QSingleApp/singleapplication_p.h" beforeDir="false" afterPath="$PROJECT_DIR$/QSingleApp/singleapplication_p.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WrapLayout.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WrapLayout.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WrapLayout.h" beforeDir="false" afterPath="$PROJECT_DIR$/WrapLayout.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/application.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application.h" beforeDir="false" afterPath="$PROJECT_DIR$/application.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/config.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configdialog.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/configdialog.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configdialog.h" beforeDir="false" afterPath="$PROJECT_DIR$/configdialog.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configdialog.ui" beforeDir="false" afterPath="$PROJECT_DIR$/configdialog.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/devicesmanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/devicesmanager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/devicesmanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/devicesmanager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs.qrc" beforeDir="false" afterPath="$PROJECT_DIR$/imgs.qrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/audio-off.svg" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/audio-off.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/audio-on-light.svg" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/audio-on-light.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/audio-on.svg" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/audio-on.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/desktop.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/desktop.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/icon_mac.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/icon_mac.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/phone.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/phone.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/status/device.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/status/device.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/status/offline.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/status/offline.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/status/permissions.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/status/permissions.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/status/recovery.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/status/recovery.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/status/sideload.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/status/sideload.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/status/unauthorized.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/status/unauthorized.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/tray/tray_dark.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/tray/tray_dark.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/tray/tray_light.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/tray/tray_light.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/view-refresh-light.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/view-refresh-light.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/view-refresh.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/view-refresh.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainwindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mainwindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainwindow.h" beforeDir="false" afterPath="$PROJECT_DIR$/mainwindow.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/mainwindow.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/launcherinfo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/models/launcherinfo.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/launcherinfo.h" beforeDir="false" afterPath="$PROJECT_DIR$/models/launcherinfo.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notificationhelper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/notificationhelper.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notificationhelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/notificationhelper.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/.github/FUNDING.yml" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/.github/FUNDING.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/.github/ISSUE_TEMPLATE/bug_report.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/.github/ISSUE_TEMPLATE/bug_report.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/.github/ISSUE_TEMPLATE/feature_request.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/.github/ISSUE_TEMPLATE/feature_request.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/.github/ISSUE_TEMPLATE/question.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/.github/ISSUE_TEMPLATE/question.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/FAQ.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/FAQ.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/data/bash-completion/scrcpy" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/data/bash-completion/scrcpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/data/icon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/data/icon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/data/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/data/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/data/icon.svg" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/data/icon.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/data/open_a_terminal_here.bat" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/data/open_a_terminal_here.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/data/scrcpy-console.bat" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/data/scrcpy-console.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/data/scrcpy-console.desktop" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/data/scrcpy-console.desktop" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/data/scrcpy-noconsole.vbs" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/data/scrcpy-noconsole.vbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/data/scrcpy.desktop" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/data/scrcpy.desktop" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/data/zsh-completion/_scrcpy" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/data/zsh-completion/_scrcpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/deps/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/deps/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/deps/README" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/deps/README" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/deps/common" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/deps/common" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/meson.build" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/meson.build" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/scrcpy-windows.manifest" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/scrcpy-windows.manifest" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/scrcpy-windows.rc" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/scrcpy-windows.rc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/scrcpy.1" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/scrcpy.1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/adb/adb.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/adb/adb.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/adb/adb.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/adb/adb.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/adb/adb_device.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/adb/adb_device.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/adb/adb_device.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/adb/adb_device.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/adb/adb_parser.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/adb/adb_parser.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/adb/adb_parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/adb/adb_parser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/adb/adb_tunnel.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/adb/adb_tunnel.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/adb/adb_tunnel.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/adb/adb_tunnel.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/android/input.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/android/input.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/android/keycodes.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/android/keycodes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/audio_player.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/audio_player.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/audio_player.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/audio_player.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/cli.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/cli.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/cli.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/cli.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/clock.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/clock.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/clock.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/clock.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/common.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/common.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/compat.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/compat.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/compat.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/compat.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/control_msg.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/control_msg.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/control_msg.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/control_msg.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/controller.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/controller.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/controller.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/controller.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/coords.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/coords.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/decoder.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/decoder.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/decoder.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/decoder.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/delay_buffer.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/delay_buffer.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/delay_buffer.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/delay_buffer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/demuxer.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/demuxer.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/demuxer.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/demuxer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/device_msg.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/device_msg.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/device_msg.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/device_msg.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/display.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/display.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/display.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/display.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/events.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/events.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/file_pusher.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/file_pusher.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/file_pusher.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/file_pusher.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/fps_counter.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/fps_counter.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/fps_counter.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/fps_counter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/frame_buffer.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/frame_buffer.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/frame_buffer.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/frame_buffer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/hid/hid_event.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/hid/hid_event.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/hid/hid_keyboard.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/hid/hid_keyboard.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/hid/hid_keyboard.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/hid/hid_keyboard.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/hid/hid_mouse.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/hid/hid_mouse.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/hid/hid_mouse.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/hid/hid_mouse.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/icon.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/icon.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/icon.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/icon.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/input_events.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/input_events.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/input_manager.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/input_manager.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/input_manager.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/input_manager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/keyboard_sdk.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/keyboard_sdk.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/keyboard_sdk.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/keyboard_sdk.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/mouse_sdk.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/mouse_sdk.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/mouse_sdk.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/mouse_sdk.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/opengl.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/opengl.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/opengl.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/opengl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/options.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/options.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/options.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/options.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/packet_merger.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/packet_merger.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/packet_merger.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/packet_merger.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/receiver.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/receiver.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/receiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/receiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/recorder.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/recorder.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/recorder.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/recorder.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/scrcpy.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/scrcpy.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/scrcpy.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/scrcpy.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/screen.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/screen.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/screen.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/screen.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/server.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/server.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/server.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/server.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/sys/unix/file.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/sys/unix/file.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/sys/unix/process.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/sys/unix/process.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/sys/win/file.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/sys/win/file.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/sys/win/process.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/sys/win/process.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/trait/frame_sink.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/trait/frame_sink.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/trait/frame_source.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/trait/frame_source.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/trait/frame_source.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/trait/frame_source.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/trait/key_processor.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/trait/key_processor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/trait/mouse_processor.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/trait/mouse_processor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/trait/packet_sink.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/trait/packet_sink.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/trait/packet_source.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/trait/packet_source.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/trait/packet_source.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/trait/packet_source.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/uhid/keyboard_uhid.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/uhid/keyboard_uhid.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/uhid/keyboard_uhid.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/uhid/keyboard_uhid.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/uhid/mouse_uhid.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/uhid/mouse_uhid.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/uhid/mouse_uhid.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/uhid/mouse_uhid.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/uhid/uhid_output.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/uhid/uhid_output.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/uhid/uhid_output.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/uhid/uhid_output.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/usb/aoa_hid.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/usb/aoa_hid.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/usb/aoa_hid.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/usb/aoa_hid.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/usb/keyboard_aoa.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/usb/keyboard_aoa.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/usb/keyboard_aoa.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/usb/keyboard_aoa.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/usb/mouse_aoa.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/usb/mouse_aoa.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/usb/mouse_aoa.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/usb/mouse_aoa.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/usb/scrcpy_otg.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/usb/scrcpy_otg.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/usb/scrcpy_otg.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/usb/scrcpy_otg.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/usb/screen_otg.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/usb/screen_otg.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/usb/screen_otg.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/usb/screen_otg.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/usb/usb.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/usb/usb.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/usb/usb.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/usb/usb.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/acksync.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/acksync.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/acksync.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/acksync.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/audiobuf.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/audiobuf.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/audiobuf.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/audiobuf.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/average.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/average.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/average.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/average.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/binary.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/binary.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/file.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/file.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/file.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/file.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/intmap.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/intmap.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/intmap.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/intmap.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/intr.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/intr.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/intr.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/intr.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/log.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/log.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/log.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/log.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/memory.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/memory.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/memory.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/memory.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/net.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/net.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/net.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/net.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/net_intr.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/net_intr.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/net_intr.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/net_intr.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/process.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/process.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/process.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/process.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/process_intr.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/process_intr.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/process_intr.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/process_intr.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/rand.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/rand.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/rand.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/rand.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/str.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/str.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/str.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/str.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/strbuf.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/strbuf.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/strbuf.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/strbuf.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/term.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/term.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/term.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/term.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/thread.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/thread.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/thread.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/thread.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/tick.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/tick.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/tick.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/tick.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/timeout.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/timeout.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/timeout.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/timeout.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/vecdeque.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/vecdeque.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/util/vector.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/util/vector.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/v4l2_sink.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/v4l2_sink.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/v4l2_sink.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/v4l2_sink.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/version.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/version.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/src/version.h" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/src/version.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/tests/test_adb_parser.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/tests/test_adb_parser.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/tests/test_audiobuf.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/tests/test_audiobuf.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/tests/test_binary.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/tests/test_binary.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/tests/test_cli.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/tests/test_cli.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/tests/test_control_msg_serialize.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/tests/test_control_msg_serialize.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/tests/test_device_msg_deserialize.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/tests/test_device_msg_deserialize.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/tests/test_orientation.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/tests/test_orientation.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/tests/test_str.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/tests/test_str.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/tests/test_strbuf.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/tests/test_strbuf.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/tests/test_vecdeque.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/tests/test_vecdeque.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/app/tests/test_vector.c" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/app/tests/test_vector.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/assets/screenshot-debian-600.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/assets/screenshot-debian-600.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/config/android-checkstyle.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/config/android-checkstyle.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/config/checkstyle/checkstyle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/config/checkstyle/checkstyle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/cross_win32.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/cross_win32.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/cross_win64.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/cross_win64.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/audio.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/audio.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/build.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/build.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/camera.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/camera.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/connection.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/connection.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/control.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/control.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/develop.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/develop.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/device.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/device.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/keyboard.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/keyboard.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/linux.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/linux.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/macos.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/macos.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/mouse.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/mouse.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/otg.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/otg.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/recording.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/recording.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/shortcuts.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/shortcuts.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/tunnels.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/tunnels.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/v4l2.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/v4l2.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/video.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/video.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/window.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/window.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/doc/windows.md" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/doc/windows.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/meson.build" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/meson.build" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/meson_options.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/meson_options.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/release.mk" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/release.mk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/meson.build" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/meson.build" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/proguard-rules.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/aidl/android/content/IOnPrimaryClipChangedListener.aidl" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/aidl/android/content/IOnPrimaryClipChangedListener.aidl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/aidl/android/view/IDisplayFoldListener.aidl" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/aidl/android/view/IDisplayFoldListener.aidl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/aidl/android/view/IRotationWatcher.aidl" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/aidl/android/view/IRotationWatcher.aidl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/AsyncProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/AsyncProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/CleanUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/CleanUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/DisplaySpec.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/DisplaySpec.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/FakeContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/FakeContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/Options.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/Options.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/Workarounds.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/Workarounds.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioCapture.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioCapture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioCaptureException.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioCaptureException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioCodec.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioCodec.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioDirectCapture.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioDirectCapture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioPlaybackCapture.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioPlaybackCapture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioRawRecorder.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioRawRecorder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioRecordReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioRecordReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/audio/AudioSource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/ControlChannel.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/ControlChannel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/ControlMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/ControlMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/ControlMessageReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/ControlMessageReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/DeviceMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/DeviceMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/DeviceMessageSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/DeviceMessageSender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/DeviceMessageWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/DeviceMessageWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/KeyComposition.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/KeyComposition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/Pointer.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/Pointer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/PointersState.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/PointersState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/UhidManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/control/UhidManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/ConfigurationException.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/ConfigurationException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/DesktopConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/DesktopConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/Device.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/Device.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/DisplayInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/DisplayInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/Point.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/Position.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/Position.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/Size.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/Size.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/Streamer.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/device/Streamer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/Binary.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/Binary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/Codec.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/Codec.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/CodecOption.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/CodecOption.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/CodecUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/CodecUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/Command.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/HandlerExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/HandlerExecutor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/IO.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/IO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/Ln.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/Ln.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/LogUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/LogUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/Settings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/SettingsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/SettingsException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/StringUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/util/StringUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/CameraAspectRatio.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/CameraAspectRatio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/CameraCapture.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/CameraCapture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/CameraFacing.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/CameraFacing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/ScreenCapture.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/ScreenCapture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/ScreenInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/ScreenInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/SurfaceCapture.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/SurfaceCapture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/SurfaceEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/SurfaceEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/VideoCodec.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/VideoCodec.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/VideoSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/video/VideoSource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/ActivityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/ActivityManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/ClipboardManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/ClipboardManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/ContentProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/ContentProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/DisplayControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/DisplayControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/DisplayManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/DisplayManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/InputManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/InputManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/PowerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/PowerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/ServiceManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/ServiceManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/StatusBarManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/StatusBarManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/SurfaceControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/SurfaceControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/WindowManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/main/java/com/genymobile/scrcpy/wrappers/WindowManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/test/java/com/genymobile/scrcpy/control/ControlMessageReaderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/test/java/com/genymobile/scrcpy/control/ControlMessageReaderTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/test/java/com/genymobile/scrcpy/control/DeviceMessageWriterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/test/java/com/genymobile/scrcpy/control/DeviceMessageWriterTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/test/java/com/genymobile/scrcpy/util/BinaryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/test/java/com/genymobile/scrcpy/util/BinaryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/test/java/com/genymobile/scrcpy/util/CodecOptionsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/test/java/com/genymobile/scrcpy/util/CodecOptionsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/test/java/com/genymobile/scrcpy/util/CommandParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/test/java/com/genymobile/scrcpy/util/CommandParserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/server/src/test/java/com/genymobile/scrcpy/util/StringUtilsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/server/src/test/java/com/genymobile/scrcpy/util/StringUtilsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrcpy/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/scrcpy/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fup/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fup/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fup/fup.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fup/fup_en_US.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fup/main.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fup/mainwindow.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fup/mainwindow.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fup/mainwindow.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../imgs/exported/desktop.png" beforeDir="false" afterPath="$PROJECT_DIR$/../imgs/exported/desktop.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../imgs/exported/icon_full.png" beforeDir="false" afterPath="$PROJECT_DIR$/../imgs/exported/icon_full.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../imgs/exported/phone.png" beforeDir="false" afterPath="$PROJECT_DIR$/../imgs/exported/phone.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../imgs/icon.icns" beforeDir="false" afterPath="$PROJECT_DIR$/../imgs/icon.icns" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../imgs/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/../imgs/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../imgs/icon_mac.icns" beforeDir="false" afterPath="$PROJECT_DIR$/../imgs/icon_mac.icns" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../imgs/logo.pxd" beforeDir="false" afterPath="$PROJECT_DIR$/../imgs/logo.pxd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../imgs/phone.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../imgs/phone.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../imgs/video-display.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../imgs/video-display.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../imgs/view-refresh.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../imgs/view-refresh.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../key" beforeDir="false" afterPath="$PROJECT_DIR$/../key" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../notes.md" beforeDir="false" afterPath="$PROJECT_DIR$/../notes.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/../readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../screencaps/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/../screencaps/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../server/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/proguard-rules.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/androidTest/java/org/santech/fup/ExampleInstrumentedTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/androidTest/java/org/santech/fup/ExampleInstrumentedTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/ic_launcher-playstore.png" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/ic_launcher-playstore.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/BroadcastReceiver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/BroadcastReceiver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/Defs.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/Defs.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/MsgHelper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/MsgHelper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/NotificationService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/NotificationService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/UpdaterListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/UpdaterListener.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/ui/theme/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/ui/theme/Color.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/ui/theme/Theme.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/ui/theme/Theme.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/ui/theme/Type.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/java/org/santech/fup/ui/theme/Type.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/drawable/ic_launcher_background.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/drawable/ic_launcher_foreground.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/drawable/ic_launcher_foreground.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-hdpi/ic_launcher.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-hdpi/ic_launcher.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-mdpi/ic_launcher.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-mdpi/ic_launcher.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xhdpi/ic_launcher.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xhdpi/ic_launcher.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/values/colors.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/values/ic_launcher_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/values/ic_launcher_background.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/values/themes.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/xml/backup_rules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/xml/backup_rules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/main/res/xml/data_extraction_rules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/main/res/xml/data_extraction_rules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/app/src/test/java/org/santech/fup/ExampleUnitTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/src/test/java/org/santech/fup/ExampleUnitTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../server/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../server/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../server/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../server/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/../server/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../server/settings.gradle.kts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+      <option value="module" />
+      <option value="repository" />
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2nU2sQeuRNuWpmGlhEOrqwQw6Hn" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/san/Projects/FUP/app&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.general&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="GitHub.CommitStatus" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>

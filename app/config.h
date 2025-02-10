@@ -12,7 +12,7 @@ class AppConfig : public QObject
 {
     Q_OBJECT
 public:
-    explicit AppConfig(QObject *parent = nullptr){}
+    explicit AppConfig(QObject *parent = nullptr);
     void toogleEnableCustomScreenSize(bool v){
         if(v){
             _screenSize = _screenSize.remove("!");
@@ -50,7 +50,7 @@ class DevConfig : public QObject
 {
     Q_OBJECT
 public:
-    explicit DevConfig(QObject *parent = nullptr) {}
+    explicit DevConfig(QObject * = nullptr) {}
     void toogleEnableCustomScreenSize(bool v) {
         if (v) {
             _screenSize = _screenSize.remove("!");

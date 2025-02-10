@@ -7,6 +7,9 @@ QString Config::adbDefaultPath = "adb";
 QString Config::scrcpyDefaultPath = "scrcpy";
 QString Config::scrcpyServerDefaultPath = "";
 
+
+AppConfig::AppConfig(QObject *){}
+
 Config::Config(QObject *parent) : QObject(parent)
 {
     load();

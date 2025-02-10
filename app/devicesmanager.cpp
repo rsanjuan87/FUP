@@ -16,7 +16,7 @@ DevicesManager::~DevicesManager(){
     }
 }
 
-Device *DevicesManager::value(QString id){
+Device *DevicesManager::get(QString id){
     return devices.value(id);
 }
 
@@ -45,10 +45,15 @@ void DevicesManager::readOut(int){
             continue;
         else{
             Device* dev = new Device(l, config, tray, parent());
-            // connect(dev, &Device::addLauncher, this, &DevicesManager::addLauncherSlot);
-            // connect(dev, &Device::launchersClearred, this, &DevicesManager::launchersClearredSlot);
-            // connect(dev, &Device::launchersSet, this, &DevicesManager::launchersSetSlot);
+            connect(dev, &Device::addLauncher, this, &DevicesManager::addLauncherSlot);
+            connect(dev, &Device::launchersClearred, this, &DevicesManager::launchersClearredSlot);
+            connect(dev, &Device::launchersSet, this, &DevicesManager::launchersSetSlot);
+
+            connect(dev, &Device::appClosed, this, &DevicesManager::appClosedSlot);
+
             connect(dev, &Device::deviceDisconected, this, &DevicesManager::deviceDisconectedSlot);
+            connect(dev, &Device::deviceUpdated, this, &DevicesManager::deviceUpdatedIdSlot);
+
             QString key = dev->id();
             try{
                 if(devices.contains(key)){
@@ -133,19 +138,30 @@ void DevicesManager::readOut(int){
 bool DevicesManager::isEmpty() { return devices.empty(); }
 
 
-// void DevicesManager::addLauncherSlot(LauncherInfo* info, QString id){
-//     emit addLauncher(info, id);
-// }
-// void DevicesManager::launchersClearredSlot(QString id){
-//     emit launchersClearred(id);
-// }
-// void DevicesManager::launchersSetSlot(QSet<LauncherInfo*> set, QString id){
-//     emit launchersSet(set, id);
-// }
+void DevicesManager::addLauncherSlot(LauncherInfo* info, QString id){
+    emit addLauncher(info, id);
+}
+
+void DevicesManager::launchersClearredSlot(QString id){
+    emit launchersClearred(id);
+}
+
+void DevicesManager::launchersSetSlot(QSet<LauncherInfo*> set, QString id){
+    emit launchersSet(set, id);
+}
+
+void DevicesManager::appClosedSlot(QString devId, QString pkgId){
+    emit appClosed(devices.value(devId), pkgId);
+}
 
 void DevicesManager::deviceDisconectedSlot(QString id){
     emit deviceDisconected(id);
 }
+
+void DevicesManager::deviceUpdatedIdSlot(QString id){
+    emit deviceUpdated(devices.value(id));
+}
+
 void DevicesManager::deviceRemovedSlot(QString id) {
     if(!devices.contains(id))
         return;

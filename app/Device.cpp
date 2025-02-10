@@ -20,8 +20,7 @@
 #endif
 
 Device::Device(QString line, Config *conf, QSystemTrayIcon *t, QObject *parent)
-    : QObject{parent},
-     notifHelper(new NotificationHelper(t))
+    : QObject{parent}
 {
 
     while (line.contains("  ")) {
@@ -31,6 +30,8 @@ Device::Device(QString line, Config *conf, QSystemTrayIcon *t, QObject *parent)
     this->_line = line;
     this->config = conf;
     init();
+
+    notifHelper = new NotificationHelper(id(), t, conf, remoteFupIconsDir());
 }
 
 void Device::init(){
@@ -46,7 +47,8 @@ void Device::init(){
         emit deviceDisconected(id());
     });
 
-    appAdder = new AppAdder(config, id(), remoteFupDir()+"/launchers.json", parent());
+    if(appAdder == nullptr)
+        appAdder = new AppAdder(config, id(), remoteFupDir()+"/launchers.json", parent());
     connect(appAdder, &AppAdder::addLauncher, this, &Device::addedLauncherSlot);
     connect(appAdder, &AppAdder::launchersClearred, this, &Device::Cleared);
     connect(appAdder, &AppAdder::launchersSet, this, &Device::launchersSetSlot);
@@ -193,7 +195,6 @@ QSet<LauncherInfo *> Device::launchers()
         // Manejo cuando appAdder es nulo
         return QSet<LauncherInfo*>();
     }
-
 }
 
 QString Device::remoteFupDir(){
@@ -235,11 +236,17 @@ void Device::connectDevice(){
     // QString(p.readAll()).remove("\r");
 
     //get remote date
+
+    QStringList params;
+    params << "reverse" <<( "tcp:"+QString().setNum(Defs::serverPort)) <<( "tcp:"+QString().setNum(Defs::serverPort));
+    p.start(config->adbPath(), params);
+    p.waitForFinished();
+
     p.start(config->adbPath() , QString("-s "+ id() +" shell date +'%m-%d %H:%M:%S.000'").split(" "));
     p.waitForFinished();
     QString time = QString(p.readAll()).remove("\r").replace("\n", "");
     //to connnect logcat with that date
-    QStringList params;
+    params.clear();
     // QString("-s "+ id() +" shell logcat -s "+ Defs::KEY_PACKAGE_ID + " -T '"+time+"'").split(" ")
     params << "-s" << id() << "logcat" << "-s" << Defs::KEY_PACKAGE_ID << "-T" << time;
     logcat.start(config->adbPath(), params);
@@ -248,6 +255,13 @@ void Device::connectDevice(){
 
     requestAction(Defs::KEY_START_SERVICE);
     requestAction(Defs::KEY_GET_LAUNCHERS);
+    runInAdb("pm grant " + Defs::KEY_PACKAGE_ID + " android.permission.POST_NOTIFICATIONS");
+    //todo not asignable runInAdb("pm grant " + Defs::KEY_PACKAGE_ID + " android.permission.BIND_NOTIFICATION_LISTENER_SERVICE");
+    runInAdb("monkey -p "+Defs::KEY_PACKAGE_ID+" -c android.intent.category.LAUNCHER 1", [this](QProcess* p){
+        QString out = QString(p->readAll());
+        if(out.contains("error"))
+            runInAdb("am start -n "+Defs::KEY_PACKAGE_ID+"/.MainActivity");
+    });
 }
 
 void Device::disconnectDevice(){
@@ -273,7 +287,8 @@ void Device::requestAction(QString action, QMap<QString, QString> extras, std::f
                          << "android.intent.action.VIEW" << "-n"
                          << Defs::KEY_PACKAGE_ID + "/" +
                                 Defs::KEY_PACKAGE_ID + ".BroadcastReceiver"
-                         << "--es" << "action" << "'" + action + "'";
+                         << "--es" << "action" << "'" + action + "'"
+                         << "--es" << "deviceId" << "'" + id() + "'";
     for (auto it = extras.constBegin(); it != extras.constEnd(); ++it) {
         params << "--es" << it.key() << it.value();
     }
@@ -346,6 +361,7 @@ void Device::runInAdb(QString shell, std::function<void(QProcess*)> onAdbFinishe
 //     p->startDetached(config->adbPath(), params);
 //     adbList << p;
 // }
+
 
 
 void Device::parseMessages(QStringList out){
@@ -645,7 +661,7 @@ void Device::runScrcpy(QString pkgId, QString title, QStringList params, QString
             qDebug() << scrcpy->exitCode()<< scrcpy->exitStatus();
             // p->deleteLater();
             delete scrcpy;
-            emit appClosed(pkgId);
+            emit appClosed(id(), pkgId);
         }, Qt::QueuedConnection);
     });
 
@@ -704,6 +720,10 @@ void Device::setLine(QString line) {
     emit deviceUpdated(id());
 }
 
+bool Device::nulled(){
+    return this == nullptr || config == nullptr;
+}
+
 QString Device::lastScreenId() {
     if (_lastScreenId.isEmpty()) {
         QProcess *p = new QProcess();
@@ -748,4 +768,51 @@ QString Device::lastScreenId() {
     }
     return _lastScreenId;
 }
-int Device::scrcpyCount() { return scrcpyProcess.count(); }
+
+int Device::scrcpyCount() {
+    return scrcpyProcess.count();
+}
+
+void Device::processLaunchers(const QString strJson)
+{
+    appAdder->processStrJson(strJson);
+}
+
+void Device::saveIcon(const QString fileName, const QByteArray body) {
+    if(appAdder == nullptr)
+        init();
+    appAdder->saveIcon(fileName, body);
+}
+
+bool Device::checkIcon(const QString fileName, const int size) {
+    if(appAdder == nullptr)
+        init();
+    return appAdder->checkIcon(fileName, size);
+}
+
+void Device::parseNotif(const QString body, QString deviceId)
+{
+    if(notifHere)
+        notifHelper->parse(body, deviceId);
+}
+
+void Device::parseStatus(const QString body)
+{
+    QMap<QString, QString>  map = AppAdder::toJson(body);
+    bool tf = map["notifStatus"] == "true";
+    setAllowedNotif(tf);
+}
+
+void Device::requestNotificationsAccess()
+{
+    requestAction(Defs::KEY_GET_REQUEST_NOTIFICATIONS_ACCESS);
+}
+
+void Device::setAllowedNotif(bool tf) {
+    allowAccessToNotif = tf;
+    emit deviceUpdated(id());
+}
+
+bool Device::allowedAccessNotif() {
+    return allowAccessToNotif;
+}

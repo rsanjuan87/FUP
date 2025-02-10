@@ -33,6 +33,7 @@
 
 #include "mainwindow.h"
 #include "application.h"
+#include "server.h"
 
 #include <QApplication>
 #include <QSystemTrayIcon>
@@ -170,6 +171,8 @@ void startDeviceMonitor() {
 #endif
 
 int main(int argc, char *argv[]) {
+
+    HttpServer server;
     QString arg0(argv[0]);
     // qputenv("QT_QPA_PLATFORM_PLUGIN_PATH", QString(QFileInfo(argv[0]).dir().path()+"/Plugins").toUtf8());
     Application app(argc, argv, true);
@@ -192,7 +195,7 @@ int main(int argc, char *argv[]) {
 
     QMenu menu;
     tray.setContextMenu(&menu);
-    w = new MainWindow (&tray, &menu);
+    w = new MainWindow (&tray, &menu, &server);
     w->show();
     app.setQuitOnLastWindowClosed(false);
 
@@ -215,6 +218,8 @@ int main(int argc, char *argv[]) {
     QObject::connect(&app, SIGNAL(clickedOnDock()), w, SLOT(show()));
 #endif
     w->parceReceivedMessage(0, args.toUtf8());
+
+    server.start();
 
 
     return app.exec();
